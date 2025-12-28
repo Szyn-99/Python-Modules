@@ -20,4 +20,3 @@ for i in range(7):
     lotus.grow()
     lotus.age_cm()
     lotus.get_info()
-
