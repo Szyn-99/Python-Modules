@@ -15,13 +15,23 @@ class Plant:
 
 
 class FloweringPlant(Plant):
-    pass
+    def __init__(self, name, height, age, color):
+        super().__init__(self, name, height, age)
+        self.color = color
+    def 
+
+
+
+
+
+
+
 class GardenManager:
     gardens_total = 0
     gardens_owners = []
     gardens_owners_stats = []
     def add_plant(self, owner):
+        pass
     class GardenStats:
-
         pass
         
