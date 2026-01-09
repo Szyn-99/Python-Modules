@@ -42,6 +42,7 @@ class Vegetable(Plant):
         )
         print(f"{self.name} is rich in {self.nutritional_value}")
 
+
 def test():
     print("=== Garden Plant Types ===")
     rose = Flower("Rose", 25, 30, "red")
