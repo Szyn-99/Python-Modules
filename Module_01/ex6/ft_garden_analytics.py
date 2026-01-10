@@ -2,7 +2,7 @@ class Plant:
     def __init__(self, name, height):
         self.name = name
         self.height = height
-        self.plant_type = "regular"
+        self.type = "regular"
 
     def grow(self):
         self.height += 1
@@ -12,8 +12,7 @@ class Plant:
     def get_info(self):
         return f"- {self.name}: {self.height}cm"
 
-    def calculate_value(self):
-        """Base score is just the height."""
+    def score(self):
         return self.height
 
 
@@ -21,24 +20,26 @@ class FloweringPlant(Plant):
     def __init__(self, name, height, color, blooming):
         super().__init__(name, height)
         self.color = color
-        self.blooming = "blooming" if blooming == "blooming" else "not blooming"
-        self.plant_type = "flowering"
+        if(blooming == "blooming"):
+            self.blooming = "blooming"
+        else:
+            self.blooming = "not blooming"
+        self.type = "flowering"
 
     def get_info(self):
         return f"{super().get_info()}, {self.color} flowers ({self.blooming})"
 
 
 class PrizeFlower(FloweringPlant):
-    def __init__(self, name, height, color, points, blooming):
+    def __init__(self, name, height, color, blooming, points):
         super().__init__(name, height, color, blooming)
         self.points = points
-        self.plant_type = "prize"
+        self.type = "prize"
 
     def get_info(self):
         return f"{super().get_info()}, Prize points: {self.points}"
 
-    def calculate_value(self):
-        """Override: Height + Prize points."""
+    def score(self):
         return self.height + self.points
 
 
@@ -63,7 +64,7 @@ class GardenManager:
         """Instance Method: Adds a plant and updates stats[cite: 184]."""
         self.plants.append(plant)
         self.stats.plants_added += 1
-        self.stats.counts[plant.plant_type] += 1
+        self.stats.counts[plant.type] += 1
         print(f"Added {plant.name} to {self.owner}'s garden")
 
     def grow_garden(self):
@@ -72,7 +73,7 @@ class GardenManager:
         for plant in self.plants:
             self.stats.total_growth += plant.grow()
 
-    # Requirement: Static Method 
+    # Requirement: Static Method
     @staticmethod
     def validate_height(height):
         """Utility function: Independent of garden data[cite: 184]."""
@@ -83,16 +84,16 @@ class GardenManager:
     def create_garden_network(cls):
         """Processes all gardens in the class registry dynamically[cite: 183]."""
         score_strings = []
-        
+
         for garden in cls.all_gardens:
             total_score = 0
             # Instead of sum(), we use a standard loop
             for plant in garden.plants:
                 # Polymorphism: Each plant knows its own value
-                total_score += plant.calculate_value()
-            
+                total_score += plant.score()
+
             score_strings.append(f"{garden.owner}: {total_score}")
-            
+
         print(f"Garden scores - {', '.join(score_strings)}")
 
     def generate_report(self):
@@ -101,20 +102,24 @@ class GardenManager:
         print("Plants in garden:")
         for plant in self.plants:
             print(plant.get_info())
-        print(f"Plants added: {self.stats.plants_added}, Total growth: {self.stats.total_growth}cm")
-        print(f"Plant types: {self.stats.counts['regular']} regular, "
-              f"{self.stats.counts['flowering']} flowering, "
-              f"{self.stats.counts['prize']} prize flowers")
+        print(
+            f"Plants added: {self.stats.plants_added}, Total growth: {self.stats.total_growth}cm"
+        )
+        print(
+            f"Plant types: {self.stats.counts['regular']} regular, "
+            f"{self.stats.counts['flowering']} flowering, "
+            f"{self.stats.counts['prize']} prize flowers"
+        )
 
 
 if __name__ == "__main__":
     print("=== Garden Management System Demo ===")
-    
+
     alice = GardenManager("Alice")
     alice.add_plant(Plant("Oak Tree", 100))
     alice.add_plant(FloweringPlant("Rose", 25, "red", "blooming"))
     alice.add_plant(PrizeFlower("Sunflower", 50, "yellow", 10, "blooming"))
-    
+
     # Adding Bob to demonstrate dynamic network
     bob = GardenManager("Bob")
     bob.add_plant(Plant("Small Bush", 92))
@@ -123,8 +128,8 @@ if __name__ == "__main__":
     alice.generate_report()
 
     print(f"Height validation test: {GardenManager.validate_height(101)}")
-    
+
     # Requirement: Dynamic method working on the manager type itself [cite: 184]
     GardenManager.create_garden_network()
-    
+
     print(f"Total gardens managed: {len(GardenManager.all_gardens)}")
