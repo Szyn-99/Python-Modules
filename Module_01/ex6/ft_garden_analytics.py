@@ -87,7 +87,7 @@ class GardenManager:
     @classmethod
     def create_garden_network(cls):
         """Processes all gardens in the class registry dynamically[cite: 183]."""
-        score_strings = []
+        score_strings = ""
 
         for garden in cls.all_gardens:
             total_score = 0
@@ -95,10 +95,12 @@ class GardenManager:
             for plant in garden.plants:
                 # Polymorphism: Each plant knows its own value
                 total_score += plant.score()
+            if(plant == GardenManager.gardens_counter - 1):
+                score_strings += f"{garden.owner}: {total_score}"
+            else:
+                score_strings += f"{garden.owner}: {total_score}, "
 
-            score_strings.append(f"{garden.owner}: {total_score}")
-
-        print(f"Garden scores - {', '.join(score_strings)}")
+        print(f"Garden scores - {score_strings}")
 
     def generate_report(self):
         """Instance Method: Uses nested helper to show analytics[cite: 184]."""
