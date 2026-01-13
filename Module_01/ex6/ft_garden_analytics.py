@@ -63,7 +63,7 @@ class GardenManager:
 
     def add_plant(self, plant):
         """Instance Method: Adds a plant and updates stats[cite: 184]."""
-        self.plants.append(plant)
+        self.plants += [plant]
         self.stats.plants_added += 1
         self.stats.counts[plant.type] += 1
         print(f"Added {plant.name} to {self.owner}'s garden")
@@ -77,8 +77,11 @@ class GardenManager:
     # Requirement: Static Method
     @staticmethod
     def validate_height(height):
-        """Utility function: Independent of garden data[cite: 184]."""
-        return height > 0
+        if height <= 0:
+            print("Height validation test: False")
+        else:
+            print("Height validation test: True")
+
 
     # Requirement: Class Method for dynamic networking [cite: 184]
     @classmethod
@@ -130,11 +133,11 @@ if __name__ == "__main__":
     bob.add_plant(Plant("Small Bush", 92))
     szyn = GardenManager("Szyn")
     szyn.add_plant(PrizeFlower("Exotic Orchid", 30, "purple", "not blooming", 20))
-    
+
     alice.grow_garden()
     alice.generate_report()
 
-    print(f"Height validation test: {GardenManager.validate_height(101)}")
+    GardenManager.validate_height(101)
 
     # Requirement: Dynamic method working on the manager type itself [cite: 184]
     GardenManager.create_garden_network()
