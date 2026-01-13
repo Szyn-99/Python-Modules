@@ -46,7 +46,7 @@ class PrizeFlower(FloweringPlant):
 class GardenManager:
     # Requirement: Class-level registry for dynamic networking [cite: 184]
     all_gardens = []
-
+    gardens_counter = 0
     # Requirement: Nested Helper Class [cite: 184]
     class GardenStats:
         def __init__(self):
@@ -59,6 +59,7 @@ class GardenManager:
         self.plants = []
         self.stats = self.GardenStats()
         GardenManager.all_gardens.append(self)
+        GardenManager.gardens_counter += 1
 
     def add_plant(self, plant):
         """Instance Method: Adds a plant and updates stats[cite: 184]."""
@@ -110,6 +111,10 @@ class GardenManager:
             f"{self.stats.counts['flowering']} flowering, "
             f"{self.stats.counts['prize']} prize flowers"
         )
+    @classmethod
+    def gardens_managed(self):
+        """Instance Method: Returns the number of gardens managed."""
+        print(f"Total gardens managed: {GardenManager.gardens_counter}")
 
 
 if __name__ == "__main__":
@@ -118,12 +123,14 @@ if __name__ == "__main__":
     alice = GardenManager("Alice")
     alice.add_plant(Plant("Oak Tree", 100))
     alice.add_plant(FloweringPlant("Rose", 25, "red", "blooming"))
-    alice.add_plant(PrizeFlower("Sunflower", 50, "yellow", 10, "blooming"))
+    alice.add_plant(PrizeFlower("Sunflower", 50, "yellow", "blooming", 10))
 
     # Adding Bob to demonstrate dynamic network
     bob = GardenManager("Bob")
     bob.add_plant(Plant("Small Bush", 92))
-
+    szyn = GardenManager("Szyn")
+    szyn.add_plant(PrizeFlower("Exotic Orchid", 30, "purple", "not blooming", 20))
+    
     alice.grow_garden()
     alice.generate_report()
 
@@ -132,4 +139,4 @@ if __name__ == "__main__":
     # Requirement: Dynamic method working on the manager type itself [cite: 184]
     GardenManager.create_garden_network()
 
-    print(f"Total gardens managed: {len(GardenManager.all_gardens)}")
+    GardenManager.gardens_managed()
