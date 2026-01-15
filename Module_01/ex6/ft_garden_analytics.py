@@ -121,14 +121,14 @@ class GardenManager:
     gardens_managed = classmethod(gardens_managed)
 
 
-"""main function meant for testing"""
 def main():
+    """main function meant for testing"""  
     print("=== Garden Management System Demo ===")
 
     alice = GardenManager("Alice")
     alice.add_plant(Plant("Oak Tree", 100))
     alice.add_plant(FloweringPlant("Rose", 25, "red", "blooming"))
-    alice.add_plant(PrizeFlower("Sunflower", 50, "yellow", "blooming", 10))
+    alice.add_plant(PrizeFlower("Sunflower", 50, "yellow", "blooming", 10),)
     bob = GardenManager("Bob")
     bob.add_plant(Plant("Small Bush", 92))
     szyn = GardenManager("Szyn")
@@ -138,7 +138,8 @@ def main():
     GardenManager.validate_height(101)
     GardenManager.create_garden_network()
     GardenManager.gardens_managed()
+    
 
-"""using the pattern {if __name__ == "__main__"} to avoid running the program in case of importing it to another module"""
 if __name__ == "__main__":
+    """using the pattern {if __name__ == "__main__"} to avoid running the program in case of importing it to another module"""
     main()
