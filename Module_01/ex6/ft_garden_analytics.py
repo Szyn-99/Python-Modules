@@ -1,24 +1,24 @@
 """ Classes act like blueprints for objects """
 class Plant:
-    """ this is a built in method (dunder method) it initialize attributes for instances"""
     def __init__(self, name, height):
+        """ this is a built in method (dunder method) it initialize attributes for instances"""
         self.name = name
         self.height = height
         self.type = "regular"
-    """this is an object method, each call grow a plant by 1cm"""
     def grow(self):
+        """this is an instance method, each call grow a plant by 1cm"""
         self.height += 1
         print(f"{self.name} grew 1cm")
         return 1
-    """same as the type of the previous method, but this one gives basic info"""
     def get_info(self):
+        """same as the type of the previous method, but this one gives basic info"""
         return f"- {self.name}: {self.height}cm"
-    """object method, as the name suggest, it returns the height of the plant as a score"""
     def score(self):
+        """instance method, as the name suggest, it returns the height of the plant as a score"""
         return self.height
 
-"""this class gets the same structure of the class (Plant), we call this inheritance"""
 class FloweringPlant(Plant):
+    """this class gets the same structure of the class (Plant), we call this inheritance"""
     def __init__(self, name, height, color, blooming):
         """super() is a method that calls another method from the base class with similar behaviour"""
         super().__init__(name, height)
@@ -28,12 +28,12 @@ class FloweringPlant(Plant):
         else:
             self.blooming = "not blooming"
         self.type = "flowering"
-    """you may ask how can we use the same function name twice ?, it is possible thanks to polymorphism"""
     def get_info(self):
+        """you may ask how can we use the same function name twice ?, it is possible thanks to polymorphism"""
         return f"{super().get_info()}, {self.color} flowers ({self.blooming})"
 
-"""like the previous class, this one inherit both of the previous classes (Plant) and (Flowering Plant)"""
 class PrizeFlower(FloweringPlant):
+    """like the previous class, this one inherit both of the previous classes (Plant) and (Flowering Plant)"""
     def __init__(self, name, height, color, blooming, points):
         super().__init__(name, height, color, blooming)
         self.points = points
@@ -41,23 +41,23 @@ class PrizeFlower(FloweringPlant):
 
     def get_info(self):
         return f"{super().get_info()}, Prize points: {self.points}"
-    """score calculating for this class is quite different, since we get it's height and value"""
     def score(self):
+        """score calculating for this class is quite different, since we get it's height and value"""
         return self.height + self.points
 
-"""a class that handles comple"""
 class GardenManager:
+    """a class that handles comple"""
 
     all_gardens = []
     gardens_counter = 0
-    """nested class, contains a dunder method to initialize extra attributes, that might be used"""
     class GardenStats:
+        """nested class, contains a dunder method to initialize extra attributes, that might be used"""
         def __init__(self):
             self.owner_plants = 0
             self.t_growth = 0
             self.types_count = {"regular": 0, "flowering": 0, "prize": 0}
-    """ """
     def __init__(self, owner):
+        """initialization of class variables, the __init__ is also called constructor"""
         self.owner = owner
         self.plants = []
         self.stats = self.GardenStats()
@@ -65,39 +65,34 @@ class GardenManager:
         GardenManager.gardens_counter += 1
 
     def add_plant(self, plant):
-        """Instance Method: Adds a plant and updates stats[cite: 184]."""
+        """this method add a plant to the garden of it's owner"""
         self.plants += [plant]
-        """"""
         self.stats.owner_plants += 1
         self.stats.types_count[plant.type] += 1
         print(f"Added {plant.name} to {self.owner}'s garden")
 
     def grow_garden(self):
-        """Instance Method: Processes growth for all plants."""
+        """this method grow all plants by iterating on all plants of the garden"""
         print(f"{self.owner} is helping all plants grow...")
         for plant in self.plants:
             self.stats.t_growth += plant.grow()
 
-    # Requirement: Static Method
-    @staticmethod
     def validate_height(height):
+        """this method validate a given height"""
         if height <= 0:
             print("Height validation test: False")
         else:
             print("Height validation test: True")
-
-
-    # Requirement: Class Method for dynamic networking [cite: 184]
-    @classmethod
+    """here we convert this method to a static method, thus not needing an instance to call it"""
+    validate_height = staticmethod(validate_height)
+    
     def create_garden_network(cls):
-        """Processes all gardens in the class registry dynamically[cite: 183]."""
+        """this method create a network between gardens, the idea is showing all scores of each garden and it's owner"""
         score_strings = ""
         counter = GardenManager.gardens_counter
         for garden in cls.all_gardens:
             total_score = 0
-            # Instead of sum(), we use a standard loop
             for plant in garden.plants:
-                # Polymorphism: Each plant knows its own value
                 total_score += plant.score()
             if (counter - 1 > 0):
                 score_strings += f"{garden.owner}: {total_score}, "
@@ -106,28 +101,28 @@ class GardenManager:
             counter -= 1
 
         print(f"Garden scores - {score_strings}")
+    """here we convert this method to a class method, avoiding decorators is a must according to the correction sheet"""
+    create_garden_network = classmethod(create_garden_network)
 
     def generate_report(self):
-        """Instance Method: Uses nested helper to show analytics[cite: 184]."""
+        """instace method that generates a report for the owner calling it"""
         print(f"=== {self.owner}'s Garden Report ===")
         print("Plants in garden:")
         for plant in self.plants:
             print(plant.get_info())
-        print(
-            f"Plants added: {self.stats.owner_plants}, Total growth: {self.stats.t_growth}cm"
-        )
+        print(f"Plants added: {self.stats.owner_plants}, Total growth: {self.stats.t_growth}cm")
         print(
             f"Plant types: {self.stats.types_count['regular']} regular, "
             f"{self.stats.types_count['flowering']} flowering, "
             f"{self.stats.types_count['prize']} prize flowers"
         )
-    @classmethod
-    def gardens_managed(self):
-        """Instance Method: Returns the number of gardens managed."""
+    def gardens_managed(cls):
         print(f"Total gardens managed: {GardenManager.gardens_counter}")
+    gardens_managed = classmethod(gardens_managed)
 
 
-if __name__ == "__main__":
+"""main function meant for testing"""
+def main():
     print("=== Garden Management System Demo ===")
 
     alice = GardenManager("Alice")
@@ -143,3 +138,7 @@ if __name__ == "__main__":
     GardenManager.validate_height(101)
     GardenManager.create_garden_network()
     GardenManager.gardens_managed()
+
+"""using the pattern {if __name__ == "__main__"} to avoid running the program in case of importing it to another module"""
+if __name__ == "__main__":
+    main()
