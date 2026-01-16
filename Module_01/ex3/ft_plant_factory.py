@@ -12,7 +12,8 @@ class Plant:
 
 
 if __name__ == "__main__":
-    """main entry of the program, executing only when the script is run directly"""
+    """main entry of the program, executing
+    only when the script is run directly"""
     print("=== Plant Factory Output ===")
     plants = [
         Plant("Rose", 30, 45),

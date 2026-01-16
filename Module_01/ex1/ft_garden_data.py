@@ -1,5 +1,6 @@
 class Plant:
-    """this class represents a plant with a name, height, and age, also a blueprint for plant objects"""
+    """this class represents a plant with a name,
+    height, and age, also a blueprint for plant objects"""
 
     def __init__(self, name, height, age):
         """constructor method to initialize plant attributes"""

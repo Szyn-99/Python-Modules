@@ -1,5 +1,6 @@
 class SecurePlant:
-    """a class that represents a plant with private attributes for height and age"""
+    """a class that represents a plant with
+    private attributes for height and age"""
 
     def __init__(self, name, height: int, age: int):
         self.name = name
@@ -16,7 +17,8 @@ class SecurePlant:
 
     def set_height(self, n_height: int):
         if n_height < 0:
-            print(f"""Invalid operation attempted: height {n_height}cm [REJECTED]""")
+            print("Invalid operation attempted: "
+                  f"height {n_height}cm [REJECTED]")
             print("Security: Negative height rejected")
         else:
             self.__height = n_height
@@ -31,7 +33,8 @@ class SecurePlant:
 
     def set_age(self, n_age: int):
         if n_age < 0:
-            print(f"""Invalid operation attempted: age {n_age} days [REJECTED]""")
+            print("Invalid operation attempted: "
+                  f"age {n_age} days [REJECTED]")
             print("Security: Negative age rejected")
         else:
             self.__age = n_age
@@ -40,12 +43,13 @@ class SecurePlant:
 
 if __name__ == "__main__":
     print("=== Garden Security System ===")
-    """main entry of the program, executing only when the script is run directly"""
+    """main entry of the program, executing
+    only when the script is run directly"""
     plant = SecurePlant("Rose", 0, 0)
     plant.set_height(25)
     plant.set_age(30)
-    plant.set_age(-5)
     plant.set_height(-5)
     print(
-        f"""Current plant: {plant.name} ({plant.get_height()}cm, {plant.get_age()} days)"""
+        f"\nCurrent plant: {plant.name} "
+        f"({plant.get_height()}cm, {plant.get_age()} days)"
     )

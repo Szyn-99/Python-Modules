@@ -15,5 +15,6 @@ def main():
 
 
 if __name__ == "__main__":
-    """here we use the (if __name__ == "__main__") pattern to call to execute the main function only when the script in the main file"""
+    """here we use the (if __name__ == "__main__") pattern to call
+    to execute the main function only when the script in the main file"""
     main()
