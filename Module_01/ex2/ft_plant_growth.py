@@ -12,8 +12,8 @@ class Plant:
     def grow(self):
         self.height += 1
 
-    """this method will increment the age
-    of the plant by 1 day each time it is called"""
+    """this method will increment the age of the
+    plant by 1 day each time it is called"""
 
     def age(self):
         self.agee += 1

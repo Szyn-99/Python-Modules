@@ -175,7 +175,6 @@ def main():
     GardenManager.validate_height(101)
     GardenManager.create_garden_network()
     GardenManager.gardens_managed()
-    alice.create_garden_network()
 
 
 if __name__ == "__main__":
