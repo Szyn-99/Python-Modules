@@ -1,14 +1,19 @@
 class SecurePlant:
     """a class that represents a plant with private attributes for height and age"""
+
     def __init__(self, name, height: int, age: int):
         self.name = name
         self.__height = height
         self.__age = age
         print(f"Plant created: {self.name}")
+
     """getter method for height"""
+
     def get_height(self):
         return self.__height
+
     """setter method for height with security check"""
+
     def set_height(self, n_height: int):
         if n_height < 0:
             print(f"""Invalid operation attempted: height {n_height}cm [REJECTED]""")
@@ -16,10 +21,14 @@ class SecurePlant:
         else:
             self.__height = n_height
             print(f"Height updated: {n_height}cm [OK]")
+
     """getter method for age"""
+
     def get_age(self):
         return self.__age
+
     """setter method for age with security check"""
+
     def set_age(self, n_age: int):
         if n_age < 0:
             print(f"""Invalid operation attempted: age {n_age} days [REJECTED]""")
@@ -27,6 +36,7 @@ class SecurePlant:
         else:
             self.__age = n_age
             print(f"Age updated: {n_age} days [OK]")
+
 
 if __name__ == "__main__":
     print("=== Garden Security System ===")
@@ -36,4 +46,6 @@ if __name__ == "__main__":
     plant.set_age(30)
     plant.set_age(-5)
     plant.set_height(-5)
-    print(f"""Current plant: {plant.name} ({plant.get_height()}cm, {plant.get_age()} days)""")
+    print(
+        f"""Current plant: {plant.name} ({plant.get_height()}cm, {plant.get_age()} days)"""
+    )

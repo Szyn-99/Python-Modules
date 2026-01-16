@@ -1,5 +1,6 @@
 class Plant:
     """a class that will work as a blueprint for plant objects"""
+
     def __init__(self, name, height, age):
         self.name = name
         self.height = height
@@ -8,6 +9,7 @@ class Plant:
     def get_info(self):
         """this method will print the plant information"""
         print(f"{self.name}: {self.height}cm, {self.age} days old")
+
 
 if __name__ == "__main__":
     """main entry of the program, executing only when the script is run directly"""
@@ -23,5 +25,5 @@ if __name__ == "__main__":
     for plant in plants:
         plant.get_info()
         plants_count += 1
-    
+
     print(f"\nTotal plants created: {plants_count}")
