@@ -8,7 +8,7 @@ class Plant:
 
     def get_info(self):
         """this method will print the plant information"""
-        print(f"{self.name}: {self.height}cm, {self.age} days old")
+        return f"{self.name} ({self.height}cm, {self.age} days old)"
 
 
 if __name__ == "__main__":
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     ]
     plants_count = 0
     for plant in plants:
-        plant.get_info()
+        print(f"Created: {plant.get_info()}")
         plants_count += 1
 
     print(f"\nTotal plants created: {plants_count}")
