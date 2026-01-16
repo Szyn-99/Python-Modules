@@ -13,8 +13,8 @@ class Plant:
 
     """this method gives basic infos about the current plant"""
 
-    def get_info(self) -> None:
-        print(f"{self.name}: {self.height}cm, {self.age} days old")
+    def get_info(self) -> str:
+        return f"{self.name}: {self.height}cm, {self.age} days old"
 
 
 class Flower(Plant):
@@ -26,9 +26,10 @@ class Flower(Plant):
         this class parent, thus initializing and reducing code lines"""
         super().__init__(name, height, age)
         self.color = color
-        print(
-            f"{self.name} (Flower): "
-            f"{self.height}cm, {self.age} days, {self.color} color"
+
+    def get_info(self) -> str:
+        return (
+            f"{super().get_info()}, "f"{self.color} flowers"
         )
 
     def bloom(self) -> None:
@@ -44,9 +45,10 @@ class Tree(Plant):
                  int, age: int, trunk_diameter: int) -> None:
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
-        print(
-            f"{self.name} (Tree): "
-            f"{self.height}cm, {self.age} days, "
+
+    def get_info(self) -> str:
+        return (
+            f"{super().get_info()}, "
             f"{self.trunk_diameter}cm diameter"
         )
 
@@ -65,11 +67,14 @@ class Vegetable(Plant):
         super().__init__(name, height, age)
         self.harvest_season = harvest_season
         self.nutritional_value = nutritional_value
-        print(
-            f"{self.name} (Vegetable): "
-            f"{self.height}cm, {self.age} days, {self.harvest_season} harvest"
+
+    def get_info(self) -> str:
+        return (
+            f"{super().get_info()}, {self.harvest_season} harvest"
         )
-        print(f"{self.name} is rich in {self.nutritional_value}")
+
+    def vegetable_value(self) -> str:
+        return f"{self.name} is rich in {self.nutritional_value}"
 
 
 """a testing method"""
@@ -78,11 +83,29 @@ class Vegetable(Plant):
 def test() -> None:
     print("=== Garden Plant Types ===")
     rose = Flower("Rose", 25, 30, "red")
+    print(rose.get_info())
     rose.bloom()
+    lotus = Flower("Lotus", 15, 20, "pink")
+    print(lotus.get_info())
+    lotus.bloom()
+    print()
+
+    sapling = Tree("Sapling", 100, 365, 10)
+    print(sapling.get_info())
+    sapling.produce_shade()
     oak = Tree("Oak", 500, 1825, 50)
+    print(oak.get_info())
     oak.produce_shade()
+    print()
+
+    potato = Vegetable("Potato", 60, 120, "autumn", "carbohydrates")
     tomato = Vegetable("Tomato", 80, 90, "summer", "vitamin C")
-    tomato.get_info()
+
+    print(potato.get_info())
+    print(potato.vegetable_value())
+
+    print(tomato.get_info())
+    print(tomato.vegetable_value())
 
 
 """again, this pattern ensures that the test() function

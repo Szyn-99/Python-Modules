@@ -4,7 +4,7 @@
 class Plant:
     def __init__(self, name: str, height: int) -> None:
         """this is a built in method (dunder method)
-         it initialize attributes for instances"""
+        it initialize attributes for instances"""
         self.name = name
         self.height = height
         self.type = "regular"
@@ -17,7 +17,7 @@ class Plant:
 
     def get_info(self) -> str:
         """same as the type of the previous method,
-         but this one gives basic info"""
+        but this one gives basic info"""
         return f"- {self.name}: {self.height}cm"
 
     def score(self) -> int:
@@ -28,12 +28,13 @@ class Plant:
 
 class FloweringPlant(Plant):
     """this class gets the same structure
-     of the class (Plant), we call this inheritance"""
+    of the class (Plant), we call this inheritance"""
 
-    def __init__(self, name: str,
-                 height: int, color: str, blooming: str) -> None:
+    def __init__(
+        self, name: str, height: int, color: str, blooming: str
+    ) -> None:
         """super() is a method that calls another
-         method from the base class with similar behaviour"""
+        method from the base class with similar behaviour"""
         super().__init__(name, height)
         self.color = color
         if blooming == "blooming":
@@ -52,8 +53,9 @@ class PrizeFlower(FloweringPlant):
     """like the previous class, this one inherit both
     of the previous classes (Plant) and (Flowering Plant)"""
 
-    def __init__(self, name: str, height: int,
-                 color: str, blooming: str, points: int) -> None:
+    def __init__(
+        self, name: str, height: int, color: str, blooming: str, points: int
+    ) -> None:
         super().__init__(name, height, color, blooming)
         self.points = points
         self.type = "prize"
