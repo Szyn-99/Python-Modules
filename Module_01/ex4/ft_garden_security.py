@@ -10,12 +10,12 @@ class SecurePlant:
 
     """getter method for height"""
 
-    def get_height(self):
+    def get_height(self) -> int:
         return self.__height
 
     """setter method for height with security check"""
 
-    def set_height(self, n_height: int):
+    def set_height(self, n_height: int) -> None:
         if n_height < 0:
             print("Invalid operation attempted: "
                   f"height {n_height}cm [REJECTED]")
@@ -26,12 +26,12 @@ class SecurePlant:
 
     """getter method for age"""
 
-    def get_age(self):
+    def get_age(self) -> int:
         return self.__age
 
     """setter method for age with security check"""
 
-    def set_age(self, n_age: int):
+    def set_age(self, n_age: int) -> None:
         if n_age < 0:
             print("Invalid operation attempted: "
                   f"age {n_age} days [REJECTED]")

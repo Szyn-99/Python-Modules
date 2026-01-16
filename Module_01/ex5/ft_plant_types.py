@@ -6,14 +6,14 @@ class Plant:
     """this is the construcor method, where we
     initialize attributes of the instances"""
 
-    def __init__(self, name, height, age):
+    def __init__(self, name: str, height: int, age: int) -> None:
         self.name = name
         self.height = height
         self.age = age
 
     """this method gives basic infos about the current plant"""
 
-    def get_info(self):
+    def get_info(self) -> None:
         print(f"{self.name}: {self.height}cm, {self.age} days old")
 
 
@@ -21,7 +21,7 @@ class Flower(Plant):
     """this class inherit methods and variables
     of the base class {Plant}, we call it derived or child class"""
 
-    def __init__(self, name, height, age, color):
+    def __init__(self, name: str, height: int, age: int, color: str) -> None:
         """the super() method will call the constructor of
         this class parent, thus initializing and reducing code lines"""
         super().__init__(name, height, age)
@@ -31,7 +31,7 @@ class Flower(Plant):
             f"{self.height}cm, {self.age} days, {self.color} color"
         )
 
-    def bloom(self):
+    def bloom(self) -> None:
         """this method print a string, when calling it"""
         print(f"{self.name} is blooming beautifully!")
 
@@ -40,7 +40,8 @@ class Tree(Plant):
     """once again, this is a a child
     class that inherits the characteristics of {Plant}"""
 
-    def __init__(self, name, height, age, trunk_diameter):
+    def __init__(self, name: str, height:
+                 int, age: int, trunk_diameter: int) -> None:
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
         print(
@@ -49,7 +50,7 @@ class Tree(Plant):
             f"{self.trunk_diameter}cm diameter"
         )
 
-    def produce_shade(self):
+    def produce_shade(self) -> None:
         height_m = self.height / 100
         shade = 3.14 * height_m**2
         print(f"{self.name} provides {shade:.0f} square meters of shade")
@@ -59,7 +60,8 @@ class Vegetable(Plant):
     """same as the last two previous classes, a
     child class that inherits from parent class"""
 
-    def __init__(self, name, height, age, harvest_season, nutritional_value):
+    def __init__(self, name: str, height: int, age: int,
+                 harvest_season: str, nutritional_value: str) -> None:
         super().__init__(name, height, age)
         self.harvest_season = harvest_season
         self.nutritional_value = nutritional_value
@@ -73,7 +75,7 @@ class Vegetable(Plant):
 """a testing method"""
 
 
-def test():
+def test() -> None:
     print("=== Garden Plant Types ===")
     rose = Flower("Rose", 25, 30, "red")
     rose.bloom()

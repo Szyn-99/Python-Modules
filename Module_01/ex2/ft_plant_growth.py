@@ -1,7 +1,7 @@
 class Plant:
     """a class that will work as a blueprint for plant objects"""
 
-    def __init__(self, name, height, age):
+    def __init__(self, name: str, height: int, age: int) -> None:
         self.name = name
         self.height = height
         self.agee = age
@@ -9,18 +9,18 @@ class Plant:
     """this method will increment the height
     and age of the plant by 1 cm each time it is called"""
 
-    def grow(self):
+    def grow(self) -> None:
         self.height += 1
 
     """this method will increment the age of the
     plant by 1 day each time it is called"""
 
-    def age(self):
+    def age(self) -> None:
         self.agee += 1
 
     """this method will print the plant information"""
 
-    def get_info(self):
+    def get_info(self) -> None:
         print(f"{self.name}: {self.height}cm, {self.agee} days old")
 
 
