@@ -2,7 +2,7 @@ class SecurePlant:
     """a class that represents a plant with
     private attributes for height and age"""
 
-    def __init__(self, name, height: int, age: int):
+    def __init__(self, name: str, height: int, age: int):
         self.name = name
         self.__height = height
         self.__age = age

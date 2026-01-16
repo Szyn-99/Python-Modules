@@ -1,15 +1,15 @@
 def plant_in_a_garden() -> None:
     """Defining class attributes based on instance variables"""
-    name = "Lotus"
-    height = "13cm"
-    age = "37 days"
+    name = "Rose"
+    height = "25cm"
+    age = "30 days"
     """here we print the plant information"""
     print(f"Plant: {name}\nHeight: {height}\nAge: {age}")
 
 
 def main():
     """main function to call the method above and run the program"""
-    print("=== Welcome to the Garden ===")
+    print("=== Welcome to My Garden ===")
     plant_in_a_garden()
     print("=== End of Program ===")
 
