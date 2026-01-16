@@ -4,7 +4,7 @@ def plant_in_a_garden() -> None:
     height = "13cm"
     age = "37 days"
     """here we print the plant information"""
-    print(f"Plant: {name}\nHeigth: {height}\nAge: {age}")
+    print(f"Plant: {name}\nHeight: {height}\nAge: {age}")
 
 
 def main():
