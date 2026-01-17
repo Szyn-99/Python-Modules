@@ -4,14 +4,14 @@ class SecurePlant:
 
     def __init__(self, name: str, height: int, age: int):
         self.name = name
-        self.__height = height
-        self.__age = age
+        self._height = height
+        self._age = age
         print(f"Plant created: {self.name}")
 
     """getter method for height"""
 
     def get_height(self) -> int:
-        return self.__height
+        return self._height
 
     """setter method for height with security check"""
 
@@ -23,13 +23,13 @@ class SecurePlant:
             )
             print("Security: Negative height rejected")
         else:
-            self.__height = n_height
+            self._height = n_height
             print(f"Height updated: {n_height}cm [OK]")
 
     """getter method for age"""
 
     def get_age(self) -> int:
-        return self.__age
+        return self._age
 
     """setter method for age with security check"""
 
@@ -41,7 +41,7 @@ class SecurePlant:
             )
             print("Security: Negative age rejected")
         else:
-            self.__age = n_age
+            self._age = n_age
             print(f"Age updated: {n_age} days [OK]")
 
 
