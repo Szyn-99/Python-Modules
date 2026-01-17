@@ -118,7 +118,6 @@ class GardenManager:
     thus not needing an instance to call it"""
     validate_height = staticmethod(validate_height)
 
-    @classmethod
     def create_garden_network(cls) -> None:
         """this method create a network between gardens,
         the idea is showing all scores of each garden and it's owner"""
