@@ -28,15 +28,22 @@ if __name__ == "__main__":
     """main entry of the program, executing only
     when the script is run directly"""
     print("=== Day 1 ===")
-    rose = Plant("Rose", 25, 30)
-    rose.get_info()
-
-    heigth = rose.height
+    plants = [
+        Plant("Rose", 25, 30),
+        Plant("Lotus", 10, 15),
+        Plant("Lily", 12, 20)
+    ]
+    for plant in plants:
+        plant.get_info()
+    print()
+    growth = 0
     for day in range(6):
-        rose.grow()
-        rose.age()
+        for plant in plants:
+            plant.grow()
+            plant.age()
+        growth += 1
     print("=== Day 7 ===")
-    rose.get_info()
+    for plant in plants:
+        plant.get_info()
 
-    growth = rose.height - heigth
     print(f"Growth this week: +{growth}cm")
