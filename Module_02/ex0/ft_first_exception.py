@@ -20,7 +20,7 @@ def test_temperature_input() -> None:
     print("=== Garden Temperature Checker ===")
     print("Testing temperature: 25")
     try:
-        check_temperature("25")
+        check_temperature(402 / 10)
     except Exception as subject_says_No_Crash:
         print(f"Subject Requirement: {subject_says_No_Crash}")
     print()

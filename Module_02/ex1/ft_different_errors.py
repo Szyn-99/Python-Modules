@@ -1,4 +1,6 @@
-def garden_operations(division: int = None, file: str = None, value: str = None, key: str = None) -> None:
+def garden_operations(
+    division: int = None, file: str = None, value: str = None, key: str = None
+) -> None:
     try:
         if division != None:
             a = division / 0
@@ -26,19 +28,17 @@ def garden_operations(division: int = None, file: str = None, value: str = None,
         print("Caught ZeroDivisionError: division by zero")
 
 
-
-
 def test_garden_operations() -> None:
     print("=== Garden Error Types Demo ===")
-    
+
     print("Testing ValueError...")
     try:
         garden_operations(value="abc")
     except Exception as subject_says_No_Crash:
         print(f"Subject Requirement: {subject_says_No_Crash}")
-    
+
     print()
-    
+
     print("Testing ZeroDivisionError...")
     try:
         garden_operations(division=5)
@@ -46,21 +46,21 @@ def test_garden_operations() -> None:
         print(f"Subject Requirement: {subject_says_No_Crash}")
 
     print()
-    
+
     print("Testing FileNotFoundError...")
     try:
         garden_operations(file="alo.txt")
     except Exception as subject_says_No_Crash:
         print(f"Subject Requirement: {subject_says_No_Crash}")
     print()
-    
+
     print("Testing KeyError...")
     try:
         garden_operations(key="alo_plant")
     except Exception as subject_says_No_Crash:
         print(f"Subject Requirement: {subject_says_No_Crash}")
     print()
-    
+
     print("Testing multiple errors together...")
     try:
         garden_operations(value="xyz", division=3, file="alo.txt")
