@@ -32,25 +32,40 @@ def test_garden_operations() -> None:
     print("=== Garden Error Types Demo ===")
     
     print("Testing ValueError...")
-    garden_operations(value="abc")
+    try:
+        garden_operations(value="abc")
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
     
     print()
     
     print("Testing ZeroDivisionError...")
-    garden_operations(division=5)
+    try:
+        garden_operations(division=5)
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
 
     print()
     
     print("Testing FileNotFoundError...")
-    garden_operations(file="alo.txt")
+    try:
+        garden_operations(file="alo.txt")
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
     print()
     
     print("Testing KeyError...")
-    garden_operations(key="alo_plant")
+    try:
+        garden_operations(key="alo_plant")
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
     print()
     
     print("Testing multiple errors together...")
-    garden_operations(value="xyz", division=3, file="alo.txt")
+    try:
+        garden_operations(value="xyz", division=3, file="alo.txt")
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
     print()
     print("Caught an error, but program continues!")
     print()
