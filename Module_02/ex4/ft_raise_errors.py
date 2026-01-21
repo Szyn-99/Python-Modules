@@ -14,7 +14,8 @@ class SunLightHoursError(GardenError):
     pass
 
 
-def check_plant_health(plant_name: str, water_level: int, sunlight_hours: int) -> str:
+def check_plant_health(
+        plant_name: str, water_level: int, sunlight_hours: int) -> str:
     try:
         if plant_name is None or plant_name == "":
             raise IsValidNameError("Error: Plant name cannot be empty!")

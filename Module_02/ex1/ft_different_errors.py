@@ -2,15 +2,15 @@ def garden_operations(
     division: int = None, file: str = None, value: str = None, key: str = None
 ) -> None:
     try:
-        if division != None:
-            a = division / 0
-        elif file != None:
-            stream = open(file, "r")
-        elif value != None:
-            another_a = int(value)
-        elif key != None:
+        if division is not None:
+            division / 0
+        elif file is not None:
+            open(file, "r")
+        elif value is not None:
+            int(value)
+        elif key is not None:
             larousse = {}
-            keyv = larousse[key]
+            larousse[key]
         else:
             print("No operation specified")
             return None

@@ -13,7 +13,8 @@ class WaterError(GardenError):
 def water_plant(tank: int) -> None:
     try:
         if tank <= 0:
-            raise WaterError("Caught WaterError: Not enough water in the tank!")
+            raise WaterError(
+                "Caught WaterError: Not enough water in the tank!")
         else:
             print("Plants are fine !")
 
