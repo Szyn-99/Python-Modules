@@ -15,7 +15,7 @@ class SunLightHoursError(GardenError):
 
 
 class Plant:
-    def __init__(self, plant_name: str, water_level: int, sunlight_hours: int):
+    def __init__(self, plant_name: str, water_level: int, sunlight_hours: int) -> None:
         if plant_name is None or plant_name == "":
             raise IsValidNameError("Plant name cannot be empty!")
         elif water_level > 10:
@@ -44,9 +44,8 @@ class GardenManager:
         self.garden = []
         self.adding_flag = 1
         self.water_flag = 1
-        self.adding_flag = 1
         self.water_total = water_total
-        self.water_total = water_total
+
 
     def add_plant(self, plant_name: str,
                   water_level: int, sunlight_hours: int) -> None:
@@ -61,14 +60,12 @@ class GardenManager:
             print(f"Error adding plant: {error_add}")
 
     def water_plant(self, water_to_water: int) -> None:
-        if self.water_flag == 1:
-            self.water_flag = 0
+        try:
             print("Watering plants...")
             print("Opening watering system")
-        try:
             for plant in self.garden:
                 if self.water_total < water_to_water:
-                    raise GardenError("Not enough water in tank")
+                    raise WaterLevelError("Not enough water in tank")
                 self.water_total -= water_to_water
                 plant.water_level += water_to_water
                 print(f"Watering {plant.plant_name} - success")
