@@ -53,8 +53,7 @@ def test_garden_operations() -> None:
         garden_operations(value="xyz", division=3, file="alo.txt")
     except (ValueError, ZeroDivisionError, FileNotFoundError, KeyError) as e:
         print(f"Caught {e.__class__.__name__}: {e}")
-    print()
-    print("Caught an error, but program continues!")
+        print("Caught an error, but program continues!")
     print()
     print("All error types tested successfully")
 
