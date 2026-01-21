@@ -45,6 +45,7 @@ class GardenManager:
         self.garden = []
         self.adding_flag = 1
         self.water_flag = 1
+        self.health_flag = 1
         self.water_total = water_total
 
     def add_plant(self, plant_name: str,
@@ -77,6 +78,9 @@ class GardenManager:
 
     def check_plant_health(self, plant: Plant) -> str:
         try:
+            if self.health_flag == 1:
+                self.health_flag = 0
+                print("Checking plant health...")
             if plant.water_level > 10:
                 raise WaterLevelError(
                     f"Water level {plant.water_level} is too high (max 10)"
@@ -107,6 +111,7 @@ def test_garden_management():
     garden = GardenManager(10)
     try:
         garden.add_plant("tomato", 5, 8)
+        garden.add_plant("batata", 5, 8)
         garden.add_plant("lettuce", 8, 8)
         garden.add_plant("", 4, 4)
     except Exception as subject_says_No_Crash:
@@ -119,7 +124,6 @@ def test_garden_management():
         print(f"Subject Requirement: {subject_says_No_Crash}")
     print()
 
-    print("Checking plant health...")
     try:
         for plant in garden.garden:
             print(garden.check_plant_health(plant))

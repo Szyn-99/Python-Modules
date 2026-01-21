@@ -6,7 +6,7 @@ def water_plants(plant_list: list) -> None:
     print("Opening watering system")
     try:
         for each in plant_list:
-            if each is None or each == "None":
+            if each is None or each == "":
                 raise InvalidPlantError(
                     f"Error: Cannot water {each} - invalid plant!")
             print(f"Watering {each}")

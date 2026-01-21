@@ -12,7 +12,6 @@ def garden_operations(
         larousse[key]
     else:
         print("No operation specified")
-        return None
 
 
 def test_garden_operations() -> None:
@@ -51,8 +50,9 @@ def test_garden_operations() -> None:
     print("Testing multiple errors together...")
     try:
         garden_operations(value="xyz", division=3, file="alo.txt")
-    except (ValueError, ZeroDivisionError, FileNotFoundError, KeyError) as e:
-        print(f"Caught {e.__class__.__name__}: {e}")
+    except (ValueError, ZeroDivisionError,
+            FileNotFoundError, KeyError) as lereur:
+        print(f"Caught {lereur.__class__.__name__}: {lereur}")
         print("Caught an error, but program continues!")
     print()
     print("All error types tested successfully")
