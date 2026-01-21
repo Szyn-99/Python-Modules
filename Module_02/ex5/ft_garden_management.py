@@ -15,7 +15,8 @@ class SunLightHoursError(GardenError):
 
 
 class Plant:
-    def __init__(self, plant_name: str, water_level: int, sunlight_hours: int) -> None:
+    def __init__(self, plant_name: str, water_level:
+                 int, sunlight_hours: int) -> None:
         if plant_name is None or plant_name == "":
             raise IsValidNameError("Plant name cannot be empty!")
         elif water_level > 10:
@@ -45,7 +46,6 @@ class GardenManager:
         self.adding_flag = 1
         self.water_flag = 1
         self.water_total = water_total
-
 
     def add_plant(self, plant_name: str,
                   water_level: int, sunlight_hours: int) -> None:
