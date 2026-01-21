@@ -60,7 +60,7 @@ class GardenManager:
         except GardenError as error_add:
             print(f"Error adding plant: {error_add}")
 
-    def water_plant(self, water_to_water) -> None:
+    def water_plant(self, water_to_water: int) -> None:
         if self.water_flag == 1:
             self.water_flag = 0
             print("Watering plants...")

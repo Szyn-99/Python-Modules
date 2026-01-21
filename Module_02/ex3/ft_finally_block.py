@@ -2,7 +2,7 @@ class InvalidPlantError(Exception):
     pass
 
 
-def water_plants(plant_list: list):
+def water_plants(plant_list: list) -> None:
     print("Opening watering system")
     try:
         for each in plant_list:
