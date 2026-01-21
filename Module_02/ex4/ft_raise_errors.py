@@ -16,29 +16,26 @@ class SunLightHoursError(GardenError):
 
 def check_plant_health(
         plant_name: str, water_level: int, sunlight_hours: int) -> str:
-    try:
-        if plant_name is None or plant_name == "":
-            raise IsValidNameError("Error: Plant name cannot be empty!")
-        elif water_level > 10:
-            raise WaterLevelError(
-                f"Error: Water level {water_level} is too high (max 10)"
-            )
-        elif water_level < 1:
-            raise WaterLevelError(
-                f"Error: Water level {water_level} is too low (min 1)"
-            )
-        elif sunlight_hours < 2:
-            raise SunLightHoursError(
-                f"Error: Sunlight hours {sunlight_hours} is too low (min 2)"
-            )
-        elif sunlight_hours > 12:
-            raise SunLightHoursError(
-                f"Error: Sunlight hours {sunlight_hours} is too high (max 12)"
-            )
-        else:
-            return f"Plant '{plant_name}' is healthy!"
-    except GardenError as hadi9a:
-        print(hadi9a)
+    if plant_name is None or plant_name == "":
+        raise IsValidNameError("Error: Plant name cannot be empty!")
+    elif water_level > 10:
+        raise WaterLevelError(
+            f"Error: Water level {water_level} is too high (max 10)"
+        )
+    elif water_level < 1:
+        raise WaterLevelError(
+            f"Error: Water level {water_level} is too low (min 1)"
+        )
+    elif sunlight_hours < 2:
+        raise SunLightHoursError(
+            f"Error: Sunlight hours {sunlight_hours} is too low (min 2)"
+        )
+    elif sunlight_hours > 12:
+        raise SunLightHoursError(
+            f"Error: Sunlight hours {sunlight_hours} is too high (max 12)"
+        )
+    else:
+        return f"Plant '{plant_name}' is healthy!"
 
 
 def test_plant_checks() -> None:
@@ -49,29 +46,29 @@ def test_plant_checks() -> None:
         result = check_plant_health("tomato", 5, 8)
         if result:
             print(result)
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+    except GardenError as e:
+        print(e)
     print()
 
     print("Testing empty plant name...")
     try:
         check_plant_health(None, 5, 8)
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+    except GardenError as e:
+        print(e)
     print()
 
     print("Testing bad water level...")
     try:
         check_plant_health("tomato", 15, 8)
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+    except GardenError as e:
+        print(e)
     print()
 
     print("Testing bad sunlight hours...")
     try:
         check_plant_health("tomato", 5, 0)
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+    except GardenError as e:
+        print(e)
     print()
 
     print("All error raising tests completed!")
