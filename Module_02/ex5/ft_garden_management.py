@@ -47,6 +47,11 @@ class GardenManager:
     adding_flag = 1
     water_flag = 1
     adding_flag = 1
+    water_total = 0
+    def __init__(self, water_total: int) -> None:
+        
+        GardenManager.water_total = water_total
+    
     def add_plant(plant_name: str, water_level: int, sunlight_hours: int) -> None:
         
         try:
@@ -61,42 +66,101 @@ class GardenManager:
             
     add_plant = staticmethod(add_plant)
     
-    def water_plant() -> None:
-        if GardenManager.water == 1:
-            GardenManager.water = 0
-            print("Opening watering system")
+    def water_plant(water_to_water) -> None:
+        if GardenManager.water_flag == 1:
+            GardenManager.water_flag = 0
             print("Watering plants...")
-        for plant in GardenManager.garden:
-            plant.water_level += 1
-            print(f"Watering {plant.plant_name} - success")
+            print("Opening watering system")
+        try:
+            for plant in GardenManager.garden:
+                if GardenManager.water_total < water_to_water:
+                    raise GardenError("Not enough water in tank")
+                GardenManager.water_total -= water_to_water
+                plant.water_level += water_to_water
+                print(f"Watering {plant.plant_name} - success")
+        except GardenError as ga:
+            print(f"Caught GardenError: {ga}")
+            print("System recovered and continuing...")
+        finally:
+            print("Closing watering system (cleanup)")
+            
             
     water_plant = staticmethod(water_plant)
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    @staticmethod
-    def show_plant():
-        for plant in GardenManager.garden:
-            print(plant.plant_name, plant.water_level, plant.sunlight_hours)
-   
+    def check_plant_health(plant: Plant) -> str:
+        try:
+            if plant.water_level > 10:
+                raise WaterLevelError(
+                    f"Water level {plant.water_level} is too high (max 10)"
+                )
+            elif plant.water_level < 1:
+                raise WaterLevelError(
+                    f"Water level {plant.water_level} is too low (min 1)"
+                )
+            elif plant.sunlight_hours < 2:
+                raise SunLightHoursError(
+                    f"Sunlight hours {plant.sunlight_hours} is too low (min 2)"
+                )
+            elif plant.sunlight_hours > 12:
+                raise SunLightHoursError(
+                    f"Sunlight hours {plant.sunlight_hours} is too high (max 12)"
+                )
+            else:
+                return f"{plant.plant_name}: healthy (water: {plant.water_level}, sun: {plant.sunlight_hours})"
+        except GardenError as error:
+            print(error)
+            return None
 
+    check_plant_health = staticmethod(check_plant_health)
 
-
-def test():
-    garden = GardenManager()
-    garden.add_plant("khizo", 4, 4)
-    garden.add_plant("btata", 4, 4)
-    garden.add_plant("", 4, 4)
-    garde.water_plant
-    garden.show_plant()
+def test_garden_management():
+    print("=== Garden Management System ===")
+    
+    garden = GardenManager(100)
+    try:
+        garden.add_plant("tomato", 3, 8)
+        garden.add_plant("lettuce", 3, 8)
+        garden.add_plant("", 4, 4)
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
     print()
     
+    try:
+        garden.water_plant(2)
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
+    print()
     
-test()
+    print("Checking plant health...")
+    try:
+        for plant in GardenManager.garden:
+            result = GardenManager.check_plant_health(plant)
+            if result:
+                print(result)
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
+    print()
+    
+    print("Testing error recovery...")
+    GardenManager.water_flag = 1
+    GardenManager.garden = []
+    GardenManager.adding_flag = 1
+    
+    garden2 = GardenManager(5)
+    try:
+        garden2.add_plant("carrot", 3, 6)
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
+    
+    try:
+        garden2.water_plant(10)
+    except Exception as subject_says_No_Crash:
+        print(f"Subject Requirement: {subject_says_No_Crash}")
+    print()
+    
+    print("Garden management system test complete!")
+
+
+if __name__ == "__main__":
+    test_garden_management()
