@@ -1,4 +1,4 @@
-def check_temperature(temp_str: str) -> str:
+def check_temperature(temp_str: str) -> int | None:
     try:
         try:
             temp = int(temp_str)
@@ -19,29 +19,33 @@ def check_temperature(temp_str: str) -> str:
 
 def test_temperature_input() -> None:
     print("=== Garden Temperature Checker ===")
-    print("Testing temperature: 25")
     try:
-        check_temperature("25")
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+        tmp = "25"
+        print(f"Testing temperature: {tmp}")
+        check_temperature(tmp)
+    except Exception as error:
+        print(f"Subject Requirement: {error}")
     print()
-    print("Testing temperature: abc")
     try:
-        check_temperature("abc")
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+        tmp = "abc"
+        print(f"Testing temperature: {tmp}")
+        check_temperature(tmp)
+    except Exception as error:
+        print(f"Subject Requirement: {error}")
     print()
-    print("Testing temperature: 100")
     try:
-        check_temperature("100")
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+        tmp = "100"
+        print(f"Testing temperature: {tmp}")
+        check_temperature(tmp)
+    except Exception as error:
+        print(f"Subject Requirement: {error}")
     print()
-    print("Testing temperature: -50")
     try:
-        check_temperature("-50")
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+        tmp = "-50"
+        print(f"Testing temperature: {tmp}")
+        check_temperature(tmp)
+    except Exception as error:
+        print(f"Subject Requirement: {error}")
     print()
     print("All tests completed - program didn't crash!")
 

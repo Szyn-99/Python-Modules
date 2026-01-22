@@ -1,52 +1,39 @@
 class GardenError(Exception):
-    pass
+    def __init__(self, message: str = "GardenError") -> None:
+        super().__init__(message)
 
 
 class IsValidNameError(GardenError):
-    pass
+    def __init__(self, message: str = "IsValidNameError") -> None:  
+        super().__init__(message)
 
 
 class WaterLevelError(GardenError):
-    pass
+    def __init__(self, message: str = "WaterLevelError") -> None:
+        super().__init__(message)
 
 
 class SunLightHoursError(GardenError):
-    pass
+    def __init__(self, message: str = "SunLightHoursError") -> None:
+        super().__init__(message)
 
 
 class Plant:
     def __init__(self, plant_name: str, water_level:
                  int, sunlight_hours: int) -> None:
-        if plant_name is None or plant_name == "":
-            raise IsValidNameError("Plant name cannot be empty!")
-        elif water_level > 10:
-            raise WaterLevelError(
-                f"Water level {water_level} is too high (max 10)")
-        elif water_level < 1:
-            raise WaterLevelError(
-                f"Water level {water_level} is too low (min 1)")
-        elif sunlight_hours < 2:
-            raise SunLightHoursError(
-                f"Sunlight hours {sunlight_hours} is too low (min 2)"
-            )
-        elif sunlight_hours > 12:
-            raise SunLightHoursError(
-                f"Sunlight hours {sunlight_hours} is too high (max 12)"
-            )
-        else:
-            self.plant_name = plant_name
-            self.water_level = water_level
-            self.sunlight_hours = sunlight_hours
-
+        self.plant_name = plant_name
+        self.water_level = water_level
+        self.sunlight_hours = sunlight_hours
+    
 
 class GardenManager:
 
     def __init__(self, water_total: int) -> None:
         self.garden = []
+        self.water_total = water_total
         self.adding_flag = 1
         self.water_flag = 1
         self.health_flag = 1
-        self.water_total = water_total
 
     def add_plant(self, plant_name: str,
                   water_level: int, sunlight_hours: int) -> None:
@@ -55,6 +42,8 @@ class GardenManager:
                 self.adding_flag = 0
                 print("Adding plants to garden...")
             plant = Plant(plant_name, water_level, sunlight_hours)
+            if plant_name is None or plant_name == "":
+                raise IsValidNameError("Plant name cannot be empty")
             self.garden += [plant]
             print(f"Added {plant_name} successfully")
         except GardenError as error_add:
@@ -112,7 +101,7 @@ def test_garden_management():
     try:
         garden.add_plant("tomato", 5, 8)
         garden.add_plant("batata", 5, 8)
-        garden.add_plant("lettuce", 8, 8)
+        garden.add_plant("lettuce", 18, 8)
         garden.add_plant("", 4, 4)
     except Exception as subject_says_No_Crash:
         print(f"Subject Requirement: {subject_says_No_Crash}")

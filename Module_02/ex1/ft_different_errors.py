@@ -22,6 +22,8 @@ def test_garden_operations() -> None:
         garden_operations(value="abc")
     except ValueError:
         print("Caught ValueError: invalid literal for int()")
+    except Exception as e:
+        print(f"Caught unexpected error: {e}")
 
     print()
 
@@ -30,7 +32,8 @@ def test_garden_operations() -> None:
         garden_operations(division=5)
     except ZeroDivisionError:
         print("Caught ZeroDivisionError: division by zero")
-
+    except Exception as e:
+        print(f"Caught unexpected error: {e}") 
     print()
 
     print("Testing FileNotFoundError...")
@@ -38,6 +41,8 @@ def test_garden_operations() -> None:
         garden_operations(file="alo.txt")
     except FileNotFoundError:
         print("Caught FileNotFoundError: No such file 'alo.txt'")
+    except Exception as e:
+        print(f"Caught unexpected error: {e}")
     print()
 
     print("Testing KeyError...")
@@ -45,6 +50,8 @@ def test_garden_operations() -> None:
         garden_operations(key="alo_plant")
     except KeyError:
         print("Caught KeyError: 'alo_plant'")
+    except Exception as e:
+        print(f"Caught unexpected error: {e}")
     print()
 
     print("Testing multiple errors together...")
@@ -54,6 +61,9 @@ def test_garden_operations() -> None:
             FileNotFoundError, KeyError) as lereur:
         print(f"Caught {lereur.__class__.__name__}: {lereur}")
         print("Caught an error, but program continues!")
+        
+    except Exception as e:
+        print(f"Caught unexpected error: {e}")
     print()
     print("All error types tested successfully")
 

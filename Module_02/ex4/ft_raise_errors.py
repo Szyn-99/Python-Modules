@@ -30,29 +30,37 @@ def test_plant_checks() -> None:
         result = check_plant_health("tomato", 5, 8)
         if result:
             print(result)
-    except ValueError as lireur:
-        print(lireur)
+    except ValueError as e:
+        print(e)
+    except Exception as e:
+        print(f"Caught unexpected exception: {e}")
     print()
 
     print("Testing empty plant name...")
     try:
         check_plant_health(None, 5, 8)
-    except ValueError as lireur:
-        print(lireur)
+    except ValueError as e:
+        print(e)
+    except Exception as e:
+        print(f"Caught unexpected exception: {e}")
     print()
 
     print("Testing bad water level...")
     try:
         check_plant_health("tomato", 15, 8)
-    except ValueError as lireur:
-        print(lireur)
+    except ValueError as e:
+        print(e)
+    except Exception as e:
+        print(f"Caught unexpected exception: {e}")
     print()
 
     print("Testing bad sunlight hours...")
     try:
         check_plant_health("tomato", 5, 0)
-    except ValueError as lireur:
-        print(lireur)
+    except ValueError as e:
+        print(e)
+    except Exception as e:
+        print(f"Caught unexpected exception: {e}")
     print()
 
     print("All error raising tests completed!")

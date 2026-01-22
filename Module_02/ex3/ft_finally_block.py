@@ -1,5 +1,6 @@
 class InvalidPlantError(Exception):
-    pass
+    def __init__(self, message: str = "InvalidPlantError") -> None:
+        super().__init__(message)
 
 
 def water_plants(plant_list: list) -> None:
@@ -23,15 +24,17 @@ def test_watering_system() -> None:
     print("Testing normal watering...")
     try:
         water_plants(["tomato", "lettuce", "carrots"])
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+    except Exception as error:
+        print(f"Subject Requirement: {error}")
+    finally:
+        print("Cleanup after normal watering")
     print()
 
     print("Testing with error...")
     try:
         water_plants(["tomato", None])
-    except Exception as subject_says_No_Crash:
-        print(f"Subject Requirement: {subject_says_No_Crash}")
+    except Exception as error:
+        print(f"Subject Requirement: {error}")
     print()
 
     print("Cleanup always happens, even with errors!")
