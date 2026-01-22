@@ -14,7 +14,7 @@ def garden_operations(
         print("No operation specified")
 
 
-def test_garden_operations() -> None:
+def test_error_types() -> None:
     print("=== Garden Error Types Demo ===")
 
     print("Testing ValueError...")
@@ -68,4 +68,4 @@ def test_garden_operations() -> None:
 
 
 if __name__ == "__main__":
-    test_garden_operations()
+    test_error_types()
