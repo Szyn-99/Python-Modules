@@ -4,7 +4,7 @@ class GardenError(Exception):
 
 
 class IsValidNameError(GardenError):
-    def __init__(self, message: str = "IsValidNameError") -> None:  
+    def __init__(self, message: str = "IsValidNameError") -> None:
         super().__init__(message)
 
 
@@ -24,7 +24,7 @@ class Plant:
         self.plant_name = plant_name
         self.water_level = water_level
         self.sunlight_hours = sunlight_hours
-    
+
 
 class GardenManager:
 

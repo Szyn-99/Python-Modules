@@ -33,7 +33,7 @@ def test_garden_operations() -> None:
     except ZeroDivisionError:
         print("Caught ZeroDivisionError: division by zero")
     except Exception as e:
-        print(f"Caught unexpected error: {e}") 
+        print(f"Caught unexpected error: {e}")
     print()
 
     print("Testing FileNotFoundError...")
@@ -61,7 +61,6 @@ def test_garden_operations() -> None:
             FileNotFoundError, KeyError) as lereur:
         print(f"Caught {lereur.__class__.__name__}: {lereur}")
         print("Caught an error, but program continues!")
-        
     except Exception as e:
         print(f"Caught unexpected error: {e}")
     print()
