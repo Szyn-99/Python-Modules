@@ -3,18 +3,13 @@ class GardenError(Exception):
         super().__init__(message)
 
 
-class IsValidNameError(GardenError):
-    def __init__(self, message: str = "IsValidNameError") -> None:
+class PlantError(GardenError):
+    def __init__(self, message: str = "PlantError") -> None:
         super().__init__(message)
 
 
-class WaterLevelError(GardenError):
-    def __init__(self, message: str = "WaterLevelError") -> None:
-        super().__init__(message)
-
-
-class SunLightHoursError(GardenError):
-    def __init__(self, message: str = "SunLightHoursError") -> None:
+class WaterError(GardenError):
+    def __init__(self, message: str = "WaterError") -> None:
         super().__init__(message)
 
 
@@ -41,9 +36,9 @@ class GardenManager:
             if self.adding_flag == 1:
                 self.adding_flag = 0
                 print("Adding plants to garden...")
-            plant = Plant(plant_name, water_level, sunlight_hours)
             if plant_name is None or plant_name == "":
-                raise IsValidNameError("Plant name cannot be empty")
+                raise PlantError("Plant name cannot be empty")
+            plant = Plant(plant_name, water_level, sunlight_hours)
             self.garden += [plant]
             print(f"Added {plant_name} successfully")
         except GardenError as error_add:
@@ -55,7 +50,7 @@ class GardenManager:
             print("Opening watering system")
             for plant in self.garden:
                 if self.water_total < water_to_water:
-                    raise WaterLevelError("Not enough water in tank")
+                    raise WaterError("Not enough water in tank")
                 self.water_total -= water_to_water
                 plant.water_level += water_to_water
                 print(f"Watering {plant.plant_name} - success")
@@ -71,19 +66,19 @@ class GardenManager:
                 self.health_flag = 0
                 print("Checking plant health...")
             if plant.water_level > 10:
-                raise WaterLevelError(
+                raise WaterError(
                     f"Water level {plant.water_level} is too high (max 10)"
                 )
             elif plant.water_level < 1:
-                raise WaterLevelError(
+                raise WaterError(
                     f"Water level {plant.water_level} is too low (min 1)"
                 )
             elif plant.sunlight_hours < 2:
-                raise SunLightHoursError(
+                raise PlantError(
                     f"Sunlight hours {plant.sunlight_hours} is too low (min 2)"
                 )
             elif plant.sunlight_hours > 12:
-                raise SunLightHoursError(
+                raise PlantError(
                     f"Sunlight hours {plant.sunlight_hours} is too high "
                     f"(max 12)"
                 )
