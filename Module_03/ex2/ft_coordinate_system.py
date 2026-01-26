@@ -31,6 +31,7 @@ def ft_coordinate_system() -> None:
     except Exception as e:
         print(f"Error: {e}")
 
-ft_coordinate_system()
+if __name__ == "__main__":
+    ft_coordinate_system()
 
 
