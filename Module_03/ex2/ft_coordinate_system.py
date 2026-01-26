@@ -32,3 +32,5 @@ def ft_coordinate_system() -> None:
         print(f"Error: {e}")
 
 ft_coordinate_system()
+
+
