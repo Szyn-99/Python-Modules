@@ -39,8 +39,8 @@ def show_more_stats(inventory: dict) -> None:
     try:
         max_item = max(inventory.values())
         min_item = min(inventory.values())
-        max_item_name = [item for item in inventory if inventory[item] == max_item]
-        min_item_name = [item for item in inventory if inventory[item] == min_item]
+        max_item_name = [for item in inventory if inventory[item] == max_item]
+        min_item_name = [for item in inventory if inventory[item] == min_item]
         if max_item == min_item:
             min_item_name = None
             min_item = 0
@@ -50,6 +50,11 @@ def show_more_stats(inventory: dict) -> None:
         print(f"Least abundant: {min_item_name} ({min_item} units)")
     except Exception:
         raise
+    
+def restock_reminder(inventory: dict) -> None:
+    for item in inventory:
+        if inventory[item] <= 1:
+            
 
 def ft_inventory_system() -> None:
     print("=== Inventory System Analysis ===")
