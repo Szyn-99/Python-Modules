@@ -33,6 +33,3 @@ def ft_coordinate_system() -> None:
 
 if __name__ == "__main__":
     ft_coordinate_system()
-
-
-   
