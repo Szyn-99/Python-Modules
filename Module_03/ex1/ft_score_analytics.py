@@ -1,5 +1,6 @@
 import sys
 
+
 def extract_format(to_format: list) -> list:
     scores = []
     for i in to_format:
@@ -11,11 +12,14 @@ def extract_format(to_format: list) -> list:
 
     return scores
 
+
 def ft_score_analytics() -> None:
     print("=== Player Score Analytics ===")
     try:
-        if(len(sys.argv) < 2):
-            raise Exception("No scores provided. Usage: python3 ft_score_analytics.py <score1> <score2> ...")
+        if len(sys.argv) < 2:
+            raise Exception(
+                "No scores provided. Usage: python3 ft_score_analytics.py <score1> <score2> ..."
+            )
         scores = extract_format(sys.argv[1:])
         total_p = len(scores)
         total_s = sum(scores, 0)
@@ -32,5 +36,7 @@ def ft_score_analytics() -> None:
         print(f"Score range: {range_s}")
     except Exception as e:
         print(e)
+
+
 if __name__ == "__main__":
     ft_score_analytics()
