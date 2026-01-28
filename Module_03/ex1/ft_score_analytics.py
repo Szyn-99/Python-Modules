@@ -32,4 +32,5 @@ def ft_score_analytics() -> None:
         print(f"Score range: {range_s}")
     except Exception as e:
         print(e)
-ft_score_analytics()
+if __name__ == "__main__":
+    ft_score_analytics()
