@@ -1,11 +1,55 @@
+def prime_detector(num):
+    if num < 2:
+        return False
+    for n in range(2, num):
+        if num % n == 0:
+            return False
+    return True
+
+def fibonacci_range(num_range):
+    a = 0
+    b = 1
+    count = 0
+    while True:
+        if(count == num_range):
+            break
+        yield a
+        """the rule is: new a is the old b, new b is the old a + old b"""
+        tmp = a
+        a = b
+        b = tmp + b
+        count += 1
+
+def prime_range(num_range):
+    count = 0
+    prime = 2
+    while True:
+        if prime_detector(prime):
+            yield prime
+            count += 1
+        prime += 1
+        if count == num_range:
+            break
+
 def events():
     yield "killed monster"
     yield "found treasure"
+    yield "completed quest"
     yield "scored"
     yield "leveled up"
+    yield "healed"
+    yield "Obtained DarkSword"
+    yield "Joined DarkWraiths"
 
 def players():
     yield "Alice"
+    yield "Szyn"
+    yield "Eve"
+    yield "Frank"
+    yield "Grace"
+    yield "Heidi"
+    yield "Ivan"
+    yield "Judy"
     yield "Bob"
     yield "Charlie"
     yield "Diana"
@@ -21,13 +65,12 @@ def ft_data_stream(num):
         players_i = players()
         events_i = events()
         levels_i = levels(num)
-
+        already_count = []
         total_events = 0
         treasure_events = 0
         levelup_events = 0
         high_level_events = 0
-        event_counter = 0
-        while event_counter < num:
+        while total_events < num:
             try:
                 player = next(players_i)
             except StopIteration:
@@ -41,23 +84,28 @@ def ft_data_stream(num):
             try:
                 level = next(levels_i)
             except StopIteration:
-                levels_i = levels(num)
-                level = next(levels_i)
-                
-            event_counter += 1
+                break
             if event == "found treasure":
                 treasure_events += 1
-            elif event == "leveled up":
+            if event == "leveled up":
                 levelup_events += 1
-            elif level == 10:
+            if level > 10 and player not in already_count:
                 high_level_events += 1
+                already_count.append(player)
             total_events += 1
             print(f"Event {total_events}: Player {player} (level {level}) {event}")
         print("=== Stream Analytics ===")
         print(f"Total events processed: {total_events}")
-        print(f"High level (10) events: {high_level_events}")
+        print(f"High-level players (10+): {high_level_events}")
         print(f"Treasure events: {treasure_events}")
         print(f"Level-up events: {levelup_events}")
+        print("=== Generator Demonstration ===")
+        prime = 5
+        fibonacci = 10
+        print(f"Fibonacci sequence (first {fibonacci}):", end=" ")
+        print(*fibonacci_range(fibonacci),sep=", ", end="\n")
+        print(f"Prime numbers (first {prime}):", end=" ")
+        print(*prime_range(prime), sep=", ", end="\n")
     except Exception as e:
         print(f"Finished with error: {e}")
         
