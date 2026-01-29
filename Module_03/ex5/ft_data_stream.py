@@ -16,7 +16,8 @@ def levels(num):
 
 def ft_data_stream(num):
     try:
-        print("Starting data stream processing...")
+        print("=== Game Data Stream Processor ===\n")
+        print(f"Processing {num} game events...\n")
         players_i = players()
         events_i = events()
         levels_i = levels(num)
@@ -52,8 +53,13 @@ def ft_data_stream(num):
                 high_level_events += 1
             total_events += 1
             print(f"Event {total_events}: Player {player} (level {level}) {event}")
+        print("=== Stream Analytics ===")
+        print(f"Total events processed: {total_events}")
+        print(f"High level (10) events: {high_level_events}")
+        print(f"Treasure events: {treasure_events}")
+        print(f"Level-up events: {levelup_events}")
     except Exception as e:
         print(f"Finished with error: {e}")
         
 if __name__ == "__main__":
-    ft_data_stream(50)
+    ft_data_stream(1000)
