@@ -131,8 +131,8 @@ def comprehension_d(game_data: dict) -> None:
 
 
 def comprehension_s(game_data: dict) -> None:
-    unqiue_p = {player for player in game_data}
-    unqiue_a = {
+    unique_p = {player for player in game_data}
+    unique_a = {
         achievement
         for player in game_data
         for achievement in game_data[player]["Achievements"]
@@ -142,12 +142,12 @@ def comprehension_s(game_data: dict) -> None:
         for player in game_data
         if game_data[player]["Active"]
     }
-    print(f"Unique players: {unqiue_p}")
-    print(f"Unique achievements: {unqiue_a}")
+    print(f"Unique players: {unique_p}")
+    print(f"Unique achievements: {unique_a}")
     print(f"Active regions: {active_regions}")
 
 
-def extra_status(game_data: dict) -> tuple:
+def extra_status(game_data: dict) -> None:
     total_p = sum(1 for player in game_data)
     unique_achievements = {
         ach for player in game_data
@@ -155,9 +155,7 @@ def extra_status(game_data: dict) -> tuple:
     }
     total_unique_ach = sum(1 for ach in unique_achievements)
 
-    scores = []
-    for player in game_data:
-        scores += [game_data[player]["Total Score"]]
+    scores = [game_data[player]["Total Score"] for player in game_data]
     best_performer = {"name": "", "score": 0, "achievements": 0}
     max_score = 0
     for player in game_data:

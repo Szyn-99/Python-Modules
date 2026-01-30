@@ -27,18 +27,6 @@ def show_stats(inventory: dict, inv_items_total: int) -> None:
         raise
 
 
-def get_name(item: list) -> str:
-    name = ""
-    for c in item:
-        if c == "'" or c == "[" or c == "]":
-            continue
-        elif c == ",":
-            return name
-        name += c
-
-    return name
-
-
 def show_more_stats(inventory: dict) -> None:
     print("=== Inventory Statistics ===")
     try:

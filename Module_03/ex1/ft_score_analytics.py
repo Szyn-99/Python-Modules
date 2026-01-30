@@ -1,7 +1,7 @@
 import sys
 
 
-def extract_format(to_format: list) -> list:
+def extract_format(to_format: list[str]) -> list[int]:
     scores = []
     for i in to_format:
         try:
@@ -18,12 +18,12 @@ def ft_score_analytics() -> None:
     try:
         if len(sys.argv) < 2:
             raise Exception(
-                "No scores provided. Usage: python3"
+                "No scores provided. Usage: python3 "
                 "ft_score_analytics.py <score1> <score2> ..."
             )
         scores = extract_format(sys.argv[1:])
         total_p = len(scores)
-        total_s = sum(scores, 0)
+        total_s = sum(scores)
         average_s = total_s / total_p
         max_s = max(scores)
         min_s = min(scores)

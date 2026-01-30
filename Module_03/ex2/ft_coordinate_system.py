@@ -2,16 +2,9 @@ import sys
 import math
 
 
-def get_len(argvs: list) -> int:
-    i = 0
-    for arg in argvs:
-        i += 1
-    return i
-
-
 def parsing_input_2(argvs: list) -> tuple:
     try:
-        length = get_len(argvs) - 1
+        length = len(argvs) - 1
         if length == 1:
             cords = [int(i) for i in argvs[1].split(",")]
         elif length == 3:
@@ -20,10 +13,10 @@ def parsing_input_2(argvs: list) -> tuple:
             raise ValueError("Too many arguments")
         elif length < 3:
             raise ValueError("Not enough arguments")
-        Coordinate = tuple(cords)
+        coordinate = tuple(cords)
     except Exception:
         raise
-    return Coordinate
+    return coordinate
 
 
 def unpacking_coordinates(coordinates: tuple) -> None:

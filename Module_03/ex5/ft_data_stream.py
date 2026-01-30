@@ -1,4 +1,7 @@
-def prime_detector(num):
+from typing import Generator
+
+
+def prime_detector(num: int) -> bool:
     if num < 2:
         return False
     for n in range(2, num):
@@ -7,7 +10,7 @@ def prime_detector(num):
     return True
 
 
-def fibonacci_range(num_range):
+def fibonacci_range(num_range: int) -> Generator[int, None, None]:
     a = 0
     b = 1
     count = 0
@@ -22,7 +25,7 @@ def fibonacci_range(num_range):
         count += 1
 
 
-def prime_range(num_range):
+def prime_range(num_range: int) -> Generator[int, None, None]:
     count = 0
     prime = 2
     while True:
@@ -34,7 +37,7 @@ def prime_range(num_range):
             break
 
 
-def events():
+def events() -> Generator[str, None, None]:
     yield "killed monster"
     yield "found treasure"
     yield "completed quest"
@@ -45,7 +48,7 @@ def events():
     yield "Joined DarkWraiths"
 
 
-def players():
+def players() -> Generator[str, None, None]:
     yield "Alice"
     yield "Szyn"
     yield "Eve"
@@ -59,12 +62,12 @@ def players():
     yield "Diana"
 
 
-def levels(num):
+def levels(num: int) -> Generator[int, None, None]:
     for level in range(1, num + 1):
         yield level
 
 
-def ft_data_stream(num):
+def ft_data_stream(num: int) -> None:
     try:
         print("=== Game Data Stream Processor ===\n")
         print(f"Processing {num} game events...\n")
@@ -125,4 +128,4 @@ def ft_data_stream(num):
 
 
 if __name__ == "__main__":
-    ft_data_stream(1000000)
+    ft_data_stream(1000)
