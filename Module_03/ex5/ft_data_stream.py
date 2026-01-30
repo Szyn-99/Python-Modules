@@ -99,14 +99,20 @@ def ft_data_stream(num):
                 high_level_events += 1
                 already_count.append(player)
             total_events += 1
-            print(f"Event {total_events}: Player {player} (level {level}) {event}")
+            print(
+                f"Event {total_events}: Player {player} (level {level}) "
+                f"{event}"
+            )
         print("\n=== Stream Analytics ===")
         print(f"Total events processed: {total_events}")
         print(f"High-level players (10+): {high_level_events}")
         print(f"Treasure events: {treasure_events}")
         print(f"Level-up events: {levelup_events}")
 
-        print("\nMemory usage: Constant (streaming)\nProcessing time: 0.045 seconds\n")
+        print(
+            "\nMemory usage: Constant (streaming)\n"
+            "Processing time: 0.045 seconds\n"
+        )
         print("=== Generator Demonstration ===")
         prime = 5
         fibonacci = 10

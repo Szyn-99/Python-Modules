@@ -88,11 +88,14 @@ def generate_data() -> dict:
 
 def comprehension_l(game_data: dict) -> None:
     high_score = [
-        player for player in game_data if game_data[player]["Total Score"] > 2000
+        player for player in game_data
+        if game_data[player]["Total Score"] > 2000
     ]
-    double_score = [game_data[player]["Total Score"] * 2 for player in game_data]
+    double_score = [
+        game_data[player]["Total Score"] * 2 for player in game_data
+    ]
     active_players = [
-        player for player in game_data if game_data[player]["Active"] == True
+        player for player in game_data if game_data[player]["Active"] is True
     ]
     print(f"High scorers (>2000): {high_score}")
     print(f"Scores doubled: {double_score}")
@@ -100,19 +103,26 @@ def comprehension_l(game_data: dict) -> None:
 
 
 def comprehension_d(game_data: dict) -> None:
-    players_scores = {score: game_data[score]["Total Score"] for score in game_data}
+    players_scores = {
+        score: game_data[score]["Total Score"] for score in game_data
+    }
     score_cat = {
-        "high": sum(1 for high in game_data if game_data[high]["Total Score"] > 1500),
+        "high": sum(
+            1 for high in game_data if game_data[high]["Total Score"] > 1500
+        ),
         "medium": sum(
             1
             for high in game_data
             if game_data[high]["Total Score"] <= 1500
             and game_data[high]["Total Score"] >= 1000
         ),
-        "low": sum(1 for high in game_data if game_data[high]["Total Score"] <= 500),
+        "low": sum(
+            1 for high in game_data if game_data[high]["Total Score"] <= 500
+        ),
     }
     achievement_counts = {
-        player: len(game_data[player]["Achievements"]) for player in game_data
+        player: len(game_data[player]["Achievements"])
+        for player in game_data
     }
 
     print(f"Player scores: {players_scores}")
@@ -140,9 +150,10 @@ def comprehension_s(game_data: dict) -> None:
 def extra_status(game_data: dict) -> tuple:
     total_p = sum(1 for player in game_data)
     unique_achievements = {
-        ach for player in game_data for ach in game_data[player]["Achievements"]
+        ach for player in game_data
+        for ach in game_data[player]["Achievements"]
     }
-    total_unique_achievements = sum(1 for ach in unique_achievements)
+    total_unique_ach = sum(1 for ach in unique_achievements)
 
     scores = []
     for player in game_data:
@@ -154,14 +165,20 @@ def extra_status(game_data: dict) -> tuple:
             max_score = game_data[player]["Total Score"]
             best_performer["name"] = player
             best_performer["score"] = game_data[player]["Total Score"]
-            best_performer["achievements"] = len(game_data[player]["Achievements"])
+            best_performer["achievements"] = len(
+                game_data[player]["Achievements"]
+            )
 
     average_score = sum(scores) / len(scores)
     print(f"Total players: {total_p}")
-    print(f"Total unique achievements: {total_unique_achievements}")
+    print(
+        f"Total unique achievements: {total_unique_ach}"
+    )
     print(f"Average score: {average_score:.1f}")
     print(
-        f"Top performer: {best_performer['name']} ({best_performer['score']} points, {best_performer['achievements']} achievements)"
+        f"Top performer: {best_performer['name']} "
+        f"({best_performer['score']} points, "
+        f"{best_performer['achievements']} achievements)"
     )
 
 
@@ -178,7 +195,7 @@ def combined_analysis() -> None:
         print("\n=== Combined Analysis ===")
         extra_status(game_data)
     except Exception as e:
-        print(f"Something went wrong :(")
+        print("Something went wrong :(")
         print(f"Error Details : {e}")
 
 

@@ -9,7 +9,9 @@ def fill_dict(args: list) -> dict:
             count = int(count)
             inventory.update({item: count})
     except Exception:
-        raise ValueError("Invalid data, use format item:count with count as integer")
+        raise ValueError(
+            "Invalid data, use format item:count with count as integer"
+        )
     return inventory
 
 
@@ -42,8 +44,12 @@ def show_more_stats(inventory: dict) -> None:
     try:
         max_item = max(inventory.values())
         min_item = min(inventory.values())
-        max_item_name = [item for item in inventory if inventory[item] == max_item]
-        min_item_name = [item for item in inventory if inventory[item] == min_item]
+        max_item_name = [
+            item for item in inventory if inventory[item] == max_item
+        ]
+        min_item_name = [
+            item for item in inventory if inventory[item] == min_item
+        ]
         if max_item == min_item:
             min_item_name = None
             min_item = 0

@@ -18,7 +18,8 @@ def ft_score_analytics() -> None:
     try:
         if len(sys.argv) < 2:
             raise Exception(
-                "No scores provided. Usage: python3 ft_score_analytics.py <score1> <score2> ..."
+                "No scores provided. Usage: python3"
+                "ft_score_analytics.py <score1> <score2> ..."
             )
         scores = extract_format(sys.argv[1:])
         total_p = len(scores)

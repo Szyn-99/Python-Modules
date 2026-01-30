@@ -39,14 +39,21 @@ def ft_coordinate_system() -> None:
         x, y, z = 0, 0, 0
         position = parsing_input_2(sys.argv)
         distance = math.sqrt(
-            (position[0] - x) ** 2 + (position[1] - y) ** 2 + (position[2] - z) ** 2
+            (position[0] - x) ** 2 + (position[1] - y) ** 2 +
+            (position[2] - z) ** 2
         )
         print(f"Position created: {position}")
-        print(f"Distance between ({x}, {y}, {z}) and {position}: {distance:.2f}\n")
+        print(
+            f"Distance between ({x}, {y}, {z}) and {position}: "
+            f"{distance:.2f}\n"
+        )
         unpacking_coordinates(position)
     except Exception as e:
         print(f"Error parsing coordinates: {e}")
-        print(f'Error details - Type: {e.__class__.__name__}, Args: ("{sys.argv[1:]}")')
+        print(
+            f'Error details - Type: {e.__class__.__name__}, '
+            f'Args: ("{sys.argv[1:]}")'
+        )
 
 
 if __name__ == "__main__":
