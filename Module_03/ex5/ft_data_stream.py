@@ -6,12 +6,13 @@ def prime_detector(num):
             return False
     return True
 
+
 def fibonacci_range(num_range):
     a = 0
     b = 1
     count = 0
     while True:
-        if(count == num_range):
+        if count == num_range:
             break
         yield a
         """the rule is: new a is the old b, new b is the old a + old b"""
@@ -19,6 +20,7 @@ def fibonacci_range(num_range):
         a = b
         b = tmp + b
         count += 1
+
 
 def prime_range(num_range):
     count = 0
@@ -31,6 +33,7 @@ def prime_range(num_range):
         if count == num_range:
             break
 
+
 def events():
     yield "killed monster"
     yield "found treasure"
@@ -40,6 +43,7 @@ def events():
     yield "healed"
     yield "Obtained DarkSword"
     yield "Joined DarkWraiths"
+
 
 def players():
     yield "Alice"
@@ -54,9 +58,11 @@ def players():
     yield "Charlie"
     yield "Diana"
 
+
 def levels(num):
     for level in range(1, num + 1):
         yield level
+
 
 def ft_data_stream(num):
     try:
@@ -105,11 +111,12 @@ def ft_data_stream(num):
         prime = 5
         fibonacci = 10
         print(f"Fibonacci sequence (first {fibonacci}):", end=" ")
-        print(*fibonacci_range(fibonacci),sep=", ", end="\n")
+        print(*fibonacci_range(fibonacci), sep=", ", end="\n")
         print(f"Prime numbers (first {prime}):", end=" ")
         print(*prime_range(prime), sep=", ", end="\n")
     except Exception as e:
         print(f"Finished with error: {e}")
-        
+
+
 if __name__ == "__main__":
     ft_data_stream(1000000)

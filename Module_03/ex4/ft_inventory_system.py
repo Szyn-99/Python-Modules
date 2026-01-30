@@ -70,10 +70,7 @@ def sample_lookup(inventory: dict, item: str) -> None:
 
 def item_categories(inventory: dict, inv_items_total: int) -> None:
     print("\n=== Item Categories ===")
-    cat = {
-        "moderate": {},
-        "scarce": {}
-    }
+    cat = {"moderate": {}, "scarce": {}}
     for item in inventory:
         percent = inventory[item] / inv_items_total * 100
         if percent >= 40:
@@ -82,6 +79,7 @@ def item_categories(inventory: dict, inv_items_total: int) -> None:
             cat["scarce"].update({item: inventory[item]})
     print(f"Moderate: {cat['moderate']}")
     print(f"Scarce: {cat['scarce']}")
+
 
 def dictionary_properties(inventory: dict) -> None:
     print("\n=== Dictionary Properties Demo ===")
