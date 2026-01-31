@@ -29,7 +29,7 @@ def unpacking_coordinates(coordinates: tuple[int, int, int]) -> None:
 def ft_coordinate_system() -> None:
     print("=== Game Coordinate System ===")
     try:
-        x, y, z = 0, 0, 0
+        x, y, z = 6, 0, 2
         position = parsing_input_2(sys.argv)
         distance = math.sqrt(
             (position[0] - x) ** 2 + (position[1] - y) ** 2 +
