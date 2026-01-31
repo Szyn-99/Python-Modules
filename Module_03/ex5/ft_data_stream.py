@@ -7,7 +7,7 @@ def prime_detector(num: int) -> bool:
     return True
 
 
-""""Since we are not allowed to use external libraries, this generator
+"""Since we are not allowed to use external libraries, this generator
 return type is : Generator[int, None, None]"""
 
 
@@ -26,7 +26,7 @@ def fibonacci_range(num_range: int) -> object:
         count += 1
 
 
-""""Since we are not allowed to use external libraries, this generator
+"""Since we are not allowed to use external libraries, this generator
 return type is : Generator[int, None, None]"""
 
 
@@ -42,7 +42,7 @@ def prime_range(num_range: int) -> object:
             break
 
 
-""""Since we are not allowed to use external libraries, this generator
+"""Since we are not allowed to use external libraries, this generator
 return type is : Generator[str, None, None]"""
 
 
@@ -57,7 +57,7 @@ def events() -> object:
     yield "Joined DarkWraiths"
 
 
-""""Since we are not allowed to use external libraries, this generator
+"""Since we are not allowed to use external libraries, this generator
 return type is : Generator[str, None, None]"""
 
 
@@ -75,7 +75,7 @@ def players() -> object:
     yield "Diana"
 
 
-""""Since we are not allowed to use external libraries, this generator
+"""Since we are not allowed to use external libraries, this generator
 return type is : Generator[int, None, None]"""
 
 
@@ -88,24 +88,24 @@ def stream_data(num: int) -> object:
     players_i = players()
     events_i = events()
     levels_i = levels(num)
-    total_events = 0
-    while total_events < num:
-            try:
-                player = next(players_i)
-            except StopIteration:
-                players_i = players()
-                player = next(players_i)
-            try:
-                event = next(events_i)
-            except StopIteration:
-                events_i = events()
-                event = next(events_i)
-            try:
-                level = next(levels_i)
-            except StopIteration:
-                break
-            yield player, event, level
-    
+
+    while True:
+        try:
+            player = next(players_i)
+        except StopIteration:
+            players_i = players()
+            player = next(players_i)
+        try:
+            event = next(events_i)
+        except StopIteration:
+            events_i = events()
+            event = next(events_i)
+        try:
+            level = next(levels_i)
+        except StopIteration:
+            break
+        yield player, event, level
+
 
 def ft_data_stream(num: int) -> None:
     try:
