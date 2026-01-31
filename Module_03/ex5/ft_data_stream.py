@@ -84,19 +84,12 @@ def levels(num: int):
         yield level
 
 
-def ft_data_stream(num: int) -> None:
-    try:
-        print("=== Game Data Stream Processor ===\n")
-        print(f"Processing {num} game events...\n")
-        players_i = players()
-        events_i = events()
-        levels_i = levels(num)
-        already_count = []
-        total_events = 0
-        treasure_events = 0
-        levelup_events = 0
-        high_level_events = 0
-        while total_events < num:
+def stream_data(num: int):
+    players_i = players()
+    events_i = events()
+    levels_i = levels(num)
+    total_events = 0
+    while total_events < num:
             try:
                 player = next(players_i)
             except StopIteration:
@@ -111,6 +104,19 @@ def ft_data_stream(num: int) -> None:
                 level = next(levels_i)
             except StopIteration:
                 break
+            yield player, event, level
+    
+
+def ft_data_stream(num: int) -> None:
+    try:
+        print("=== Game Data Stream Processor ===\n")
+        print(f"Processing {num} game events...\n")
+        already_count = []
+        total_events = 0
+        treasure_events = 0
+        levelup_events = 0
+        high_level_events = 0
+        for player, event, level in stream_data(num):
             if event == "found treasure":
                 treasure_events += 1
             if event == "leveled up":
@@ -134,7 +140,7 @@ def ft_data_stream(num: int) -> None:
         )
         print("=== Generator Demonstration ===")
         prime = 5
-        fibonacci = 10
+        fibonacci = 9
         print(f"Fibonacci sequence (first {fibonacci}):", end=" ")
         print(*fibonacci_range(fibonacci), sep=", ", end="\n")
         print(f"Prime numbers (first {prime}):", end=" ")
