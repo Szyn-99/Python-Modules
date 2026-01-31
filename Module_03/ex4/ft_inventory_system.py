@@ -56,7 +56,7 @@ def restock_reminder(inventory: dict) -> None:
 
 
 def sample_lookup(inventory: dict, item: str) -> None:
-    if item is not None and item in inventory:
+    if inventory.get(item):
         print(f"Sample lookup - '{item}' in inventory: True")
     else:
         print(f"Sample lookup - '{item}' in inventory: False")
@@ -85,6 +85,11 @@ def dictionary_properties(inventory: dict) -> None:
 def ft_inventory_system() -> None:
     print("=== Inventory System Analysis ===")
     try:
+        if len(sys.argv) < 2:
+            raise Exception(
+                "No inventory data provided. Usage: python3 "
+                "ft_inventory_system.py <item1:count1> <item2:count2> ..."
+            )
         arguments = sys.argv[1:]
         inventory = fill_dict(arguments)
         inv_items_total = sum(inventory.values())

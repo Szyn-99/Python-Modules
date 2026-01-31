@@ -45,7 +45,7 @@ def ft_coordinate_system() -> None:
         print(f"Error parsing coordinates: {e}")
         print(
             f'Error details - Type: {e.__class__.__name__}, '
-            f'Args: ("{sys.argv[1:]}")'
+            f'Args: ("{e.args}")'
         )
 
 
