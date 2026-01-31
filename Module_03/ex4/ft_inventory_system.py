@@ -102,4 +102,7 @@ def ft_inventory_system() -> None:
 
 
 if __name__ == "__main__":
-    ft_inventory_system()
+    try:
+        ft_inventory_system()
+    except Exception as e:
+        print(f"Unhandled error: {e}")

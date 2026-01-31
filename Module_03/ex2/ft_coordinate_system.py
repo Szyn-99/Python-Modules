@@ -2,7 +2,7 @@ import sys
 import math
 
 
-def parsing_input_2(argvs: list) -> tuple:
+def parsing_input_2(argvs: list[str]) -> tuple[int, int, int]:
     try:
         length = len(argvs) - 1
         if length == 1:
@@ -11,7 +11,7 @@ def parsing_input_2(argvs: list) -> tuple:
             cords = [int(i) for i in argvs[1:]]
         elif length > 3:
             raise ValueError("Too many arguments")
-        elif length < 3:
+        else:
             raise ValueError("Not enough arguments")
         coordinate = tuple(cords)
     except Exception:
@@ -19,7 +19,7 @@ def parsing_input_2(argvs: list) -> tuple:
     return coordinate
 
 
-def unpacking_coordinates(coordinates: tuple) -> None:
+def unpacking_coordinates(coordinates: tuple[int, int, int]) -> None:
     print("Unpacking demonstration:")
     x, y, z = coordinates
     print(f"Player at: x={x}, y={y}, z={z}")
@@ -50,4 +50,7 @@ def ft_coordinate_system() -> None:
 
 
 if __name__ == "__main__":
-    ft_coordinate_system()
+    try:
+        ft_coordinate_system()
+    except Exception as e:
+        print(f"Unhandled error: {e}")

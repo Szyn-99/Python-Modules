@@ -19,11 +19,12 @@ def command_interpreter() -> None:
             print(f"Argument {i}: {sys.argv[i]}")
             i += 1
         print(f"Total arguments: {p_arguments_count}")
-    except Exception:
-        raise Exception("Something Went Wrong !")
     except Exception as e:
         print(e)
 
 
 if __name__ == "__main__":
-    command_interpreter()
+    try:
+        command_interpreter()
+    except Exception as e:
+        print(f"Unhandled error: {e}")

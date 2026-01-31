@@ -38,4 +38,7 @@ def ft_achievement_tracker() -> None:
 
 
 if __name__ == "__main__":
-    ft_achievement_tracker()
+    try:
+        ft_achievement_tracker()
+    except Exception as e:
+        print(f"Unhandled error: {e}")

@@ -40,4 +40,7 @@ def ft_score_analytics() -> None:
 
 
 if __name__ == "__main__":
-    ft_score_analytics()
+    try:
+        ft_score_analytics()
+    except Exception as e:
+        print(f"Unhandled error: {e}")

@@ -1,6 +1,3 @@
-from typing import Generator
-
-
 def prime_detector(num: int) -> bool:
     if num < 2:
         return False
@@ -10,7 +7,11 @@ def prime_detector(num: int) -> bool:
     return True
 
 
-def fibonacci_range(num_range: int) -> Generator[int, None, None]:
+""""Since we are not allowed to use external libraries, this generator
+return type is : Generator[int, None, None]"""
+
+
+def fibonacci_range(num_range: int):
     a = 0
     b = 1
     count = 0
@@ -25,7 +26,11 @@ def fibonacci_range(num_range: int) -> Generator[int, None, None]:
         count += 1
 
 
-def prime_range(num_range: int) -> Generator[int, None, None]:
+""""Since we are not allowed to use external libraries, this generator
+return type is : Generator[int, None, None]"""
+
+
+def prime_range(num_range: int):
     count = 0
     prime = 2
     while True:
@@ -37,7 +42,11 @@ def prime_range(num_range: int) -> Generator[int, None, None]:
             break
 
 
-def events() -> Generator[str, None, None]:
+""""Since we are not allowed to use external libraries, this generator
+return type is : Generator[str, None, None]"""
+
+
+def events():
     yield "killed monster"
     yield "found treasure"
     yield "completed quest"
@@ -48,7 +57,11 @@ def events() -> Generator[str, None, None]:
     yield "Joined DarkWraiths"
 
 
-def players() -> Generator[str, None, None]:
+""""Since we are not allowed to use external libraries, this generator
+return type is : Generator[str, None, None]"""
+
+
+def players():
     yield "Alice"
     yield "Szyn"
     yield "Eve"
@@ -62,7 +75,11 @@ def players() -> Generator[str, None, None]:
     yield "Diana"
 
 
-def levels(num: int) -> Generator[int, None, None]:
+""""Since we are not allowed to use external libraries, this generator
+return type is : Generator[int, None, None]"""
+
+
+def levels(num: int):
     for level in range(1, num + 1):
         yield level
 
@@ -114,7 +131,6 @@ def ft_data_stream(num: int) -> None:
 
         print(
             "\nMemory usage: Constant (streaming)\n"
-            "Processing time: 0.045 seconds\n"
         )
         print("=== Generator Demonstration ===")
         prime = 5
@@ -128,4 +144,7 @@ def ft_data_stream(num: int) -> None:
 
 
 if __name__ == "__main__":
-    ft_data_stream(1000)
+    try:
+        ft_data_stream(1000)
+    except Exception as e:
+        print(f"Unhandled error: {e}")

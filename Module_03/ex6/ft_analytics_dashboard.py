@@ -86,7 +86,7 @@ def generate_data() -> dict:
     }
 
 
-def comprehension_l(game_data: dict) -> None:
+def comprehension_l(game_data: dict[str, dict]) -> None:
     high_score = [
         player for player in game_data
         if game_data[player]["Total Score"] > 2000
@@ -102,7 +102,7 @@ def comprehension_l(game_data: dict) -> None:
     print(f"Active players: {active_players}")
 
 
-def comprehension_d(game_data: dict) -> None:
+def comprehension_d(game_data: dict[str, dict]) -> None:
     players_scores = {
         score: game_data[score]["Total Score"] for score in game_data
     }
@@ -130,7 +130,7 @@ def comprehension_d(game_data: dict) -> None:
     print(f"Achievement counts: {achievement_counts}")
 
 
-def comprehension_s(game_data: dict) -> None:
+def comprehension_s(game_data: dict[str, dict]) -> None:
     unique_p = {player for player in game_data}
     unique_a = {
         achievement
@@ -147,7 +147,7 @@ def comprehension_s(game_data: dict) -> None:
     print(f"Active regions: {active_regions}")
 
 
-def extra_status(game_data: dict) -> None:
+def extra_status(game_data: dict[str, dict]) -> None:
     total_p = sum(1 for player in game_data)
     unique_achievements = {
         ach for player in game_data
@@ -198,4 +198,7 @@ def combined_analysis() -> None:
 
 
 if __name__ == "__main__":
-    combined_analysis()
+    try:
+        combined_analysis()
+    except Exception as e:
+        print(f"Unhandled error: {e}")
