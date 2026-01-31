@@ -11,7 +11,7 @@ def prime_detector(num: int) -> bool:
 return type is : Generator[int, None, None]"""
 
 
-def fibonacci_range(num_range: int):
+def fibonacci_range(num_range: int) -> object:
     a = 0
     b = 1
     count = 0
@@ -30,7 +30,7 @@ def fibonacci_range(num_range: int):
 return type is : Generator[int, None, None]"""
 
 
-def prime_range(num_range: int):
+def prime_range(num_range: int) -> object:
     count = 0
     prime = 2
     while True:
@@ -46,7 +46,7 @@ def prime_range(num_range: int):
 return type is : Generator[str, None, None]"""
 
 
-def events():
+def events() -> object:
     yield "killed monster"
     yield "found treasure"
     yield "completed quest"
@@ -61,7 +61,7 @@ def events():
 return type is : Generator[str, None, None]"""
 
 
-def players():
+def players() -> object:
     yield "Alice"
     yield "Szyn"
     yield "Eve"
@@ -79,12 +79,12 @@ def players():
 return type is : Generator[int, None, None]"""
 
 
-def levels(num: int):
+def levels(num: int) -> object:
     for level in range(1, num + 1):
         yield level
 
 
-def stream_data(num: int):
+def stream_data(num: int) -> object:
     players_i = players()
     events_i = events()
     levels_i = levels(num)
@@ -140,7 +140,7 @@ def ft_data_stream(num: int) -> None:
         )
         print("=== Generator Demonstration ===")
         prime = 5
-        fibonacci = 9
+        fibonacci = 10
         print(f"Fibonacci sequence (first {fibonacci}):", end=" ")
         print(*fibonacci_range(fibonacci), sep=", ", end="\n")
         print(f"Prime numbers (first {prime}):", end=" ")
