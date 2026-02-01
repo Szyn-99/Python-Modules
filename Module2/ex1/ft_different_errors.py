@@ -19,7 +19,7 @@ def test_error_types() -> None:
 
     print("Testing ValueError...")
     try:
-        garden_operations(value="abc")
+        garden_operations(value="abc", a =  open("f"))
     except ValueError:
         print("Caught ValueError: invalid literal for int()")
     except Exception as e:
