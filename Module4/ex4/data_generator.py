@@ -16,6 +16,7 @@ from datetime import datetime
 
 def handle_file_errors(func: Callable) -> Callable:
     """Decorator for consistent file operation error handling."""
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -32,11 +33,13 @@ def handle_file_errors(func: Callable) -> Callable:
         except Exception as e:
             print(f"Unexpected error in {func.__name__}: {e}")
             return None
+
     return wrapper
 
 
 def validate_output(func: Callable) -> Callable:
     """Decorator to validate generated content before writing."""
+
     @wraps(func)
     def wrapper(self, filename: str, content: str, *args, **kwargs):
         if not content or not content.strip():
@@ -44,6 +47,7 @@ def validate_output(func: Callable) -> Callable:
         if len(content) > 10000:  # Reasonable size limit
             raise ValueError(f"Content too large for {filename}")
         return func(self, filename, content, *args, **kwargs)
+
     return wrapper
 
 
@@ -56,39 +60,36 @@ class DataTemplates:
         return {
             "ancient_fragment": {
                 "content": [
-                    "[FRAGMENT 001] Digital preservation protocols "
-                    "established 2087",
-                    "[FRAGMENT 002] Knowledge must survive the entropy "
-                    "wars",
-                    "[FRAGMENT 003] Every byte saved is a victory against "
-                    "oblivion"
+                    "[FRAGMENT 001] Digital preservation protocols " "established 2087",
+                    "[FRAGMENT 002] Knowledge must survive the entropy " "wars",
+                    "[FRAGMENT 003] Every byte saved is a victory against " "oblivion",
                 ],
                 "type": "historical_data",
-                "encoding": "utf-8"
+                "encoding": "utf-8",
             },
             "classified_data": {
                 "content": [
                     "[CLASSIFIED] Quantum encryption keys recovered",
-                    "[CLASSIFIED] Archive integrity: 100%"
+                    "[CLASSIFIED] Archive integrity: 100%",
                 ],
                 "type": "security_data",
-                "classification": "restricted"
+                "classification": "restricted",
             },
             "security_protocols": {
                 "content": "[CLASSIFIED] New security protocols archived",
                 "type": "protocol_data",
-                "version": "3.1.0"
+                "version": "3.1.0",
             },
             "standard_archive": {
                 "content": "Knowledge preserved for humanity",
                 "type": "standard_data",
-                "status": "active"
+                "status": "active",
             },
             "corrupted_archive": {
                 "content": "DATA_CORRUPTION_ERROR_0x7F4A",
                 "type": "error_simulation",
-                "error_code": "0x7F4A"
-            }
+                "error_code": "0x7F4A",
+            },
         }
 
 
@@ -113,7 +114,7 @@ class ArchiveDataGenerator:
         """Write content to file with comprehensive error handling."""
         file_path = self.base_path / filename
 
-        with open(file_path, 'w', encoding='utf-8') as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             file.write(content)
 
         self.generated_files.append(filename)
@@ -173,50 +174,37 @@ class ArchiveDataGenerator:
             "metadata": {
                 "version": "2.1.0",
                 "generated": datetime.now().isoformat(),
-                "generator": "ArchiveDataGenerator"
+                "generator": "ArchiveDataGenerator",
             },
-            "file_types": [
-                "ancient_fragment",
-                "classified_data",
-                "standard_archive"
-            ],
+            "file_types": ["ancient_fragment", "classified_data", "standard_archive"],
             "test_scenarios": [
                 {
                     "name": "basic_recovery",
                     "files": ["ancient_fragment.txt"],
-                    "description": "Basic file reading operations"
+                    "description": "Basic file reading operations",
                 },
                 {
                     "name": "secure_access",
                     "files": ["classified_data.txt"],
-                    "description": "Secure file handling with context "
-                                   "managers"
+                    "description": "Secure file handling with context " "managers",
                 },
                 {
                     "name": "crisis_response",
-                    "files": [
-                        "standard_archive.txt",
-                        "corrupted_archive.txt"
-                    ],
-                    "description": "Error handling and exception "
-                                   "management"
-                }
+                    "files": ["standard_archive.txt", "corrupted_archive.txt"],
+                    "description": "Error handling and exception " "management",
+                },
             ],
             "templates": {
                 name: {
                     "type": template.get("type", "unknown"),
-                    "has_content": bool(template.get("content"))
+                    "has_content": bool(template.get("content")),
                 }
                 for name, template in self.templates.items()
-            }
+            },
         }
 
         try:
-            json_content = json.dumps(
-                sample_data,
-                indent=2,
-                ensure_ascii=False
-            )
+            json_content = json.dumps(sample_data, indent=2, ensure_ascii=False)
             return self._write_file("sample_data.json", json_content)
         except (TypeError, ValueError) as e:
             print(f"Error serializing JSON data: {e}")
@@ -232,11 +220,10 @@ class ArchiveDataGenerator:
         generators = [
             (self.generate_ancient_fragment, "Ancient fragment data"),
             (self.generate_classified_data, "Classified security data"),
-            (self.generate_security_protocols,
-             "Security protocol definitions"),
+            (self.generate_security_protocols, "Security protocol definitions"),
             (self.generate_standard_archive, "Standard archive content"),
             (self.generate_corrupted_archive, "Corrupted data simulation"),
-            (self.generate_sample_json, "JSON configuration sample")
+            (self.generate_sample_json, "JSON configuration sample"),
         ]
 
         results = {}
@@ -253,14 +240,15 @@ class ArchiveDataGenerator:
                 results[generator_func.__name__] = False
 
         print()
-        print(f"Generation complete: {successful}/{len(generators)} "
-              f"files created successfully")
+        print(
+            f"Generation complete: {successful}/{len(generators)} "
+            f"files created successfully"
+        )
 
         if successful == len(generators):
             print("All training files ready for Data Archivist exercises")
         else:
-            print("Some files failed to generate - check error messages "
-                  "above")
+            print("Some files failed to generate - check error messages " "above")
 
         return results
 
