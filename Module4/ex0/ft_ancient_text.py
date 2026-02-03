@@ -1,11 +1,15 @@
-def ft_ancient_text(file_name: str):
+def ft_ancient_text(file_name: str) -> None:
     try:
         if not file_name:
-            raise
-        with open(file_name) as file:
-            return file.read()
+            raise ValueError("Invalid file name provided.")
+        file = open(file_name)
+        lines = file.read()
+        return lines
     except Exception:
         raise Exception("ERROR: Storage vault not found.")
+    finally:
+        if file:
+            file.close()
 
 
 if __name__ == "__main__":
