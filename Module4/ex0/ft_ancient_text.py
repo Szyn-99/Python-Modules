@@ -1,4 +1,5 @@
-def ft_ancient_text(file_name: str) -> None:
+def ft_ancient_text(file_name: str) -> str:
+    file = None
     try:
         if not file_name:
             raise ValueError("Invalid file name provided.")

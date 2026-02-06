@@ -2,7 +2,8 @@ def ft_crisis_response(file_name, mode) -> None:
     try:
         with open(file_name, mode) as f:
             print(f"ROUTINE ACCESS: Attempting access to '{file_name}'...")
-            print(f"SUCCESS: Archive recovered - ``{f.read()}''")
+            content = f.read()
+            print(f"SUCCESS: Archive recovered - '{content}'")
             print("STATUS: Normal operations resumed")
     except FileNotFoundError:
         print(f"CRISIS ALERT: Attempting access to '{file_name}'...")

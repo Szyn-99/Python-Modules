@@ -1,0 +1,158 @@
+================================================================================
+              PYTHON MODULE 04 - CORRECTION SHEET ANSWERS
+================================================================================
+
+--------------------------------------------------------------------------------
+Exercise 0 - Ancient Text Recovery
+--------------------------------------------------------------------------------
+
+Q: What happens to the storage system if connections aren't properly closed?
+   (What happens if a file isn't closed properly?)
+
+A: If a file is not properly closed:
+   - The data buffered in memory may never be written (flushed) to disk,
+     leading to data loss or incomplete writes.
+   - The file descriptor remains open, consuming system resources. Each OS
+     has a limit on how many file descriptors a process can hold. If too
+     many files are left open, the program will eventually crash with an
+     "Too many open files" error (OSError).
+   - Other processes may be unable to access or modify the file because
+     the OS keeps a lock on it (especially on Windows).
+   - In long-running programs (servers, daemons), leaked file descriptors
+     accumulate over time and can degrade performance or crash the system.
+
+--------------------------------------------------------------------------------
+Exercise 1 - Archive Creation
+--------------------------------------------------------------------------------
+
+Q: What's the critical difference between extraction mode ('r') and
+   preservation mode ('w')?
+
+A: - 'r' (read mode) opens an existing file for reading only. It raises
+     a FileNotFoundError if the file does not exist. The file content is
+     left untouched.
+   - 'w' (write mode) opens a file for writing. If the file already exists,
+     it truncates (erases) all its content immediately upon opening. If the
+     file does not exist, it creates a new one. This means using 'w' on an
+     existing file will destroy all previous data, which can be dangerous
+     if done unintentionally.
+
+--------------------------------------------------------------------------------
+Exercise 2 - Stream Management
+--------------------------------------------------------------------------------
+
+Q: Why do the Archives maintain separate channels for standard data and
+   alerts? (Why do programs have separate streams for output and errors?)
+
+A: Programs have three standard streams: stdin, stdout, and stderr.
+   Separating stdout and stderr serves several purposes:
+   - It allows normal program output to be redirected (e.g., to a file or
+     pipe) independently from error/diagnostic messages.
+     Example: `python3 script.py > output.txt` captures stdout but still
+     shows errors on the terminal.
+   - It lets monitoring tools or log systems process errors differently
+     from regular data (e.g., triggering alerts on stderr messages).
+   - It prevents error messages from corrupting the actual data output.
+     If both were mixed, a downstream program reading the output via a
+     pipe would not be able to distinguish valid data from error messages.
+   - In the context of the Cyber Archives, alerts and diagnostics must
+     remain visible to the operator even when data is being streamed
+     elsewhere.
+
+--------------------------------------------------------------------------------
+Exercise 3 - Vault Security
+--------------------------------------------------------------------------------
+
+Q: How does the `with` protocol prevent data corruption? What is the RAII
+   principle?
+
+A: The `with` statement invokes a context manager, which guarantees that
+   the resource (file) is properly released (closed) when the block exits,
+   whether it exits normally or due to an exception. This prevents:
+   - Unflushed buffers (data loss).
+   - Leaked file descriptors.
+   - Files remaining locked after a crash.
+
+   Under the hood, the context manager calls __enter__() when the block
+   starts and __exit__() when the block ends (even if an exception occurs).
+
+   RAII (Resource Acquisition Is Initialization) is a programming principle
+   originating from C++. It means that resource management (allocation and
+   deallocation) is tied to the lifetime of an object:
+   - The resource is acquired when the object is created (initialized).
+   - The resource is released when the object goes out of scope (destroyed).
+   In Python, the `with` statement implements this principle: the file is
+   opened (acquired) at the start of the block and automatically closed
+   (released) when the block ends, regardless of how it ends.
+
+Q: How does the `with` statement make file operations safer?
+
+A: It eliminates the risk of forgetting to close a file. Even if an
+   exception is raised inside the block, the __exit__() method is called,
+   ensuring the file is closed and buffers are flushed. Without `with`,
+   a programmer must use try/finally blocks manually, which is more
+   verbose and error-prone.
+
+--------------------------------------------------------------------------------
+Exercise 4 - Crisis Response
+--------------------------------------------------------------------------------
+
+Q: What are the most dangerous threats to digital archives?
+   (What are the most common file operation errors?)
+
+A: The most common file operation errors include:
+   - FileNotFoundError: trying to open a file that does not exist.
+   - PermissionError: the program lacks the necessary permissions to
+     read, write, or execute the file.
+   - IsADirectoryError: trying to open a directory as if it were a file.
+   - IOError / OSError: hardware failures, full disk, corrupted filesystem.
+   - UnicodeDecodeError: trying to read a binary file as text with the
+     wrong encoding.
+
+Q: How does proper error handling prevent data loss?
+
+A: Proper error handling (try/except/finally) ensures that:
+   - The program does not crash abruptly, leaving files in an inconsistent
+     or corrupted state.
+   - Open resources (files, connections) are properly closed even when
+     errors occur, thanks to finally blocks or context managers.
+   - The user receives meaningful feedback about what went wrong, enabling
+     corrective action instead of silent failures.
+   - Partial writes can be detected and rolled back, preserving data
+     integrity.
+   - The system remains stable and can continue operating despite
+     individual failures (defensive programming).
+
+--------------------------------------------------------------------------------
+General Knowledge
+--------------------------------------------------------------------------------
+
+Q: Demonstrate the basic file operation pattern: open, read/write, close.
+
+A: The basic pattern is:
+     file = open("filename.txt", "r")   # Step 1: Open
+     content = file.read()              # Step 2: Read (or write)
+     print(content)                     # Process the data
+     file.close()                       # Step 3: Close
+
+   A safer version uses try/finally:
+     file = open("filename.txt", "r")
+     try:
+         content = file.read()
+         print(content)
+     finally:
+         file.close()
+
+Q: Show how context managers work with the `with` statement.
+
+A: Using `with` simplifies the pattern:
+     with open("filename.txt", "r") as file:
+         content = file.read()
+         print(content)
+     # file is automatically closed here, even if an exception occurred.
+
+   This is equivalent to the try/finally pattern but cleaner and less
+   error-prone. The `with` statement calls file.__enter__() at the start
+   and file.__exit__() at the end of the block.
+
+================================================================================

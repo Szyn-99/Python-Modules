@@ -1,7 +1,7 @@
 def ft_archive_creation() -> None:
+    new = None
+    archive = None
     try:
-        new = None
-        archive = None
         file_name = "new_discovery.txt"
         print("=== CYBER ARCHIVES - PRESERVATION SYSTEM ===\n")
         print(f"Initializing new storage unit: {file_name}")
@@ -11,6 +11,7 @@ def ft_archive_creation() -> None:
         new.write("[ENTRY 001] New quantum algorithm discovered\n")
         new.write("[ENTRY 002] Efficiency increased by 347%\n")
         new.write("[ENTRY 003] Archived by Data Archivist trainee")
+        new.close()
         archive = open(file_name, "r")
         print(archive.read())
         print("\nData inscription complete. Storage unit sealed.")
