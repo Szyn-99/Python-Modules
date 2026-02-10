@@ -1,6 +1,5 @@
 def ft_archive_creation() -> None:
     new = None
-    archive = None
     try:
         file_name = "new_discovery.txt"
         print("=== CYBER ARCHIVES - PRESERVATION SYSTEM ===\n")
@@ -12,8 +11,9 @@ def ft_archive_creation() -> None:
         new.write("[ENTRY 002] Efficiency increased by 347%\n")
         new.write("[ENTRY 003] Archived by Data Archivist trainee")
         new.close()
-        archive = open(file_name, "r")
-        print(archive.read())
+        print("[ENTRY 001] New quantum algorithm discovered")
+        print("[ENTRY 002] Efficiency increased by 347%")
+        print("[ENTRY 003] Archived by Data Archivist trainee")
         print("\nData inscription complete. Storage unit sealed.")
         print(f"Archive '{file_name}' ready for long-term preservation.")
     except Exception:
@@ -21,8 +21,6 @@ def ft_archive_creation() -> None:
     finally:
         if new:
             new.close()
-        if archive:
-            archive.close()
 
 
 if __name__ == "__main__":

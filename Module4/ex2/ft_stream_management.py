@@ -8,11 +8,11 @@ def ft_stream_management() -> None:
     print()
     print(
         f"[STANDARD] Archive status from {archivist_id}: {status_report}",
-        file=sys.stdout,
+        file=sys.stdout
     )
     print(
         "[ALERT] System diagnostic: Communication channels verified",
-        file=sys.stderr,
+        file=sys.stderr
     )
     print("[STANDARD] Data transmission complete", file=sys.stdout)
     print("\nThree-channel communication test successful.")

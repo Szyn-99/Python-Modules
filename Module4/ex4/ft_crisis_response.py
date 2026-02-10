@@ -1,9 +1,9 @@
-def ft_crisis_response(file_name, mode) -> None:
+def ft_crisis_response(file_name: str, mode: str) -> None:
     try:
         with open(file_name, mode) as f:
             print(f"ROUTINE ACCESS: Attempting access to '{file_name}'...")
             content = f.read()
-            print(f"SUCCESS: Archive recovered - '{content}'")
+            print(f"SUCCESS: Archive recovered - ``{content}''")
             print("STATUS: Normal operations resumed")
     except FileNotFoundError:
         print(f"CRISIS ALERT: Attempting access to '{file_name}'...")
@@ -12,7 +12,7 @@ def ft_crisis_response(file_name, mode) -> None:
     except PermissionError:
         print(f"CRISIS ALERT: Attempting access to '{file_name}'...")
         print("RESPONSE: Security protocols deny access")
-        print("STATUS: Crisis handled, system stable")
+        print("STATUS: Crisis handled, security maintained")
     except Exception as e:
         print("Chaos in the Matrix")
         print(f"Crisis Details: {e}")
