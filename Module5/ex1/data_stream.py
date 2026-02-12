@@ -44,10 +44,8 @@ class SensorStream(DataStream):
         self.temp_count: int = 0
 
     def process_batch(self, data_batch: List[Any]) -> str:
-        """Process sensor readings like 'temp:22.5', 'humidity:65'."""
         try:
             print(f"Processing sensor batch: {data_batch}")
-            readings: int = 0
             self.total_temp = 0.0
             self.temp_count = 0
 
@@ -57,25 +55,22 @@ class SensorStream(DataStream):
                         self.error_count += 1
                         continue
                     key, value = item.split(":", 1)
-                    readings += 1
+                    self.processed_count += 1
                     if key == "temp":
                         self.total_temp += float(value)
                         self.temp_count += 1
 
-            self.processed_count += readings
             avg_temp: float = (
                 self.total_temp / self.temp_count
                 if self.temp_count > 0
                 else 0.0
             )
             result: str = (
-                f"Sensor analysis: {readings} readings processed"
+                f"Sensor analysis: {self.processed_count} readings processed, avg temp: {avg_temp}°C"
             )
-            if self.temp_count > 0:
-                result += f", avg temp: {avg_temp}\u00b0C"
+            result: str = result + f"{self.error_count} error detected" if self.error_count > 0 else result
             return result
         except Exception as e:
-            self.error_count += 1
             return f"Sensor processing error: {e}"
 
     def filter_data(
@@ -113,9 +108,6 @@ class TransactionStream(DataStream):
         """Process transactions like 'buy:100', 'sell:150'."""
         try:
             print(f"Processing transaction batch: {data_batch}")
-            operations: int = 0
-            self.net_flow = 0.0
-
             if data_batch:
                 for item in data_batch:
                     if not isinstance(item, str) or ":" not in item:
@@ -123,20 +115,21 @@ class TransactionStream(DataStream):
                         continue
                     action, amount_str = item.split(":", 1)
                     amount: float = float(amount_str)
-                    operations += 1
+                    self.processed_count += 1
                     if action == "buy":
                         self.net_flow -= amount
                     elif action == "sell":
                         self.net_flow += amount
 
-            self.processed_count += operations
             sign: str = "+" if self.net_flow >= 0 else ""
+            result = (
+                    f"Transaction analysis: {self.processed_count} operations, "
+                    f"net flow: {sign}{self.net_flow:.0f} units, "
+            )
             return (
-                f"Transaction analysis: {operations} operations, "
-                f"net flow: {sign}{self.net_flow:.0f} units"
+                result +  f"{self.error_count} error detected" if self.error_count > 0 else result
             )
         except Exception as e:
-            self.error_count += 1
             return f"Transaction processing error: {e}"
 
     def filter_data(
@@ -152,7 +145,7 @@ class TransactionStream(DataStream):
             elif criteria is None:
                 try:
                     _, amount_str = item.split(":", 1)
-                    if abs(float(amount_str)) >= 100:
+                    if float(amount_str) >= 100:
                         filtered.append(item)
                 except ValueError:
                     continue
@@ -178,8 +171,6 @@ class EventStream(DataStream):
         try:
             print(f"Processing event batch: {data_batch}")
             events: int = 0
-            self.error_events = 0
-
             if data_batch:
                 for item in data_batch:
                     if not isinstance(item, str):
@@ -192,11 +183,11 @@ class EventStream(DataStream):
             self.processed_count += events
             result: str = (
                 f"Event analysis: {events} events, "
-                f"{self.error_events} error detected"
+                f"{self.error_events} events error detected"
+               
             )
-            return result
+            return result +  f"{self.error_count} error detected" if self.error_count > 0 else result
         except Exception as e:
-            self.error_count += 1
             return f"Event processing error: {e}"
 
     def filter_data(
@@ -223,7 +214,7 @@ class StreamProcessor:
     def __init__(self) -> None:
         self.streams: List[DataStream] = []
 
-    def add_stream(self, stream: DataStream) -> None:
+    def add_stream(self, stream: Union[SensorStream, TransactionStream, EventStream]) -> None:
         """Add a stream to the processor."""
         self.streams.append(stream)
 
