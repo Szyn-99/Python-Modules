@@ -111,10 +111,9 @@ class TransactionStream(DataStream):
                     elif action == "sell":
                         self.net_flow += amount
 
-            sign: str = "+" if self.net_flow >= 0 else ""
             result: str = (
                 f"Transaction analysis: {self.processed_count} operations, "
-                f"net flow: {sign}{self.net_flow:.0f} units"
+                f"net flow: {"+" if self.net_flow >= 0 else ""}{self.net_flow:.0f} units"
             )
             if self.error_count > 0:
                 result += f" ,{self.error_count} error detected"
