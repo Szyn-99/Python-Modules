@@ -125,9 +125,10 @@ class CSVAdapter(ProcessingPipeline):
             elif isinstance(result, dict):
                 logged = result.get("action")
                 csv_result = 1 if logged else 0
-                print("here 1")
-                output = "User activity logged: "
-                f"{csv_result} actions processed"
+                output = (
+                    f"User activity logged: "
+                    f"{csv_result} actions processed"
+                )
             else:
                 output = f"Processed input -> {result}"
             print(f"Output: {output}")
@@ -157,8 +158,10 @@ class StreamAdapter(ProcessingPipeline):
                 if isinstance(items, list):
                     count: int = len(items)
                     avg: float = sum(items) / count if count > 0 else 0.0
-                    output = f"Stream summary: {count} readings, "
-                    f"avg: {avg}°C"
+                    output = (
+                        f"Stream summary: {count} readings, "
+                        f"avg: {avg:.1f}°C"
+                    )
                 else:
                     output = f"Stream processed: {result}"
             else:

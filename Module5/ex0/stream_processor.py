@@ -32,13 +32,12 @@ class NumericProcessor(DataProcessor):
             except Exception:
                 iterable = False
 
-            print("Initializing Numeric Processor...")
-            print(f"Processing data: {data}")
+            
             if iterable:
                 for i in data:
                     if (i.__class__.__name__ == "int" or
                             i.__class__.__name__ == "float") and \
-                            i.__class__.__name__ != "bool":
+                            not isinstance(i, bool):
                         continue
                     else:
                         error = True
@@ -53,7 +52,7 @@ class NumericProcessor(DataProcessor):
                 return "[VALUE] ERROR level detected: a value is not numeric"
             return (f"Processed {len(data) if iterable else data} numeric "
                     f"values, sum={sum(data) if iterable else data}, "
-                    f"avg={sum(data) / len(data) if iterable else data:.2f}")
+                    f"avg={sum(data) / len(data) if iterable else data}")
         except Exception as e:
             return f"Error: {e}"
 
@@ -67,7 +66,7 @@ class NumericProcessor(DataProcessor):
             for i in data:
                 if (i.__class__.__name__ == "int" or
                         i.__class__.__name__ == "float") and \
-                        i.__class__.__name__ != "bool":
+                        not isinstance(i, bool):
                     continue
                 else:
                     print("Validation: Data is not numeric")
@@ -84,7 +83,7 @@ class NumericProcessor(DataProcessor):
         return True
 
     def format_output(self, result: str) -> str:
-        print(super().format_output(result))
+        return super().format_output(result)
 
 
 class TextProcessor(DataProcessor):
@@ -92,8 +91,7 @@ class TextProcessor(DataProcessor):
         super().__init__()
 
     def process(self, data: Any) -> str:
-        print("Initializing Text Processor...")
-        print(f'Processing data: "{data}"')
+        
         if data.__class__.__name__ == "str":
             return (f"Processed text: {len(data)} characters, "
                     f"{len(data.split(' '))} words")
@@ -107,7 +105,7 @@ class TextProcessor(DataProcessor):
         return False
 
     def format_output(self, result: str) -> str:
-        print(super().format_output(result))
+        return super().format_output(result)
 
 
 class LogProcessor(DataProcessor):
@@ -115,67 +113,65 @@ class LogProcessor(DataProcessor):
         super().__init__()
 
     def process(self, data: Any) -> str:
-        print("Initializing Log Processor...")
-        print(f'Processing data: "{data}"')
+        
         if data.__class__.__name__ == "str" and ":" in data:
             error, error_details = data.split(":")
             if "ERROR" in error:
                 error_type = "ALERT"
             else:
                 error_type = "INFO"
-            return f'[{error_type}] {error} level detected: {error_details}'
+            return f'[{error_type}] {error} level detected:{error_details}'
 
         return "Invalid log format"
 
     def validate(self, data: Any) -> bool:
         if (data is not None and data.__class__.__name__ == "str" and
                 ":" in data):
-            print("Validation: Log entry is verified")
+            print("Validation: Log entry verified")
             return True
-        print("Validation: Log entry is not verified")
+        print("Validation: Log entry not verified")
         return False
 
     def format_output(self, result: str) -> str:
-        print(super().format_output(result))
+        return super().format_output(result)
 
 
 def log() -> None:
+    
+    print("Initializing Log Processor...")
     data = "ERROR: Connection timeout"
+    print(f'Processing data: "{data}"')
     test = LogProcessor()
     result = test.process(data)
     test.validate(data)
-    test.format_output(result)
+    print(test.format_output(result))
 
 
 def literal() -> None:
-    data = "Szyn"
+    print("Initializing Text Processor...")
+    data = "Hello Nexus World"
+    print(f'Processing data: "{data}"')
     test = TextProcessor()
     result = test.process(data)
     test.validate(data)
-    test.format_output(result)
-    print()
-    print()
+    print(test.format_output(result))
 
 
 def numeric() -> None:
-    data = True
+    print("Initializing Numeric Processor...")
+    data = [1, 2, 3, 4, 5]
+    print(f"Processing data: {data}")
     test = NumericProcessor()
     result = test.process(data)
     test.validate(data)
-    test.format_output(result)
-    print()
-    print()
+    print(test.format_output(result))
 
 
 if __name__ == "__main__":
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===\n")
     numeric()
+    print()
     literal()
+    print()
     log()
-    print("=== Polymorphic Processing Demo ===")
-    print("\nProcessing multiple data types through same interface...")
-    processors = (NumericProcessor(), TextProcessor(), LogProcessor(),)
-    data = [[2, 2, 2], "Vasto Lorde", "INFO: System ready"]
-
-    for i, (proc, value) in enumerate(zip(processors, data)):
-        print(f"Result {i}: {proc.process(value)}")
+    print("\n=== Polymorphic Processing Demo ===")
