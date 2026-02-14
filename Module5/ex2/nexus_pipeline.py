@@ -124,10 +124,10 @@ class CSVAdapter(ProcessingPipeline):
                 )
             elif isinstance(result, dict):
                 logged = result.get("action")
-                csv_result = 1 if logged else 0
+                csv_count: int = 1 if logged else 0
                 output = (
                     f"User activity logged: "
-                    f"{csv_result} actions processed"
+                    f"{csv_count} actions processed"
                 )
             else:
                 output = f"Processed input -> {result}"
@@ -254,40 +254,22 @@ if __name__ == "__main__":
     print("Data flow: Raw -> Processed -> Analyzed -> Stored")
 
     records: int = 100
+    errors = 0
+    success = 0
     for i in range(records):
         try:
-            data: Any = None if i % 2 == 0 else {"record": i}
+            data: Any = None if i % 20 == 0 else {"record": i}
             r1 = json_adapter.stages_executor(data)
             r2 = csv_adapter.stages_executor(r1)
             result_c = stream_adapter.stages_executor(r2)
 
-            json_adapter.total_process += 1
-            csv_adapter.total_process += 1
-            stream_adapter.total_process += 1
+            success += 1
         except Exception:
-            json_adapter.total_errors += 1
-            csv_adapter.total_errors += 1
-            stream_adapter.total_errors += 1
+            errors += 1
 
-    stages: int = (
-        len(json_adapter.process_stages)
-        + len(csv_adapter.process_stages)
-        + len(stream_adapter.process_stages)
-    )
+    stages: int = 3
 
-    total_s = (
-        json_adapter.total_process
-        + csv_adapter.total_process
-        + stream_adapter.total_process
-    )
-
-    total_e = (
-        json_adapter.total_errors
-        + csv_adapter.total_errors
-        + stream_adapter.total_errors
-    )
-
-    eff: float = total_s / (records * 3) * 100
+    eff: float = (success / records) * 100
 
     print(
         f"\nChain result: {records} records processed "
@@ -295,8 +277,8 @@ if __name__ == "__main__":
     )
     print(
         f"Performance: {eff:.0f}% efficiency, "
-        f"{total_s} successful, "
-        f"{total_e} errors"
+        f"{success} successful, "
+        f"{errors} errors"
     )
 
     print("\n=== Error Recovery Test ===")

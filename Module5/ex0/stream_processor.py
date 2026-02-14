@@ -175,3 +175,10 @@ if __name__ == "__main__":
     print()
     log()
     print("\n=== Polymorphic Processing Demo ===")
+    print("\nProcessing multiple data types through same interface...")
+    processors = (NumericProcessor(), TextProcessor(), LogProcessor(),)
+    data = [[1, 2, 3], "Hello Nexus World", "INFO: System ready"]
+
+    for i, (proc, value) in enumerate(zip(processors, data)):
+        print(f"Result {i + 1}: {proc.process(value)}")
+    print("Foundation systems online. Nexus ready for advanced streams.")

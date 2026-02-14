@@ -14,7 +14,7 @@ class DataStream(ABC):
         pass
 
     def filter_data(
-        self, data_batch: List[Any], criteria: Optional[str]
+        self, data_batch: List[Any], criteria: Optional[str] = None
     ) -> List[Any]:
         if criteria is None:
             return data_batch
@@ -107,9 +107,9 @@ class TransactionStream(DataStream):
                     amount: float = float(amount_str)
                     self.processed_count += 1
                     if action == "buy":
-                        self.net_flow -= amount
-                    elif action == "sell":
                         self.net_flow += amount
+                    elif action == "sell":
+                        self.net_flow -= amount
 
             result: str = (
                 f"Transaction analysis: {self.processed_count} operations, "
@@ -226,7 +226,7 @@ if __name__ == "__main__":
     print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===\n")
 
     print("Initializing Sensor Stream...")
-    s_stream: SensorStream = SensorStream("s_stream_001")
+    s_stream: SensorStream = SensorStream("SENSOR_001")
     print(f"Stream ID: {s_stream.stream_id}, Type: {s_stream.type}")
     result_s: str = s_stream.process_batch(
         ["temp:22.5", "humidity:65", "pressure:1013"]
