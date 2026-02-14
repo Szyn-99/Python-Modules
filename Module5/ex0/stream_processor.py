@@ -19,7 +19,7 @@ class DataProcessor(ABC):
 
 
 class NumericProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def process(self, data: Any) -> str:
@@ -88,7 +88,7 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def process(self, data: Any) -> str:
@@ -111,7 +111,7 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def process(self, data: Any) -> str:
@@ -139,7 +139,7 @@ class LogProcessor(DataProcessor):
         print(super().format_output(result))
 
 
-def log():
+def log() -> None:
     data = "ERROR: Connection timeout"
     test = LogProcessor()
     result = test.process(data)
@@ -147,7 +147,7 @@ def log():
     test.format_output(result)
 
 
-def literal():
+def literal() -> None:
     data = "Szyn"
     test = TextProcessor()
     result = test.process(data)
