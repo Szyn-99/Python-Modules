@@ -113,7 +113,8 @@ class TransactionStream(DataStream):
 
             result: str = (
                 f"Transaction analysis: {self.processed_count} operations, "
-                f'net flow: {"+" if self.net_flow >= 0 else ""}{self.net_flow:.0f} units'
+                f'net flow: {"+" if self.net_flow >= 0 else ""}'
+                f'{self.net_flow:.0f} units'
             )
             if self.error_count > 0:
                 result += f" ,{self.error_count} error detected"

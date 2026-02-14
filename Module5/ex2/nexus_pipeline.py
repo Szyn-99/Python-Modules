@@ -4,8 +4,7 @@ import json
 
 
 class ProcessingStage(Protocol):
-    def process(self, data: Any) -> Any:
-        ...
+    def process(self, data: Any) -> Any: ...
 
 
 class InputStage:
@@ -82,27 +81,18 @@ class JSONAdapter(ProcessingPipeline):
                 print(f"Input: {data}")
 
             result = self.stages_executor(data)
-            print(
-                "Transform: Enriched with metadata "
-                "and validation"
-            )
+            print("Transform: Enriched with metadata " "and validation")
 
             output: str
-            if (
-                isinstance(result, dict)
-                and result.get("sensor") == "temp"
-            ):
+            if isinstance(result, dict) and result.get("sensor") == "temp":
                 value: float = result.get("value", 0)
                 unit: str = result.get("unit", "C")
                 output = (
-                    f"Processed temperature reading: "
+                    "Processed temperature reading: "
                     f"{value}°{unit} (Normal range)"
                 )
             elif isinstance(result, dict):
-                output = (
-                    f"Processed JSON record: "
-                    f"{len(result)} fields"
-                )
+                output = f"Processed JSON record: " f"{len(result)} fields"
             else:
                 output = f"Processed JSON data: {result}"
 
@@ -120,23 +110,24 @@ class CSVAdapter(ProcessingPipeline):
 
     def process(self, data: Any) -> Union[str, Any]:
         try:
-            print(
-                "Processing CSV data through "
-                "same pipeline..."
-            )
+            print("Processing CSV data through " "same pipeline...")
             print(f'Input: "{data}"')
 
             result = self.stages_executor(data)
             print("Transform: Parsed and structured data")
             items = result.get("items")
             if items:
-                csv_result = [v for v in items.split(',')]
-                output = f"User activity logged: {max(len(csv_result) - 2, 1)} actions processed"
+                csv_result = [v for v in items.split(",")]
+                output = (
+                    f"User activity logged: "
+                    f"{max(len(csv_result) - 2, 1)} actions processed"
+                )
             elif isinstance(result, dict):
-                logged = result.get('action')
+                logged = result.get("action")
                 csv_result = 1 if logged else 0
                 print("here 1")
-                output = f"User activity logged: {csv_result} actions processed"
+                output = "User activity logged: "
+                f"{csv_result} actions processed"
             else:
                 output = f"Processed input -> {result}"
             print(f"Output: {output}")
@@ -153,10 +144,7 @@ class StreamAdapter(ProcessingPipeline):
 
     def process(self, data: Any) -> Union[str, Any]:
         try:
-            print(
-                "Processing Stream data through "
-                "same pipeline..."
-            )
+            print("Processing Stream data through " "same pipeline...")
 
             result = self.stages_executor(data)
 
@@ -165,23 +153,18 @@ class StreamAdapter(ProcessingPipeline):
                 items = result.get("items", [])
                 print("Input: Real-time sensor stream")
                 print("Transform: Aggregated and filtered")
-                
+
                 if isinstance(items, list):
                     count: int = len(items)
-                    avg: float = (
-                        sum(items) / count if count > 0 else 0.0
-                    )
-                    output = (
-                        f"Stream summary: {count} readings, "
-                        f"avg: {avg}°C"
-
-                    )
+                    avg: float = sum(items) / count if count > 0 else 0.0
+                    output = f"Stream summary: {count} readings, "
+                    f"avg: {avg}°C"
                 else:
                     output = f"Stream processed: {result}"
             else:
                 print(f"Input: {data}")
                 print("Transform: Processed stream data")
-                output = f"Invalid format, must be a list of int"
+                output = "Invalid format, must be a list of int"
 
             print(f"Output: {output}")
             self.total_process += 1
@@ -198,9 +181,7 @@ class NexusManager:
         self.performance["capacity"] = 1000
         self.performance["efficiency"] = 0.0
 
-    def add_pipeline(
-        self, pipeline: ProcessingPipeline
-    ) -> None:
+    def add_pipeline(self, pipeline: ProcessingPipeline) -> None:
         self.pipelines.append(pipeline)
 
     def recovery_check(
@@ -215,14 +196,10 @@ class NexusManager:
         except Exception as e:
             pipeline.total_errors += 1
             print(f"Error detected in Stage: {e}")
-            print(
-                "Recovery initiated: "
-                "Switching to backup processor"
-            )
-            print(
-                "Recovery successful: "
-                "Pipeline restored, processing resumed"
-            )
+            print("Recovery initiated: "
+                  "Switching to backup processor")
+            print("Recovery successful: "
+                  "Pipeline restored, processing resumed")
             return None
 
 
@@ -231,10 +208,8 @@ if __name__ == "__main__":
 
     manager: NexusManager = NexusManager()
     print("Initializing Nexus Manager...")
-    print(
-        f"Pipeline capacity: "
-        f"{manager.performance['capacity']} streams/second"
-    )
+    print(f"Pipeline capacity: "
+          f"{manager.performance['capacity']} streams/second")
 
     print("\nCreating Data Processing Pipeline...")
     input_stage: InputStage = InputStage()
@@ -251,9 +226,7 @@ if __name__ == "__main__":
     json_adapter.new_stage(transform_stage)
     json_adapter.new_stage(output_stage)
     manager.add_pipeline(json_adapter)
-    json_adapter.process(
-        {"sensor": "temp", "value": 23.5, "unit": "C"}
-    )
+    json_adapter.process({"sensor": "temp", "value": 23.5, "unit": "C"})
 
     print()
 
@@ -262,7 +235,7 @@ if __name__ == "__main__":
     csv_adapter.new_stage(transform_stage)
     csv_adapter.new_stage(output_stage)
     manager.add_pipeline(csv_adapter)
-    csv_adapter.process('user,action,timestamp')
+    csv_adapter.process("user,action,timestamp")
 
     print()
 
@@ -280,13 +253,11 @@ if __name__ == "__main__":
     records: int = 100
     for i in range(records):
         try:
-            data: Any = (
-                None if i % 2 == 0 else {"record": i}
-            )
+            data: Any = None if i % 2 == 0 else {"record": i}
             r1 = json_adapter.stages_executor(data)
             r2 = csv_adapter.stages_executor(r1)
             result_c = stream_adapter.stages_executor(r2)
-            
+
             json_adapter.total_process += 1
             csv_adapter.total_process += 1
             stream_adapter.total_process += 1
@@ -295,19 +266,25 @@ if __name__ == "__main__":
             csv_adapter.total_errors += 1
             stream_adapter.total_errors += 1
 
-    stages: int = (len(json_adapter.process_stages) + 
-                len(csv_adapter.process_stages) + 
-                len(stream_adapter.process_stages))
+    stages: int = (
+        len(json_adapter.process_stages)
+        + len(csv_adapter.process_stages)
+        + len(stream_adapter.process_stages)
+    )
 
-    total_s = (json_adapter.total_process + 
-                        csv_adapter.total_process + 
-                        stream_adapter.total_process)
+    total_s = (
+        json_adapter.total_process
+        + csv_adapter.total_process
+        + stream_adapter.total_process
+    )
 
-    total_e = (json_adapter.total_errors + 
-                    csv_adapter.total_errors + 
-                    stream_adapter.total_errors)
+    total_e = (
+        json_adapter.total_errors
+        + csv_adapter.total_errors
+        + stream_adapter.total_errors
+    )
 
-    eff: float = (total_s / (records * 3) * 100)
+    eff: float = total_s / (records * 3) * 100
 
     print(
         f"\nChain result: {records} records processed "
@@ -328,7 +305,4 @@ if __name__ == "__main__":
     a_broken_pipe.new_stage(output_stage)
     manager.recovery_check(a_broken_pipe, None)
 
-    print(
-        "\nNexus Integration complete. "
-        "All systems operational."
-    )
+    print("\nNexus Integration complete. " "All systems operational.")
