@@ -1,0 +1,172 @@
+============================================================
+     Python Module 05 - Correction Sheet Answers
+============================================================
+
+------------------------------------------------------------
+Exercise 0 - Data Processor Foundation
+------------------------------------------------------------
+
+Q: What is method overriding and why are abstract base classes useful?
+
+A: Method overriding is when a subclass provides its own implementation
+   of a method that is already defined in its parent class. The child
+   class replaces the parent's behavior with specialized logic while
+   keeping the same method signature.
+
+   For example, NumericProcessor, TextProcessor, and LogProcessor all
+   override the process() and validate() methods from DataProcessor,
+   each with domain-specific behavior.
+
+   Abstract base classes (ABC) are useful because they define a contract
+   that all subclasses must follow. They guarantee that every subclass
+   implements the required methods (marked with @abstractmethod),
+   preventing incomplete implementations. You cannot instantiate an ABC
+   directly — this enforces a consistent interface across all subclasses.
+
+------------------------------------------------------------
+Exercise 1 - Polymorphic Streams
+------------------------------------------------------------
+
+Q: How does polymorphism enable the StreamProcessor to handle
+   different stream types?
+
+A: StreamProcessor stores a list of DataStream objects. Because
+   SensorStream, TransactionStream, and EventStream all inherit from
+   DataStream and override process_batch(), filter_data(), and
+   get_stats(), the StreamProcessor can call these methods on any
+   stream without knowing its concrete type.
+
+   For example, process_batches_manager() iterates over all streams
+   and calls stream.process_batch(batch) — Python dispatches the
+   correct overridden method at runtime based on the actual object
+   type. This means we can add new stream types without modifying
+   StreamProcessor at all.
+
+------------------------------------------------------------
+Exercise 2 - Nexus Integration
+------------------------------------------------------------
+
+Q: How does the pipeline system demonstrate both inheritance
+   and polymorphism?
+
+A: Inheritance: JSONAdapter, CSVAdapter, and StreamAdapter all inherit
+   from ProcessingPipeline (an ABC). They inherit shared functionality
+   like new_stage() and stages_executor(), and override the abstract
+   process() method with format-specific logic.
+
+   Polymorphism: NexusManager stores a list of ProcessingPipeline
+   objects and can call process() or stages_executor() on any of them
+   without knowing whether it's a JSON, CSV, or Stream adapter. The
+   correct implementation is selected at runtime.
+
+Q: What is the difference between Protocol (duck typing) and ABC
+   (abstract base class) in this context?
+
+A: ABC (Abstract Base Class):
+   - Uses explicit inheritance (class JSONAdapter(ProcessingPipeline))
+   - The subclass MUST inherit from the ABC
+   - Python raises TypeError if you try to instantiate a class that
+     hasn't implemented all @abstractmethod methods
+   - It's a nominal/structural contract enforced at instantiation time
+
+   Protocol (Duck Typing):
+   - Uses structural subtyping (no inheritance required)
+   - A class satisfies a Protocol if it has the required methods,
+     regardless of its class hierarchy
+   - In this project, ProcessingStage is a Protocol: any class with a
+     process(data) -> Any method is valid — InputStage, TransformStage,
+     and OutputStage never inherit from ProcessingStage, they just
+     implement process()
+   - "If it walks like a duck and quacks like a duck, it's a duck"
+
+   In summary: ABC requires inheritance, Protocol only requires matching
+   method signatures. The pipeline uses both — Protocol for stages
+   (flexible composition) and ABC for adapters (enforced hierarchy).
+
+------------------------------------------------------------
+Code Quality and Understanding
+------------------------------------------------------------
+
+Q: What are abstract base classes (ABC) and why are they useful?
+
+A: ABCs are classes that cannot be instantiated directly. They serve as
+   blueprints for other classes by defining abstract methods that
+   subclasses must implement. They are useful because they:
+   - Enforce a consistent interface across all subclasses
+   - Prevent instantiation of incomplete classes
+   - Make the code self-documenting (you can see the required API)
+   - Enable polymorphism by guaranteeing method availability
+
+Q: What is the difference between method overriding and method
+   overloading?
+
+A: Method overriding: A subclass provides a new implementation for a
+   method inherited from the parent class. Same name, same signature,
+   different behavior. Python supports this natively.
+
+   Method overloading: Multiple methods with the same name but different
+   parameter signatures in the same class. Python does NOT support
+   traditional overloading — the last definition wins. Instead, Python
+   uses default arguments, *args/**kwargs, or @singledispatch to
+   achieve similar behavior.
+
+Q: When and why should you use polymorphism?
+
+A: Use polymorphism when:
+   - You have multiple types that share a common interface but differ
+     in behavior (e.g., different data processors, stream types)
+   - You want to write code that works with any subtype without
+     knowing the concrete class (e.g., StreamProcessor handling any
+     DataStream)
+   - You want to extend functionality by adding new subclasses without
+     modifying existing code (Open/Closed Principle)
+   - You need to eliminate if/elif chains that check object types
+
+Q: How does the same interface work with different implementations?
+
+A: The parent class (or ABC) defines the interface — the method names,
+   parameters, and return types. Each subclass provides its own
+   implementation. When you call a method on a variable typed as the
+   parent class, Python's dynamic dispatch calls the actual subclass
+   method at runtime. For example:
+
+     processors = [NumericProcessor(), TextProcessor(), LogProcessor()]
+     for proc in processors:
+         proc.process(data)  # calls the correct overridden method
+
+Q: Why are type annotations important in Python development?
+
+A: Type annotations:
+   - Improve code readability and documentation
+   - Enable static type checkers (mypy, pyright) to catch bugs before
+     runtime
+   - Provide better IDE support (autocompletion, refactoring)
+   - Make function contracts explicit (what goes in, what comes out)
+   - Help with maintenance — new developers can understand the codebase
+     faster
+
+Q: What does @abstractmethod do?
+
+A: @abstractmethod marks a method in an ABC that MUST be overridden by
+   any concrete subclass. If a subclass does not implement all abstract
+   methods, Python raises a TypeError when you try to instantiate it.
+   This enforces a contract ensuring all subclasses provide the required
+   functionality.
+
+Q: Explain the architecture in Exercise 2 (composition vs inheritance).
+
+A: The architecture uses both composition and inheritance:
+
+   Inheritance: JSONAdapter, CSVAdapter, and StreamAdapter inherit from
+   ProcessingPipeline. They share common attributes (pipeline_id,
+   process_stages) and methods (new_stage, stages_executor), while
+   overriding process() for format-specific behavior.
+
+   Composition: ProcessingPipeline contains a list of ProcessingStage
+   objects (self.process_stages). Stages are not subclasses of the
+   pipeline — they are independent objects composed into the pipeline.
+   NexusManager also uses composition by holding a list of pipelines.
+
+   This separation means stages can be reused across different
+   pipelines, and pipelines can be combined in the manager — following
+   the principle "favor composition over inheritance."
