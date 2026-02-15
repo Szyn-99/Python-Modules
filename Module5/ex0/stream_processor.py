@@ -19,8 +19,6 @@ class DataProcessor(ABC):
 
 
 class NumericProcessor(DataProcessor):
-    def __init__(self) -> None:
-        super().__init__()
 
     def process(self, data: Any) -> str:
         try:
@@ -44,7 +42,7 @@ class NumericProcessor(DataProcessor):
             if not iterable:
                 if (data.__class__.__name__ == "int" or
                         data.__class__.__name__ == "float") and \
-                        data.__class__.__name__ != "bool":
+                        not isinstance(data, bool):
                     iterable = False
                 else:
                     error = True
@@ -74,7 +72,7 @@ class NumericProcessor(DataProcessor):
         else:
             if (data.__class__.__name__ == "int" or
                     data.__class__.__name__ == "float") and \
-                    data.__class__.__name__ != "bool":
+                    not isinstance(data, bool):
                 iterable = False
             else:
                 print("Validation: Data is not numeric")
@@ -87,8 +85,6 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
-    def __init__(self) -> None:
-        super().__init__()
 
     def process(self, data: Any) -> str:
         
@@ -109,8 +105,6 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
-    def __init__(self) -> None:
-        super().__init__()
 
     def process(self, data: Any) -> str:
         
@@ -159,7 +153,7 @@ def literal() -> None:
 
 def numeric() -> None:
     print("Initializing Numeric Processor...")
-    data = [1, 2, 3, 4, 5]
+    data = [1, 2, 3 , 4, 5, 6]
     print(f"Processing data: {data}")
     test = NumericProcessor()
     result = test.process(data)
@@ -181,4 +175,4 @@ if __name__ == "__main__":
 
     for i, (proc, value) in enumerate(zip(processors, data)):
         print(f"Result {i + 1}: {proc.process(value)}")
-    print("Foundation systems online. Nexus ready for advanced streams.")
+    print("\nFoundation systems online. Nexus ready for advanced streams.")
