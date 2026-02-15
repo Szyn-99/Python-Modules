@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from typing import Any, List, Dict, Union, Optional, Protocol
-import json
 
 
 class ProcessingStage(Protocol):
@@ -76,12 +75,13 @@ class JSONAdapter(ProcessingPipeline):
         try:
             print("Processing JSON data through pipeline...")
             if isinstance(data, dict):
-                print(f"Input: {json.dumps(data)}")
+                print(f"Input: {str(data)}")
             else:
                 print(f"Input: {data}")
 
             result = self.stages_executor(data)
-            print("Transform: Enriched with metadata " "and validation")
+            print("Transform: Enriched with metadata "
+                  "and validation")
 
             output: str
             if isinstance(result, dict) and result.get("sensor") == "temp":
@@ -110,7 +110,7 @@ class CSVAdapter(ProcessingPipeline):
 
     def process(self, data: Any) -> Union[str, Any]:
         try:
-            print("Processing CSV data through " "same pipeline...")
+            print("Processing CSV data through same pipeline...")
             print(f'Input: "{data}"')
 
             result = self.stages_executor(data)
@@ -145,7 +145,8 @@ class StreamAdapter(ProcessingPipeline):
 
     def process(self, data: Any) -> Union[str, Any]:
         try:
-            print("Processing Stream data through " "same pipeline...")
+            print("Processing Stream data through "
+                  "same pipeline...")
 
             result = self.stages_executor(data)
 
@@ -182,7 +183,6 @@ class NexusManager:
         self.pipelines: List[ProcessingPipeline] = []
         self.performance: Dict[str, Union[int, float]] = {}
         self.performance["capacity"] = 1000
-        self.performance["efficiency"] = 0.0
 
     def add_pipeline(self, pipeline: ProcessingPipeline) -> None:
         self.pipelines.append(pipeline)
@@ -290,4 +290,4 @@ if __name__ == "__main__":
     a_broken_pipe.new_stage(output_stage)
     manager.recovery_check(a_broken_pipe, None)
 
-    print("\nNexus Integration complete. " "All systems operational.")
+    print("\nNexus Integration complete. All systems operational.")

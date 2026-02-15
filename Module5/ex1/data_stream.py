@@ -41,6 +41,7 @@ class SensorStream(DataStream):
             print(f"Processing sensor batch: {data_batch}")
             self.total_temp = 0.0
             self.temp_count = 0
+            temp: list = []
 
             if data_batch:
                 for item in data_batch:
@@ -51,6 +52,7 @@ class SensorStream(DataStream):
                     self.processed_count += 1
                     if key == "temp":
                         self.total_temp += float(value)
+                        temp.append(float(value))
                         self.temp_count += 1
 
             avg_temp: float = (
@@ -62,6 +64,15 @@ class SensorStream(DataStream):
                 f"Sensor analysis: {self.processed_count} readings "
                 f"processed, avg temp: {avg_temp}°C"
             )
+            if temp:
+                for i in temp:
+                    if i >= 50:
+                        result += f", {i} is a high temp"
+                        break
+                    elif i <= 0:
+                        result += f", {i} is a low temp"
+                        break
+
             if self.error_count > 0:
                 result += f" ,{self.error_count} error detected"
             return result
@@ -229,7 +240,7 @@ if __name__ == "__main__":
     s_stream: SensorStream = SensorStream("SENSOR_001")
     print(f"Stream ID: {s_stream.stream_id}, Type: {s_stream.type}")
     result_s: str = s_stream.process_batch(
-        ["temp:22.5", "humidity:65", "pressure:1013"]
+        ["temp:25", "humidity:65", "pressure:1013"]
     )
     print(result_s)
 
@@ -271,7 +282,7 @@ if __name__ == "__main__":
     print()
     print("Stream filtering active: High-priority data only")
     sensor_filtered: List[Any] = s_processor.streams[0].filter_data(
-        ["temp:45", "humidity:30", "temp:50"], "temp"
+        ["temp:0", "humidity:30", "temp:50"], "temp"
     )
     trans_filtered: List[Any] = s_processor.streams[1].filter_data(
         ["buy:200", "sell:50", "buy:30", "sell:10"]

@@ -30,7 +30,6 @@ class NumericProcessor(DataProcessor):
             except Exception:
                 iterable = False
 
-            
             if iterable:
                 for i in data:
                     if (i.__class__.__name__ == "int" or
@@ -87,7 +86,7 @@ class NumericProcessor(DataProcessor):
 class TextProcessor(DataProcessor):
 
     def process(self, data: Any) -> str:
-        
+
         if data.__class__.__name__ == "str":
             return (f"Processed text: {len(data)} characters, "
                     f"{len(data.split(' '))} words")
@@ -107,7 +106,7 @@ class TextProcessor(DataProcessor):
 class LogProcessor(DataProcessor):
 
     def process(self, data: Any) -> str:
-        
+
         if data.__class__.__name__ == "str" and ":" in data:
             error, error_details = data.split(":")
             if "ERROR" in error:
@@ -131,7 +130,7 @@ class LogProcessor(DataProcessor):
 
 
 def log() -> None:
-    
+
     print("Initializing Log Processor...")
     data = "ERROR: Connection timeout"
     print(f'Processing data: "{data}"')
@@ -153,7 +152,7 @@ def literal() -> None:
 
 def numeric() -> None:
     print("Initializing Numeric Processor...")
-    data = [1, 2, 3 , 4, 5, 6]
+    data = [1, 2, 3, 4, 5, 6]
     print(f"Processing data: {data}")
     test = NumericProcessor()
     result = test.process(data)
