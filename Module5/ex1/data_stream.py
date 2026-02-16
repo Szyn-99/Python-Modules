@@ -16,17 +16,25 @@ class DataStream(ABC):
     def filter_data(
         self, data_batch: List[Any], criteria: Optional[str] = None
     ) -> List[Any]:
-        if criteria is None:
-            return data_batch
-        return [item for item in data_batch if criteria in str(item)]
+        try:
+            if criteria is None:
+                return data_batch
+            return [item for item in data_batch if criteria in str(item)]
+        except Exception as e:
+            print(f"Error in filter_data: {e}")
+            return []
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        return {
-            "stream_id": self.stream_id,
-            "type": self.type,
-            "processed": self.processed_count,
-            "errors": self.error_count,
-        }
+        try:
+            return {
+                "stream_id": self.stream_id,
+                "type": self.type,
+                "processed": self.processed_count,
+                "errors": self.error_count,
+            }
+        except Exception as e:
+            print(f"Error getting stats: {e}")
+            return {}
 
 
 class SensorStream(DataStream):
@@ -82,22 +90,41 @@ class SensorStream(DataStream):
     def filter_data(
         self, data_batch: List[Any], criteria: Optional[str] = None
     ) -> List[Any]:
-        if criteria is None:
-            criteria = "temp"
-        filtered: List[Any] = []
-        for item in data_batch:
-            if isinstance(item, str) and criteria in item:
-                filtered.append(item)
-        return filtered
+
+        try:
+            filtered: List[Any] = []
+            for item in data_batch:
+                if not isinstance(item, str):
+                    continue
+
+                if criteria is not None:
+                    if criteria in item:
+                        filtered.append(item)
+                else:
+                    if "temp:" in item:
+                        try:
+                            temp_value = float(item.split(":", 1)[1])
+                            if temp_value >= 50:
+                                filtered.append(item)
+                        except (ValueError, IndexError):
+                            continue
+            return filtered
+        except Exception as e:
+            print(f"Error filtering sensor data: {e}")
+            return []
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        stats: Dict[str, Union[str, int, float]] = super().get_stats()
-        stats["avg_temp"] = (
-            self.total_temp / self.temp_count
-            if self.temp_count > 0
-            else 0.0
-        )
-        return stats
+        try:
+            stats: Dict[str, Union[str, int, float]] = super().get_stats()
+            stats["avg_temp"] = (
+                self.total_temp / self.temp_count
+                if self.temp_count > 0
+                else 0.0
+            )
+            return stats
+        except Exception as e:
+            print(f"Error getting sensor stats: {e}")
+            return {}
 
 
 class TransactionStream(DataStream):
@@ -136,25 +163,33 @@ class TransactionStream(DataStream):
     def filter_data(
         self, data_batch: List[Any], criteria: Optional[str] = None
     ) -> List[Any]:
-        filtered: List[Any] = []
-        for item in data_batch:
-            if not isinstance(item, str) or ":" not in item:
-                continue
-            if criteria is not None and criteria in item:
-                filtered.append(item)
-            elif criteria is None:
-                try:
-                    _, amount_str = item.split(":", 1)
-                    if float(amount_str) >= 100:
-                        filtered.append(item)
-                except ValueError:
+        try:
+            filtered: List[Any] = []
+            for item in data_batch:
+                if not isinstance(item, str) or ":" not in item:
                     continue
-        return filtered
+                if criteria is not None and criteria in item:
+                    filtered.append(item)
+                elif criteria is None:
+                    try:
+                        _, amount_str = item.split(":", 1)
+                        if float(amount_str) >= 100:
+                            filtered.append(item)
+                    except ValueError:
+                        continue
+            return filtered
+        except Exception as e:
+            print(f"Error filtering transaction data: {e}")
+            return []
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        stats: Dict[str, Union[str, int, float]] = super().get_stats()
-        stats["net_flow"] = self.net_flow
-        return stats
+        try:
+            stats: Dict[str, Union[str, int, float]] = super().get_stats()
+            stats["net_flow"] = self.net_flow
+            return stats
+        except Exception as e:
+            print(f"Error getting transaction stats: {e}")
+            return {}
 
 
 class EventStream(DataStream):
@@ -190,17 +225,25 @@ class EventStream(DataStream):
     def filter_data(
         self, data_batch: List[Any], criteria: Optional[str] = None
     ) -> List[Any]:
-        if criteria is None:
-            criteria = "error"
-        return [
-            item for item in data_batch
-            if isinstance(item, str) and criteria in item
-        ]
+        try:
+            if criteria is None:
+                criteria = "error"
+            return [
+                item for item in data_batch
+                if isinstance(item, str) and criteria in item
+            ]
+        except Exception as e:
+            print(f"Error filtering event data: {e}")
+            return []
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        stats: Dict[str, Union[str, int, float]] = super().get_stats()
-        stats["error_events"] = self.error_events
-        return stats
+        try:
+            stats: Dict[str, Union[str, int, float]] = super().get_stats()
+            stats["error_events"] = self.error_events
+            return stats
+        except Exception as e:
+            print(f"Error getting event stats: {e}")
+            return {}
 
 
 class StreamProcessor:
@@ -210,86 +253,108 @@ class StreamProcessor:
     def add_stream_manager(
         self, stream: Union[SensorStream, TransactionStream, EventStream]
     ) -> None:
-        self.streams.append(stream)
+        try:
+            self.streams.append(stream)
+        except Exception as e:
+            print(f"Error adding stream: {e}")
 
     def process_batches_manager(
         self, batches: List[List[Any]]
     ) -> List[str]:
-        results: List[str] = []
-        for stream, batch in zip(self.streams, batches):
-            result: str = stream.process_batch(batch)
-            results.append(result)
-        return results
+        try:
+            results: List[str] = []
+            for stream, batch in zip(self.streams, batches):
+                result: str = stream.process_batch(batch)
+                results.append(result)
+            return results
+        except Exception as e:
+            print(f"Error processing batches: {e}")
+            return []
 
     def filter_data_manager(
         self, batches: List[List[Any]], criteria: Optional[str] = None
     ) -> List[List[Any]]:
-        filtered: List[List[Any]] = []
-        for stream, batch in zip(self.streams, batches):
-            filtered.append(stream.filter_data(batch, criteria))
-        return filtered
+        try:
+            filtered: List[List[Any]] = []
+            for stream, batch in zip(self.streams, batches):
+                filtered.append(stream.filter_data(batch, criteria))
+            return filtered
+        except Exception as e:
+            print(f"Error filtering data: {e}")
+            return []
 
     def get_stats_manager(self) -> List[Dict[str, Union[str, int, float]]]:
-        return [stream.get_stats() for stream in self.streams]
+        try:
+            return [stream.get_stats() for stream in self.streams]
+        except Exception as e:
+            print(f"Error getting stats: {e}")
+            return []
 
 
 if __name__ == "__main__":
-    print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===\n")
+    try:
+        print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===\n")
 
-    print("Initializing Sensor Stream...")
-    s_stream: SensorStream = SensorStream("SENSOR_001")
-    print(f"Stream ID: {s_stream.stream_id}, Type: {s_stream.type}")
-    result_s: str = s_stream.process_batch(
-        ["temp:25", "humidity:65", "pressure:1013"]
-    )
-    print(result_s)
+        print("Initializing Sensor Stream...")
+        s_stream: SensorStream = SensorStream("SENSOR_001")
+        print(f"Stream ID: {s_stream.stream_id}, Type: {s_stream.type}")
+        result_s: str = s_stream.process_batch(
+            ["temp:25", "humidity:65", "pressure:1013"]
+        )
+        print(result_s)
 
-    print()
-    print("Initializing Transaction Stream...")
-    t_stream: TransactionStream = TransactionStream("TRANS_001")
-    print(f"Stream ID: {t_stream.stream_id}, Type: {t_stream.type}")
-    result_t: str = t_stream.process_batch(
-        ["buy:100", "sell:150", "buy:75"]
-    )
-    print(result_t)
+        print()
+        print("Initializing Transaction Stream...")
+        t_stream: TransactionStream = TransactionStream("TRANS_001")
+        print(f"Stream ID: {t_stream.stream_id}, Type: {t_stream.type}")
+        result_t: str = t_stream.process_batch(
+            ["buy:100", "sell:150", "buy:75"]
+        )
+        print(result_t)
 
-    print()
-    print("Initializing Event Stream...")
-    e_stream: EventStream = EventStream("EVENT_001")
-    print(f"Stream ID: {e_stream.stream_id}, Type: {e_stream.type}")
-    result_e: str = e_stream.process_batch(["login", "error", "logout"])
-    print(result_e)
+        print()
+        print("Initializing Event Stream...")
+        e_stream: EventStream = EventStream("EVENT_001")
+        print(f"Stream ID: {e_stream.stream_id}, Type: {e_stream.type}")
+        result_e: str = e_stream.process_batch(["login", "error", "logout"])
+        print(result_e)
 
-    print("\n=== Polymorphic Stream Processing ===")
-    print("Processing mixed stream types through unified interface...\n")
+        print("\n=== Polymorphic Stream Processing ===")
+        print("Processing mixed stream types through unified interface...\n")
 
-    s_processor: StreamProcessor = StreamProcessor()
-    s_processor.add_stream_manager(SensorStream("SENSOR_001"))
-    s_processor.add_stream_manager(TransactionStream("TRANS_001"))
-    s_processor.add_stream_manager(EventStream("EVENT_001"))
+        s_processor: StreamProcessor = StreamProcessor()
+        s_processor.add_stream_manager(SensorStream("SENSOR_001"))
+        s_processor.add_stream_manager(TransactionStream("TRANS_001"))
+        s_processor.add_stream_manager(EventStream("EVENT_001"))
 
-    batches: List[List[Any]] = [
-        ["temp:20", "pressure:1013"],
-        ["buy:200", "sell:50", "buy:30", "sell:120"],
-        ["login", "error", "logout"],
-    ]
+        batches: List[List[Any]] = [
+            ["temp:20", "pressure:1013"],
+            ["buy:200", "sell:50", "buy:30", "sell:120"],
+            ["login", "error", "logout"],
+        ]
 
-    results: List[str] = s_processor.process_batches_manager(batches)
-    print("\nBatch 1 Results:")
-    for result in results:
-        print(f"- {result}")
+        results: List[str] = s_processor.process_batches_manager(batches)
+        print("\nBatch 1 Results:")
+        for result in results:
+            print(f"- {result}")
 
-    print()
-    print("Stream filtering active: High-priority data only")
-    sensor_filtered: List[Any] = s_processor.streams[0].filter_data(
-        ["temp:0", "humidity:30", "temp:50"], "temp"
-    )
-    trans_filtered: List[Any] = s_processor.streams[1].filter_data(
-        ["buy:200", "sell:50", "buy:30", "sell:10"]
-    )
-    print(
-        f"Filtered results: {len(sensor_filtered)} critical sensor alerts, "
-        f"{len(trans_filtered)} large transaction"
-    )
-    print()
-    print("All streams processed successfully. Nexus throughput optimal.")
+        print()
+        print("Stream filtering active: High-priority data only")
+        sensor_filtered: List[Any] = s_processor.streams[0].filter_data(
+            ["temp:0", "humidity:30", "temp:50", "temp:75", "temp:30"],
+            "humidity"
+        )
+        trans_filtered: List[Any] = s_processor.streams[1].filter_data(
+            ["buy:200", "sell:50", "buy:30", "sell:10"]
+        )
+        print(
+            f"Filtered results: {len(sensor_filtered)} "
+            f"high temperature alerts ({sensor_filtered}), "
+            f"{len(trans_filtered)} large transaction"
+        )
+        print()
+        print("All streams processed successfully. "
+              "Nexus throughput optimal.")
+
+    except Exception as e:
+        print(f"Critical error in main execution: {e}")

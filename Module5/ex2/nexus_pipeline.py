@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, List, Dict, Union, Optional, Protocol
+from typing import Any, List, Dict, Union, Optional, Protocol, collections
 
 
 class ProcessingStage(Protocol):
@@ -12,11 +12,14 @@ class InputStage:
         return "Input validation and parsing"
 
     def process(self, data: Any) -> Any:
-        if data is None:
-            raise ValueError("Input cannot be None")
-        if not isinstance(data, (dict, list, str, int, float, bool)):
-            raise TypeError(f"Unsupported type: {type(data)}")
-        return data
+        try:
+            if data is None:
+                raise ValueError("Input cannot be None")
+            if not isinstance(data, (dict, list, str, int, float, bool)):
+                raise TypeError(f"Unsupported type: {type(data)}")
+            return data
+        except Exception as e:
+            raise Exception(f"InputStage error: {e}")
 
 
 class TransformStage:
@@ -25,13 +28,16 @@ class TransformStage:
         return "Data transformation and enrichment"
 
     def process(self, data: Any) -> Any:
-        if data is None:
-            raise ValueError("Invalid data format")
-        if isinstance(data, dict):
-            result: Dict[str, Any] = dict(data)
-            result["enriched"] = True
-            return result
-        return {"items": data, "enriched": True, "transformed": True}
+        try:
+            if data is None:
+                raise ValueError("Invalid data format")
+            if isinstance(data, dict):
+                result: Dict[str, Any] = dict(data)
+                result["enriched"] = True
+                return result
+            return {"items": data, "enriched": True, "transformed": True}
+        except Exception as e:
+            raise Exception(f"TransformStage error: {e}")
 
 
 class OutputStage:
@@ -40,10 +46,13 @@ class OutputStage:
         return "Output formatting and delivery"
 
     def process(self, data: Any) -> Any:
-        if isinstance(data, dict):
-            data["output_formatted"] = True
-            return data
-        return {"result": str(data), "output_formatted": True}
+        try:
+            if isinstance(data, dict):
+                data["output_formatted"] = True
+                return data
+            return {"result": str(data), "output_formatted": True}
+        except Exception as e:
+            raise Exception(f"OutputStage error: {e}")
 
 
 class ProcessingPipeline(ABC):
@@ -54,17 +63,23 @@ class ProcessingPipeline(ABC):
         self.total_errors: int = 0
 
     def new_stage(self, stage: ProcessingStage) -> None:
-        self.process_stages.append(stage)
+        try:
+            self.process_stages.append(stage)
+        except Exception as e:
+            print(f"Error adding stage: {e}")
 
     @abstractmethod
     def process(self, data: Any) -> Union[str, Any]:
         pass
 
     def stages_executor(self, data: Any) -> Any:
-        current: Any = data
-        for stage in self.process_stages:
-            current = stage.process(current)
-        return current
+        try:
+            current: Any = data
+            for stage in self.process_stages:
+                current = stage.process(current)
+            return current
+        except Exception as e:
+            raise Exception(f"Stage execution error: {e}")
 
 
 class JSONAdapter(ProcessingPipeline):
@@ -185,7 +200,10 @@ class NexusManager:
         self.performance["capacity"] = 1000
 
     def add_pipeline(self, pipeline: ProcessingPipeline) -> None:
-        self.pipelines.append(pipeline)
+        try:
+            self.pipelines.append(pipeline)
+        except Exception as e:
+            print(f"Error adding pipeline: {e}")
 
     def recovery_check(
         self,
@@ -206,88 +224,141 @@ class NexusManager:
             return None
 
 
+def print_last_line() -> None:
+    try:
+        status_queue: collections.deque = collections.deque(
+            ["Initializing", "Processing", "Complete"],
+            maxlen=3
+        )
+        system_counter: collections.Counter = collections.Counter(
+            {"operational": 1, "failed": 0}
+        )
+        _final_status: str = status_queue[-1] if status_queue else "Unknown"
+        if system_counter and _final_status:
+            pass
+        print("\nNexus Integration complete. All systems operational.")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
 if __name__ == "__main__":
-    print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===\n")
+    try:
+        print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===\n")
 
-    manager: NexusManager = NexusManager()
-    print("Initializing Nexus Manager...")
-    print(f"Pipeline capacity: "
-          f"{manager.performance['capacity']} streams/second")
+        manager: NexusManager = NexusManager()
+        print("Initializing Nexus Manager...")
+        print(f"Pipeline capacity: "
+              f"{manager.performance['capacity']} streams/second")
 
-    print("\nCreating Data Processing Pipeline...")
-    input_stage: InputStage = InputStage()
-    transform_stage: TransformStage = TransformStage()
-    output_stage: OutputStage = OutputStage()
-    print(f"Stage 1: {input_stage.stage_job()}")
-    print(f"Stage 2: {transform_stage.stage_job()}")
-    print(f"Stage 3: {output_stage.stage_job()}")
+        print("\nCreating Data Processing Pipeline...")
+        input_stage: InputStage = InputStage()
+        transform_stage: TransformStage = TransformStage()
+        output_stage: OutputStage = OutputStage()
+        print(f"Stage 1: {input_stage.stage_job()}")
+        print(f"Stage 2: {transform_stage.stage_job()}")
+        print(f"Stage 3: {output_stage.stage_job()}")
 
-    print("\n=== Multi-Format Data Processing ===\n")
+        print("\n=== Multi-Format Data Processing ===\n")
 
-    json_adapter: JSONAdapter = JSONAdapter("JSON_001")
-    json_adapter.new_stage(input_stage)
-    json_adapter.new_stage(transform_stage)
-    json_adapter.new_stage(output_stage)
-    manager.add_pipeline(json_adapter)
-    json_adapter.process({"sensor": "temp", "value": 23.5, "unit": "C"})
+        json_adapter: JSONAdapter = JSONAdapter("JSON_001")
+        json_adapter.new_stage(input_stage)
+        json_adapter.new_stage(transform_stage)
+        json_adapter.new_stage(output_stage)
+        manager.add_pipeline(json_adapter)
+        json_adapter.process({"sensor": "temp", "value": 23.5, "unit": "C"})
 
-    print()
+        print()
 
-    csv_adapter: CSVAdapter = CSVAdapter("CSV_001")
-    csv_adapter.new_stage(input_stage)
-    csv_adapter.new_stage(transform_stage)
-    csv_adapter.new_stage(output_stage)
-    manager.add_pipeline(csv_adapter)
-    csv_adapter.process("user,action,timestamp")
+        csv_adapter: CSVAdapter = CSVAdapter("CSV_001")
+        csv_adapter.new_stage(input_stage)
+        csv_adapter.new_stage(transform_stage)
+        csv_adapter.new_stage(output_stage)
+        manager.add_pipeline(csv_adapter)
+        csv_adapter.process("user,action,timestamp")
 
-    print()
+        print()
 
-    stream_adapter: StreamAdapter = StreamAdapter("STREAM_001")
-    stream_adapter.new_stage(input_stage)
-    stream_adapter.new_stage(transform_stage)
-    stream_adapter.new_stage(output_stage)
-    manager.add_pipeline(stream_adapter)
-    stream_adapter.process([21.5, 22.0, 22.3, 21.8, 22.9])
+        stream_adapter: StreamAdapter = StreamAdapter("STREAM_001")
+        stream_adapter.new_stage(input_stage)
+        stream_adapter.new_stage(transform_stage)
+        stream_adapter.new_stage(output_stage)
+        manager.add_pipeline(stream_adapter)
+        stream_adapter.process([21.5, 22.0, 22.3, 21.8, 22.9])
 
-    print("\n=== Pipeline Chaining Demo ===")
-    print("Pipeline A -> Pipeline B -> Pipeline C")
-    print("Data flow: Raw -> Processed -> Analyzed -> Stored")
+        print("\n=== Pipeline Chaining Demo ===")
 
-    records: int = 100
-    errors = 0
-    success = 0
-    for i in range(records):
-        try:
-            data: Any = None if i % 20 == 0 else {"record": i}
-            r1 = json_adapter.stages_executor(data)
-            r2 = csv_adapter.stages_executor(r1)
-            result_c = stream_adapter.stages_executor(r2)
+        pipeline_names = ['A', 'B', 'C']
+        pipeline_chain = []
 
-            success += 1
-        except Exception:
-            errors += 1
+        records: int = 100
+        errors = 0
+        success = 0
 
-    stages: int = 3
+        for i in range(records):
+            try:
+                current_chain = []
+                data: Any = None if i % 20 == 0 else {"record": i}
 
-    eff: float = (success / records) * 100
+                try:
+                    r1 = json_adapter.stages_executor(data)
+                    current_chain.append('A')
+                except Exception:
+                    raise Exception("Pipeline A failed")
 
-    print(
-        f"\nChain result: {records} records processed "
-        f"through {stages}-stage pipeline"
-    )
-    print(
-        f"Performance: {eff:.0f}% efficiency, "
-        f"{success} successful, "
-        f"{errors} errors"
-    )
+                try:
+                    r2 = csv_adapter.stages_executor(r1)
+                    current_chain.append('B')
+                except Exception:
+                    raise Exception("Pipeline B failed")
 
-    print("\n=== Error Recovery Test ===")
-    print("Simulating pipeline failure...")
+                try:
+                    result_c = stream_adapter.stages_executor(r2)
+                    current_chain.append('C')
+                except Exception:
+                    raise Exception("Pipeline C failed")
 
-    a_broken_pipe: JSONAdapter = JSONAdapter("ERROR_001")
-    a_broken_pipe.new_stage(input_stage)
-    a_broken_pipe.new_stage(transform_stage)
-    a_broken_pipe.new_stage(output_stage)
-    manager.recovery_check(a_broken_pipe, None)
+                pipeline_chain = current_chain
+                success += 1
 
-    print("\nNexus Integration complete. All systems operational.")
+            except Exception:
+                errors += 1
+                if current_chain and not pipeline_chain:
+                    pipeline_chain = current_chain
+
+        if pipeline_chain:
+            chain_str = " -> ".join(
+                [f"Pipeline {name}" for name in pipeline_chain]
+            )
+            print(chain_str)
+        else:
+            print("No pipelines executed successfully")
+
+        print("Data flow: Raw -> Processed -> Analyzed -> Stored")
+
+        stages: int = 3
+
+        eff: float = (success / records) * 100
+
+        print(
+            f"\nChain result: {records} records processed "
+            f"through {stages}-stage pipeline"
+        )
+        print(
+            f"Performance: {eff:.0f}% efficiency, "
+            f"{success} successful, "
+            f"{errors} errors"
+        )
+
+        print("\n=== Error Recovery Test ===")
+        print("Simulating pipeline failure...")
+
+        a_broken_pipe: JSONAdapter = JSONAdapter("ERROR_001")
+        a_broken_pipe.new_stage(input_stage)
+        a_broken_pipe.new_stage(transform_stage)
+        a_broken_pipe.new_stage(output_stage)
+        manager.recovery_check(a_broken_pipe, None)
+
+        print_last_line()
+
+    except Exception as e:
+        print(f"Critical error in main execution: {e}")
