@@ -98,16 +98,17 @@ class SensorStream(DataStream):
                     continue
 
                 if criteria is not None:
-                    if criteria in item:
-                        filtered.append(item)
-                else:
-                    if "temp:" in item:
+                    if criteria + ":" in item:
                         try:
-                            temp_value = float(item.split(":", 1)[1])
-                            if temp_value >= 50:
+                            val = float(item.strip(' ').split(":")[1])
+                            if val >= float(50):
                                 filtered.append(item)
                         except (ValueError, IndexError):
                             continue
+                else:
+                    if criteria in item:
+                        filtered.append(item)
+
             return filtered
         except Exception as e:
             print(f"Error filtering sensor data: {e}")
@@ -291,7 +292,7 @@ class StreamProcessor:
             return []
 
 
-if __name__ == "__main__":
+def main() -> None:
     try:
         print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===\n")
 
@@ -339,17 +340,19 @@ if __name__ == "__main__":
             print(f"- {result}")
 
         print()
+        critiria = "temp"
         print("Stream filtering active: High-priority data only")
         sensor_filtered: List[Any] = s_processor.streams[0].filter_data(
-            ["temp:0", "humidity:30", "temp:50", "temp:75", "temp:30"],
-            "humidity"
+            ["temp:0", "humidity:300", "humidity:250",
+             "temp:50", "temp:75", "temp:30"],
+            critiria
         )
         trans_filtered: List[Any] = s_processor.streams[1].filter_data(
             ["buy:200", "sell:50", "buy:30", "sell:10"]
         )
         print(
             f"Filtered results: {len(sensor_filtered)} "
-            f"high temperature alerts ({sensor_filtered}), "
+            f"high {critiria} alerts ({sensor_filtered}), "
             f"{len(trans_filtered)} large transaction"
         )
         print()
@@ -358,3 +361,7 @@ if __name__ == "__main__":
 
     except Exception as e:
         print(f"Critical error in main execution: {e}")
+
+
+if __name__ == "__main__":
+    main()

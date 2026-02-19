@@ -33,21 +33,19 @@ class NumericProcessor(DataProcessor):
             if iterable:
                 for i in data:
                     if (i.__class__.__name__ == "int" or
-                            i.__class__.__name__ == "float") and \
-                            i.__class__.__name__ != "bool":
+                            i.__class__.__name__ == "float"):
                         continue
                     else:
                         error = True
-            if not iterable:
+            else:
                 if (data.__class__.__name__ == "int" or
-                        data.__class__.__name__ == "float") and \
-                        data.__class__.__name__ != "bool":
+                        data.__class__.__name__ == "float"):
                     iterable = False
                 else:
                     error = True
             if error:
                 return "[VALUE] ERROR level detected: a value is not numeric"
-            return (f"Processed {len(data) if iterable else data} numeric "
+            return (f"Processed {len(data) if iterable else 1} numeric "
                     f"values, sum={sum(data) if iterable else data}, "
                     f"avg={sum(data) / len(data) if iterable else data}")
         except Exception as e:
@@ -63,8 +61,7 @@ class NumericProcessor(DataProcessor):
             if iterable:
                 for i in data:
                     if (i.__class__.__name__ == "int" or
-                            i.__class__.__name__ == "float") and \
-                            i.__class__.__name__ != "bool":
+                            i.__class__.__name__ == "float"):
                         continue
                     else:
                         print("Validation: Data is not numeric")
@@ -174,7 +171,7 @@ def literal() -> None:
 def numeric() -> None:
     try:
         print("Initializing Numeric Processor...")
-        data = [1, 2, 3, 4, 5, 6]
+        data = [1, 2, 3, 4, 5]
         print(f"Processing data: {data}")
         test = NumericProcessor()
         result = test.process(data)
@@ -184,19 +181,7 @@ def numeric() -> None:
         print(f"Error: {e}")
 
 
-def print_last_line() -> None:
-    try:
-        items: List[Union[int, str]] = [1, "done"]
-        meta: Dict[str, Optional[int]] = {"count": len(items), "max": None}
-        _summary: Optional[str] = f"items={items}, meta={meta}"
-        if _summary:
-            pass
-        print("\nFoundation systems online. Nexus ready for advanced streams.")
-    except Exception as e:
-        print(f"Error: {e}")
-
-
-if __name__ == "__main__":
+def main() -> None:
     try:
         print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===\n")
         numeric()
@@ -211,6 +196,12 @@ if __name__ == "__main__":
 
         for i, (proc, value) in enumerate(zip(processors, data)):
             print(f"Result {i + 1}: {proc.process(value)}")
-        print_last_line()
+        last_line: Union[List[Dict[str, Optional[int]]], str] = "\
+\nFoundation systems online. Nexus ready for advanced streams."
+        print(last_line)
     except Exception as e:
         print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
