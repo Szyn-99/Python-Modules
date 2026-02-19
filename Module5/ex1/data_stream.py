@@ -94,17 +94,15 @@ class SensorStream(DataStream):
         try:
             filtered: List[Any] = []
             for item in data_batch:
-                if not isinstance(item, str):
+                if not isinstance(item, str) or criteria is None:
                     continue
-
-                if criteria is not None:
-                    if criteria + ":" in item:
-                        try:
-                            val = float(item.strip(' ').split(":")[1])
-                            if val >= float(50):
-                                filtered.append(item)
-                        except (ValueError, IndexError):
-                            continue
+                if criteria + ":" in item:
+                    try:
+                        val = float(item.strip(' ').split(":")[1])
+                        if val >= float(50):
+                            filtered.append(item)
+                    except (ValueError, IndexError):
+                        continue
                 else:
                     if criteria in item:
                         filtered.append(item)
