@@ -1,5 +1,4 @@
 import alchemy
-import sys
 def main() -> None:
     try:
         print("Testing direct module access:")
