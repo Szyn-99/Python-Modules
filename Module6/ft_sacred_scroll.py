@@ -1,11 +1,18 @@
 import alchemy
+
+
 def main() -> None:
     try:
+        print("=== Sacred Scroll Mastery ===\n")
         print("Testing direct module access:")
-        print("alchemy.elements.create_fire():", alchemy.elements.create_fire())
-        print("alchemy.elements.create_water():", alchemy.elements.create_water())
-        print("alchemy.elements.create_earth():", alchemy.elements.create_earth())
-        print("alchemy.elements.create_air():", alchemy.elements.create_air())
+        print("alchemy.elements.create_fire():",
+              alchemy.elements.create_fire())
+        print("alchemy.elements.create_water():",
+              alchemy.elements.create_water())
+        print("alchemy.elements.create_earth():",
+              alchemy.elements.create_earth())
+        print("alchemy.elements.create_air():",
+              alchemy.elements.create_air())
         print("\nTesting package-level access (controlled by __init__.py):")
         print("alchemy.create_fire():", alchemy.create_fire())
         print("alchemy.create_water():", alchemy.create_water())
@@ -22,5 +29,7 @@ def main() -> None:
         print("Author:", alchemy.__author__)
     except Exception as e:
         print(f"Unhandled Error: {e}")
+
+
 if __name__ == "__main__":
     main()

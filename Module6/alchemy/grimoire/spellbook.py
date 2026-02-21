@@ -4,4 +4,3 @@ def record_spell(spell_name: str, ingredients: str) -> str:
         return f"Spell rejected: {spell_name} ({ingredients} - INVALID)"
     else:
         return f"Spell recorded: {spell_name} ({ingredients} - VALID)"
-        
