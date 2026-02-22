@@ -8,7 +8,8 @@ class EliteCard(Card, Combatable, Magical):
         self.defense = defense
         self.magic_power = magic_power
         self.type = "Elite"
-        self.mana = 10
+        self.health = 100
+        self.mana = 8
     def play(self, game_state: dict) -> dict:
         if super().is_playable(game_state['mana']):
             new_game_state = {}
@@ -29,13 +30,14 @@ class EliteCard(Card, Combatable, Magical):
         target.health -= self.attack_power
         return attack_result
     def defend(self, incoming_damage: int) -> dict:
-        self.health -=  (self.defense - incoming_damage)
+        self.health -= max(0, incoming_damage - self.defense)
         defend_result = {
             'defender': self.name,
             'damage_taken': incoming_damage,
-            'damage_blocked': self.defense - incoming_damage,
+            'damage_blocked': self.defense - incoming_damage if self.defense > incoming_damage else 0,
             'still_alive': self.health > 0
             }
+        
         return defend_result
     def get_combat_stats(self) -> dict:
         return {
@@ -57,4 +59,8 @@ class EliteCard(Card, Combatable, Magical):
             'total_mana': self.mana
         }
         return mana_result
-    print("Multiple interface implementation successful!")
+    def get_magic_stats(self) -> dict:
+        return {
+            "magic_power": self.magic_power,
+            "mana": self.mana
+        }
