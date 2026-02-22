@@ -16,6 +16,8 @@ class Deck:
     def draw_card(self) -> Card:
         if self.cards:
             return self.cards.pop(0)
+        else:
+            raise IndexError("Deck is empty. Cannot draw a card.")
     def get_deck_stats(self) -> dict:
         deck_stats = {'total_cards': len(self.cards),
                       'creatures': sum(1 for card in self.cards if card.type == "Creature"),
@@ -23,5 +25,6 @@ class Deck:
                       'artifacts': sum(1 for card in self.cards if card.type == "Artifact")}
         unique_cards = set(card for card in self.cards)
         average_cost = sum(card.cost for card in unique_cards) / len(unique_cards) if unique_cards else 0
-        deck_stats['average_cost'] = average_cost
+        deck_stats['avg_cost'] = f"{average_cost:.2f}"
         return deck_stats
+    
