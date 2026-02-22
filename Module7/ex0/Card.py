@@ -4,9 +4,9 @@ class Card(ABC):
         self.name = name
         self.cost = cost
         self.rarity = rarity
-    @abstractmethod
     def play(self, game_state: dict) -> dict:
         pass
+    play = abstractmethod(play)
     def get_card_info(self) -> dict:
         return {
             "name": self.name,
