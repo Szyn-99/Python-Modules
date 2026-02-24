@@ -2,7 +2,7 @@ from ex4.TournamentCard import TournamentCard
 
 
 class TournamentPlatform:
-    def __init__(self):
+    def __init__(self) -> None:
         self.registered_cards = {}
         self.leaderboard = []
         self.matches_played = 0

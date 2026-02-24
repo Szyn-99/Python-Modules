@@ -4,7 +4,8 @@ from ex4.Rankable import Rankable
 
 
 class TournamentCard(Card, Combatable, Rankable):
-    def __init__(self, name, cost, rarity, attack_power, defense, health):
+    def __init__(self, name, cost, rarity,
+                 attack_power, defense, health) -> None:
         super().__init__(name, cost, rarity)
         self.attack_power = attack_power
         self.defense = defense

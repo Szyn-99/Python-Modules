@@ -1,4 +1,5 @@
 from ex0.CreatureCard import CreatureCard
+from ex0.Card import Card
 from ex1.SpellCard import SpellCard
 from ex1.ArtifactCard import ArtifactCard
 from ex3.CardFactory import CardFactory
@@ -25,7 +26,7 @@ class FantasyCardFactory(CardFactory):
         self.random_artifact_names = ["Sword of Power", "Shield of Resilience",
                                       "Amulet of Wisdom"]
 
-    def create_creature(self, name_or_power=None):
+    def create_creature(self, name_or_power=None) -> Card:
         if isinstance(name_or_power, str):
             self.cards_created += 1
             self.cards_types["creature"] += 1
@@ -60,7 +61,7 @@ class FantasyCardFactory(CardFactory):
                 random.choice(self.random_health_list),
             )
 
-    def create_spell(self, name_or_power=None):
+    def create_spell(self, name_or_power=None) -> Card:
         if isinstance(name_or_power, str):
             self.cards_created += 1
             self.cards_types["spell"] += 1
@@ -92,7 +93,7 @@ class FantasyCardFactory(CardFactory):
                 random.choice(self.random_effect_types),
             )
 
-    def create_artifact(self, name_or_power=None):
+    def create_artifact(self, name_or_power=None) -> Card:
         if isinstance(name_or_power, str):
             self.cards_created += 1
             self.cards_types["artifact"] += 1
@@ -127,7 +128,7 @@ class FantasyCardFactory(CardFactory):
                 random.choice(self.random_effect_list),
             )
 
-    def create_themed_deck(self, size: int):
+    def create_themed_deck(self, size: int) -> dict:
         deck = {"creature": [], "spell": [], "artifact": []}
         for card in range(size):
             card_type = random.choice(["creature", "spell", "artifact"])
@@ -157,5 +158,5 @@ class FantasyCardFactory(CardFactory):
                 )
         return deck
 
-    def get_supported_types(self):
+    def get_supported_types(self) -> dict:
         return {"supported_types": ["creature", "spell", "artifact"]}
