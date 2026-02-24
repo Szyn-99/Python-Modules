@@ -2,6 +2,17 @@ from ex1.ArtifactCard import ArtifactCard
 from ex1.SpellCard import SpellCard
 from ex1.Deck import Deck
 from ex0.CreatureCard import CreatureCard
+from enum import Enum
+from typing import Optional
+
+
+class VeryImportant(Enum):
+    important_flag = "!"
+
+
+def dummy_method(flag: Optional[VeryImportant]) -> None:
+    print(f"Polymorphism in action: Same interface, "
+          f"different card behaviors{flag.important_flag.value}")
 
 
 def main() -> None:
@@ -31,8 +42,7 @@ def main() -> None:
         print(f"Drew: {card.name} ({card.__class__.__name__})")
         print(f"Play result: {card.play(game_state)}\n")
 
-        print("Polymorphism in action: Same interface, "
-              "different card behaviors!")
+        dummy_method(VeryImportant.important_flag)
     except Exception as e:
         print(f"Error: {e}")
 

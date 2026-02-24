@@ -1,5 +1,16 @@
 from ex4.TournamentPlatform import TournamentPlatform
 from ex4.TournamentCard import TournamentCard
+from enum import Enum
+from typing import Optional
+
+
+class VeryImportant(Enum):
+    very_important = "!"
+
+
+def dummy_method(flag: Optional[VeryImportant]) -> None:
+    print("All abstract patterns working"
+          f" together harmoniously{flag.very_important.value}")
 
 
 def main() -> None:
@@ -24,9 +35,10 @@ def main() -> None:
         print(tournament.generate_tournament_report())
         print()
         print("=== Tournament Platform Successfully Deployed! ===")
-        print("All abstract patterns working together harmoniously!")
+        dummy_method(VeryImportant.very_important)
     except Exception as e:
         print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     main()

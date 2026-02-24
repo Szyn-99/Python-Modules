@@ -1,4 +1,15 @@
 from ex0.CreatureCard import CreatureCard
+from enum import Enum
+from typing import Optional
+
+
+class VeryImportant(Enum):
+    important_flag = "!"
+
+
+def dummy_method(flag: Optional[VeryImportant]) -> None:
+    print("\nAbstract pattern successfully "
+          f"demonstrated{flag.important_flag.value}")
 
 
 def main() -> None:
@@ -26,9 +37,10 @@ def main() -> None:
         print()
         print(f"Testing insufficient mana ({game_state['mana']} available):")
         print(f"Playable: {fire_dragon.is_playable(game_state['mana'])}")
-        print("\nAbstract pattern successfully demonstrated!")
+        dummy_method(VeryImportant.important_flag)
     except Exception as e:
         print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     main()

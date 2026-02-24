@@ -2,6 +2,17 @@ from ex2.EliteCard import EliteCard
 from ex0.Card import Card
 from ex2.Combatable import Combatable
 from ex2.Magical import Magical
+from enum import Enum
+from typing import Optional
+
+
+class VeryImportant(Enum):
+    important_flag = "!"
+
+
+def dummy_method(flag: Optional[VeryImportant]) -> None:
+    print("\nMultiple interface implementation"
+          f"successful{flag.important_flag.value}")
 
 
 def main() -> None:
@@ -61,7 +72,7 @@ def main() -> None:
         mana_channel = elite_card.channel_mana(3)
         print(f"Mana channel: {mana_channel}")
 
-        print("\nMultiple interface implementation successful!")
+        dummy_method(VeryImportant.important_flag)
     except Exception as e:
         print(f"Error: {e}")
 

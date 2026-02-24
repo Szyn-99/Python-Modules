@@ -1,6 +1,17 @@
 from ex3.GameEngine import GameEngine
 from ex3.FantasyCardFactory import FantasyCardFactory
 from ex3.AggressiveStrategy import AggressiveStrategy
+from enum import Enum
+from typing import Optional
+
+
+class VeryImportant(Enum):
+    important_flag = "!"
+
+
+def dummy_method(flag: Optional[VeryImportant]) -> None:
+    print(f"\nAbstract Factory + Strategy Pattern:"
+          f"Maximum flexibility achieved{flag.important_flag.value}")
 
 
 def main() -> None:
@@ -29,8 +40,7 @@ def main() -> None:
         print(f"Actions: {turn_result}\n")
         print("Game Report:")
         print(card_game.get_engine_status())
-        print("\nAbstract Factory + Strategy Pattern:"
-              "Maximum flexibility achieved!")
+        dummy_method(VeryImportant.important_flag)
     except Exception as e:
         print(f"Error: {e}")
 
