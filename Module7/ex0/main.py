@@ -17,9 +17,9 @@ def main() -> None:
         print(f"{fire_dragon.name} attacks {goblin_warrior.name}:")
         attack_result = fire_dragon.attack_target(goblin_warrior)
         print(
-            f"Atack Result: {{'attacker': '{attack_result['attacker']}',"
-            f"'target': '{attack_result['target']}',"
-            f"'damage_dealt': {attack_result['damage_dealt']},"
+            f"Atack Result: {{'attacker': '{attack_result['attacker']}', "
+            f"'target': '{attack_result['target']}', "
+            f"'damage_dealt': {attack_result['damage_dealt']}, "
             f"'combat_resolved': {attack_result['combat_resolved']}}}"
         )
 

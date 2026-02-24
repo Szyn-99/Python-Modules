@@ -4,7 +4,7 @@ from ex3.CardFactory import CardFactory
 
 class GameEngine:
     def __init__(self) -> None:
-        self.engine_stats = {
+        self.stat = {
             "turns_simulated": 0,
             "strategy_used": None,
             "total_damage": 0,

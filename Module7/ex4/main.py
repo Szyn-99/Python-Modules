@@ -22,11 +22,9 @@ def main() -> None:
         tournament.get_leaderboard()
         print("\nPlatform Report:")
         print(tournament.generate_tournament_report())
-
-        print(
-            "\nTournament Platform: Multiple Inheritance + Combat +"
-            " Ranking System implemented successfully!"
-        )
+        print()
+        print("=== Tournament Platform Successfully Deployed! ===")
+        print("All abstract patterns working together harmoniously!")
     except Exception as e:
         print(f"Error: {e}")
 

@@ -28,16 +28,18 @@ class TournamentPlatform:
             raise ValueError("One or both cards are dead.")
         self.matches_played += 1
         while card_1.health > 0 and card_2.health > 0:
+            card_1_rated = card_1.calculate_rating()
+            card_2_rated = card_2.calculate_rating()
             card_1.attack(card_2)
             if card_2.health <= 0:
                 card_1.update_wins(1)
                 card_2.update_losses(1)
                 self.leaderboard.extend([card_1, card_2])
                 return {
-                    "winner": card_1.name,
-                    "loser": card_2.name,
-                    "winner_rating": card_1.calculate_rating() + 16,
-                    "loser_rating": card_2.calculate_rating() - 16,
+                    "winner": card_1.id,
+                    "loser": card_2.id,
+                    "winner_rating": card_1_rated + 16,
+                    "loser_rating": card_2_rated - 16,
                 }
             card_2.attack(card_1)
             if card_1.health <= 0:
@@ -45,10 +47,10 @@ class TournamentPlatform:
                 card_1.update_losses(1)
                 self.leaderboard.extend([card_2, card_1])
                 return {
-                    "winner": card_2.name,
-                    "loser": card_1.name,
-                    "winner_rating": card_2.calculate_rating() + 16,
-                    "loser_rating": card_1.calculate_rating() - 16,
+                    "winner": card_2.id,
+                    "loser": card_1.id,
+                    "winner_rating": card_2_rated + 16,
+                    "loser_rating": card_1_rated - 16,
                 }
 
     def get_leaderboard(self) -> list:
