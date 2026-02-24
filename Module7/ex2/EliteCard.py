@@ -27,7 +27,7 @@ class EliteCard(Card, Combatable, Magical):
             "damage": self.attack_power,
             "combat_type": "melee"
         }
-        target.health -= self.attack_power
+        target.health -= max(0, self.attack_power - target.defense)
         return attack_result
     def defend(self, incoming_damage: int) -> dict:
         self.health -= max(0, incoming_damage - self.defense)
