@@ -4,7 +4,7 @@ from ex2.Combatable import Combatable
 from ex2.Magical import Magical
 
 
-def main():
+def main() -> None:
     try:
         print("\n=== DataDeck Ability System ===\n")
         print("EliteCard capabilities:")

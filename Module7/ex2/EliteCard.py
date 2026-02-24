@@ -12,7 +12,7 @@ class EliteCard(Card, Combatable, Magical):
         attack_power: int,
         defense: int,
         magic_power: int,
-    ):
+    ) -> None:
         super().__init__(name, cost, rarity)
         self.attack_power = attack_power
         self.defense = defense

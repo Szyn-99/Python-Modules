@@ -4,7 +4,7 @@ from ex1.Deck import Deck
 from ex0.CreatureCard import CreatureCard
 
 
-def main():
+def main() -> None:
     try:
         print("\n=== DataDeck Deck Builder ===\n")
         print("Building deck with different card types...")

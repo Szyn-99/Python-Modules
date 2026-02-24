@@ -3,7 +3,7 @@ import random
 
 
 class Deck:
-    def __init__(self):
+    def __init__(self) -> None:
         self.cards = []
 
     def add_card(self, card: Card) -> None:
