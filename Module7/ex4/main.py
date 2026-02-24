@@ -1,6 +1,7 @@
 from ex4.TournamentPlatform import TournamentPlatform
 from ex4.TournamentCard import TournamentCard
 
+
 def main():
     # try:
     print("\n=== DataDeck Tournament Platform ===\n")
@@ -12,19 +13,21 @@ def main():
     card_2 = tournament.register_card(second_card)
     print(card_1)
     print(card_2)
-  
+
     print("Creating tournament match...")
     match_result = tournament.create_match(first_card.id, second_card.id)
     print(f"Match result: {match_result}\n")
-    
-    print(f"Tournament Leaderboard:\n")
+    print("Tournament Leaderboard:\n")
     tournament.get_leaderboard()
     print("\nPlatform Report:")
     print(tournament.generate_tournament_report())
 
-    
-    print("\nTournament Platform: Multiple Inheritance + Combat + Ranking System implemented successfully!")
+    print(
+        "\nTournament Platform: Multiple Inheritance + Combat +"
+        " Ranking System implemented successfully!"
+    )
     # except Exception as e:
     #     print(f"Error: {e}")
+
 
 main()
