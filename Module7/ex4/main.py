@@ -28,5 +28,5 @@ def main() -> None:
     except Exception as e:
         print(f"Error: {e}")
 
-
-main()
+if __name__ == "__main__":
+    main()
