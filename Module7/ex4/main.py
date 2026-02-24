@@ -7,7 +7,8 @@ def main() -> None:
         print("\n=== DataDeck Tournament Platform ===\n")
         print("Registering Tournament Cards...\n")
         tournament = TournamentPlatform()
-        first_card = TournamentCard("Fire Dragon", 5, "legendary", 1000, 5, 200)
+        first_card = TournamentCard("Fire Dragon", 5,
+                                    "legendary", 1000, 5, 200)
         second_card = TournamentCard("Ice Wizard", 3, "common", 1000, 3, 150)
         card_1 = tournament.register_card(first_card)
         card_2 = tournament.register_card(second_card)
@@ -25,7 +26,7 @@ def main() -> None:
         print(
             "\nTournament Platform: Multiple Inheritance + Combat +"
             " Ranking System implemented successfully!"
-    )
+        )
     except Exception as e:
         print(f"Error: {e}")
 
