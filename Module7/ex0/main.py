@@ -10,7 +10,7 @@ def main() -> None:
         print("CreatureCard Info:")
         fire_dragon.get_card_info()
         print(f"\nPlaying Fire Dragon with"
-              f"{game_state['mana']} mana available:")
+              f" {game_state['mana']} mana available:")
         print(f"Playable: {fire_dragon.is_playable(game_state['mana'])}")
         print(f"Play result: {fire_dragon.play(game_state)}\n")
         goblin_warrior = CreatureCard("Goblin Warrior", 2, "Common", 3, 5)
