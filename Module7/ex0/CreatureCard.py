@@ -27,6 +27,8 @@ class CreatureCard(Card):
         return game_state
 
     def attack_target(self, target) -> dict:
+        if not isinstance(target, CreatureCard):
+            return {'combat_resolved': False}
         if self.health <= 0:
             raise ValueError("This creature is already dead.")
         if target.health <= 0:
@@ -38,5 +40,4 @@ class CreatureCard(Card):
             "damage_dealt": self.attack,
             "combat_resolved": True
         }
-        print(f"Atack Result: {{'attacker': '{attack_result['attacker']}', 'target': '{attack_result['target']}', 'damage_dealt': {attack_result['damage_dealt']}, 'combat_resolved': {attack_result['combat_resolved']}}}")
         return attack_result

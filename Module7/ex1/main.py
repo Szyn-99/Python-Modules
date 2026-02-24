@@ -5,7 +5,7 @@ from ex0.CreatureCard import CreatureCard
 
 def main():
     try:
-        print("=== DataDeck Deck Builder ===\n")
+        print("\n=== DataDeck Deck Builder ===\n")
         print("Building deck with different card types...")
         deck = Deck()
         game_state = {'mana': 100}

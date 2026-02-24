@@ -4,12 +4,12 @@ from ex2.Combatable import Combatable
 from ex2.Magical import Magical
 def main():
     try:
-        print("=== DataDeck Ability System ===\n")
+        print("\n=== DataDeck Ability System ===\n")
         print("EliteCard capabilities:")
         
         cards_attributes = [att for att in dir(Card) if not att.startswith('__') and not att.startswith('_')]
-        magical_cards_attributes = [att for att in dir(Magical) if not att.startswith('__') and not att.startswith('_')]
         combatable_cards_attributes = [att for att in dir(Combatable) if not att.startswith('__') and not att.startswith('_')]
+        magical_cards_attributes = [att for att in dir(Magical) if not att.startswith('__') and not att.startswith('_')]
         
         print(f"- Card: {cards_attributes}\n")
         print(f"- Combatable: {combatable_cards_attributes}\n")
