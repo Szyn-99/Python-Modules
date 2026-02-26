@@ -1,0 +1,18 @@
+[project]
+name = "pyproject"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "aymel-ha"}
+]
+requires-python = "3.10.12"
+dependencies = [
+    "pandas @ https://files.pythonhosted.org/packages/source/p/pandas/pandas-2.2.2.tar.gz",
+    "numpy @ https://files.pythonhosted.org/packages/source/n/numpy/numpy-1.26.4.tar.gz",
+    "matplotlib @ https://files.pythonhosted.org/packages/source/m/matplotlib/matplotlib-3.7.3.tar.gz"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
