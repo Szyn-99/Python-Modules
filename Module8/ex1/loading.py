@@ -3,6 +3,7 @@ import importlib
 def missing_dependecies_detector() -> bool:
     print("\nLOADING STATUS: Loading programs...\n")
     try:
+        print("Checking dependencies:")
         to_import = {'pandas': "Data manipulation", 'numpy': "Numerical computations", 'matplotlib': "Visualization"}
         dep = {}
         error = 0
@@ -28,17 +29,21 @@ def testing_dependencies() -> None:
         matplotlib = importlib.import_module("matplotlib.pyplot")
         pandas = dep['pandas']
         numpy = dep['numpy']
-
-        x = numpy.linspace(0, 10, 100)
-        y = numpy.sin(x)
-
-        df = pandas.DataFrame({'x': x, 'y': y})
-
-        matplotlib.plot(df['x'], df['y'])
-        matplotlib.title("Simple Sine Wave")
-        matplotlib.xlabel("X values")
-        matplotlib.ylabel("Y values")
-        matplotlib.show()
+        data_points = 1000
+        print("\nAnalyzing Matrix data...")
+        numpy_x = numpy.array([x for x in range(data_points)])
+        numpy_y = numpy.array([y for y in range(data_points)])
+        print(f"Processing {data_points} data points...")
+        structured_data = pandas.DataFrame({
+            "panda_x": numpy_x,
+            "panda_y": numpy_y
+        })
+        print("Generating visualization...")
+        matplotlib.plot(structured_data["panda_x"], structured_data["panda_y"])
+        print("\nAnalysis complete!")
+        matplotlib.savefig("analysis.png")
+        print("Results saved to: matrix\_analysis.png}")
+        # matplotlib.show()
 
     except Exception as e:
         print(f"Error: {e.__class__.__name__} - {e}")

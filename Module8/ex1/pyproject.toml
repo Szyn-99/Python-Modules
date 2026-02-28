@@ -1,15 +1,13 @@
 [project]
 name = "pyproject"
 version = "0.1.0"
-description = ""
+description = "testing dependencies"
 authors = [
-    {name = "aymel-ha"}
+    {name = "Szyn"}
 ]
-requires-python = "3.10.12"
+readme = "README.md"
+requires-python = "^3.10.12"
 dependencies = [
-    "pandas @ https://files.pythonhosted.org/packages/source/p/pandas/pandas-2.2.2.tar.gz",
-    "numpy @ https://files.pythonhosted.org/packages/source/n/numpy/numpy-1.26.4.tar.gz",
-    "matplotlib @ https://files.pythonhosted.org/packages/source/m/matplotlib/matplotlib-3.7.3.tar.gz"
 ]
 
 
