@@ -17,6 +17,9 @@ def missing_dependecies_detector() -> bool:
                 print(f"[KO] {module} (unknown version) - {to_import[module]} not ready")
                 error = 1
         if error == 1:
+            print("\nInstallation instructions:")
+            print(f"Poetry: poetry install {' '.join(to_import.keys())}")
+            print(f"Pip: pip install {' '.join(to_import.keys())}")
             exit(1)
         return dep
     except Exception as e:
