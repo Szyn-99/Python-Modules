@@ -1,30 +1,45 @@
-# import pandas
-# import numpy
-# import matplotlib
 import importlib
 
-
 def missing_dependecies_detector() -> bool:
+    print("\nLOADING STATUS: Loading programs...\n")
     try:
-        to_import = ['pandas', 'numpy', 'matplotlib']
-        dependency_and_version = []
+        to_import = {'pandas': "Data manipulation", 'numpy': "Numerical computations", 'matplotlib': "Visualization"}
+        dep = {}
+        error = 0
         for module in to_import:
             try:
                 imported = importlib.import_module(module)
                 if imported:
-                    dependency_and_version.append([(imported, imported.__name__, imported.__version__)])
-                    to_import.pop(0)
-            
+                    dep.update({module: imported})
+                    print(f"[OK] {module} ({getattr(imported, "__version__", "unknown version")}) - {to_import[module]} ready")
             except ImportError:
-                return False, dependency_and_version
-        return True, dependency_and_version
+                print(f"[KO] {module} (unknown version) - {to_import[module]} not ready")
+                error = 1
+        if error == 1:
+            exit(1)
+        return dep
     except Exception as e:
-        print(f"Error: {e.__class__.__name__} - {e}")
+        print("alo")
+        raise
 
 def testing_dependencies() -> None:
     try:
-        a = missing_dependecies_detector()
-        missing , dependency_and_version = a
+        dep = missing_dependecies_detector()
+        matplotlib = importlib.import_module("matplotlib.pyplot")
+        pandas = dep['pandas']
+        numpy = dep['numpy']
+
+        x = numpy.linspace(0, 10, 100)
+        y = numpy.sin(x)
+
+        df = pandas.DataFrame({'x': x, 'y': y})
+
+        matplotlib.plot(df['x'], df['y'])
+        matplotlib.title("Simple Sine Wave")
+        matplotlib.xlabel("X values")
+        matplotlib.ylabel("Y values")
+        matplotlib.show()
+
     except Exception as e:
         print(f"Error: {e.__class__.__name__} - {e}")
         
