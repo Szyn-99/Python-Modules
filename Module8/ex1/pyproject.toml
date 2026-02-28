@@ -1,16 +1,16 @@
 [project]
 name = "ex1"
 version = "0.1.0"
-description = ""
+description = "this is an assignment"
 authors = [
-    {name = "Your Name",email = "you@example.com"}
+    {name = "aymel-ha",email = "aymel-ha@realemail.com"}
 ]
-readme = "README.md"
-requires-python = "3.13.11"
+requires-python = ">=3.10,<3.11"
+
 dependencies = [
-    "numpy (>=2.4.2,<3.0.0)",
-    "pandas (>=3.0.1,<4.0.0)",
-    "matplotlib (>=3.10.8,<4.0.0)"
+    "numpy (>=1.22,<2.0)",
+    "pandas (>=1.5,<2.0)",
+    "matplotlib (>=3.6,<4.0)"
 ]
 
 
