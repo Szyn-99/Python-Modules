@@ -41,9 +41,9 @@ def testing_dependencies() -> None:
         print("Generating visualization...")
         matplotlib.plot(structured_data["panda_x"], structured_data["panda_y"])
         print("\nAnalysis complete!")
-        matplotlib.savefig("analysis.png")
-        print("Results saved to: matrix\_analysis.png}")
-        # matplotlib.show()
+        save_path = "analysis.png"
+        matplotlib.savefig(save_path)
+        print(f"Results saved to: {save_path}")
 
     except Exception as e:
         print(f"Error: {e.__class__.__name__} - {e}")
