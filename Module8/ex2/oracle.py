@@ -2,8 +2,11 @@ import os
 import dotenv
 
 
-def a_function() -> None:
+def a_function(over_ride: bool) -> None:
     try:
+        """Load and validate environment variables,
+        checking for missing or hardcoded secrets."""
+
         print("\nORACLE STATUS: Reading the Matrix...\n")
         config = [
             'MATRIX_MODE', 'DATABASE_URL',
@@ -39,12 +42,16 @@ def a_function() -> None:
             print("[OK] .env file properly configured")
         else:
             print("[KO] .env file properly configured")
-        print("[OK] Production overrides available")
+        if over_ride:
+            print("[OK] Production overrides available")
+        else:
+            print("[KO] Production overrides unavailable")
         print("\nThe Oracle sees all configurations.")
     except Exception as e:
         print(f"Erro: {e.__class__.__name__} - {e}")
 
 
 if __name__ == "__main__":
-    dotenv.load_dotenv(override=True)
-    a_function()
+    over_ride = True
+    dotenv.load_dotenv(override=over_ride)
+    a_function(over_ride)

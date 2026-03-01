@@ -3,15 +3,18 @@ from types import ModuleType
 
 
 def missing_dependecies_detector() -> dict[str, ModuleType]:
+    """Check for required dependencies
+    and return successfully imported modules."""
+
     print("\nLOADING STATUS: Loading programs...\n")
     try:
         print("Checking dependencies:")
-        to_import: dict[str, str] = {
+        to_import = {
             'pandas': "Data manipulation",
             'numpy': "Numerical computations",
             'matplotlib': "Visualization",
         }
-        dep: dict[str, ModuleType] = {}
+        dep = {}
         error = False
         for module in to_import:
             try:
@@ -41,6 +44,8 @@ def missing_dependecies_detector() -> dict[str, ModuleType]:
 
 def testing_dependencies() -> None:
     try:
+        """Run a sample analysis using loaded
+        dependencies and saves the result."""
         dep = missing_dependecies_detector()
         matplotlib = importlib.import_module("matplotlib.pyplot")
         pandas = dep['pandas']

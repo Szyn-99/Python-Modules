@@ -4,6 +4,9 @@ import sys
 
 def construct() -> None:
     try:
+        """this function detect and report if the script
+        is running inside a virtual environment or not by comparing
+        prefix and base_prefix."""
         if sys.prefix == sys.base_prefix:
             print("MATRIX STATUS: You're still plugged in\n")
             print(f"Current Python: {sys.executable}")
@@ -18,6 +21,7 @@ def construct() -> None:
             print("activate    # On Windows\n")
             print("Then run this program again.")
         else:
+
             print(
                 "MATRIX STATUS: Welcome to the "
                 f"{os.path.basename(__file__).split('.')[0]}\n"
