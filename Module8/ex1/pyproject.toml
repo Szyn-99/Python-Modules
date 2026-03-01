@@ -6,7 +6,6 @@ authors = [
     {name = "aymel-ha",email = "aymel-ha@realemail.com"}
 ]
 requires-python = ">=3.10,<3.11"
-
 dependencies = [
     "numpy (>=1.22,<2.0)",
     "pandas (>=1.5,<2.0)",

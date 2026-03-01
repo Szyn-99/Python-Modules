@@ -1,20 +1,24 @@
-import dotenv
 import os
+import dotenv
+
 
 def a_function() -> None:
     try:
         print("\nORACLE STATUS: Reading the Matrix...\n")
-        config = ['MATRIX_MODE', 'DATABASE_URL', 'API_KEY', 'LOG_LEVEL', 'ZION_ENDPOINT']
+        config = [
+            'MATRIX_MODE', 'DATABASE_URL',
+            'API_KEY', 'LOG_LEVEL', 'ZION_ENDPOINT',
+        ]
         a_dict = {}
-        err = 0
-        hardcoded = 0
+        err = False
+        hardcoded = False
         for c in config:
             token = os.getenv(c)
             if token:
-                a_dict.update({c:token})
+                a_dict.update({c: token})
             else:
                 print(f"Missing configuration: {c}")
-                err = 1337
+                err = True
         print("\nConfiguration loaded:")
         print(f"Mode: {a_dict.get('MATRIX_MODE')}")
         print(f"Database: {a_dict.get('DATABASE_URL')}")
@@ -23,14 +27,15 @@ def a_function() -> None:
         print(f"Zion Network: {a_dict.get('ZION_ENDPOINT')}")
 
         print("\nEnvironment security check:")
-        for val in globals():
+        check = {**globals(), **locals()}
+        for val in check:
             if val.upper() in config:
                 print("[KO] hardcoded secrets detected")
-                hardcoded = 1
+                hardcoded = True
                 break
-        if hardcoded == 0:
+        if not hardcoded:
             print("[OK] No hardcoded secrets detected")
-        if err == 0:
+        if not err:
             print("[OK] .env file properly configured")
         else:
             print("[KO] .env file properly configured")
