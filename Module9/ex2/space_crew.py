@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
-from typing import List, Self
-
+from typing import List
+from typing_extensions import Self
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 

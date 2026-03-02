@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Self
-
+from typing import Optional
+from typing_extensions import Self
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
@@ -33,7 +33,7 @@ class AlienContact(BaseModel):
             raise ValueError(
                 'Telepathic contact requires'
                 ' at least 3 witnesses')
-        if self.message_received and self.signal_strength < 7.0:
+        if self.signal_strength >= 7.0 and not self.message_received:
             raise ValueError(
                 'Strong signals (> 7.0) should'
                 ' include received messages')
@@ -46,7 +46,7 @@ def main() -> None:
         print("======================================")
         alien_contact = AlienContact(
             contact_id="AC_2024_001",
-            contact_type="radio",
+            contact_type=ContactType.rad,
             timestamp="3030-12-21",
             location="Area 51, Nevada",
             signal_strength=8.5,
@@ -67,13 +67,13 @@ def main() -> None:
         try:
             AlienContact(
                 contact_id="AC_2024_001",
-                contact_type="telepathic",
+                contact_type=ContactType.tel,
                 timestamp="3030-12-21",
                 location="Area 51, Nevada",
                 signal_strength=8.5,
                 duration_minutes=45,
                 witness_count=1,
-                message_received='Greetings from Zeta Reticuli',
+                message_received="Greetings from Zeta Reticuli",
             )
         except ValidationError as e:
             for error in e.errors():
