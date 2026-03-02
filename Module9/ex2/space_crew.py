@@ -1,7 +1,9 @@
-from pydantic import BaseModel, model_validator, Field, ValidationError
-from enum import Enum
-from typing import Optional, List, Self
 from datetime import datetime
+from enum import Enum
+from typing import List, Self
+
+from pydantic import BaseModel, Field, ValidationError, model_validator
+
 
 class Rank(Enum):
     cad = "cadet"
@@ -9,6 +11,7 @@ class Rank(Enum):
     lie = "lieutenant"
     cap = "captain"
     comm = "commander"
+
 
 class CrewMember(BaseModel):
     member_id: str = Field(min_length=3, max_length=10)
@@ -19,6 +22,7 @@ class CrewMember(BaseModel):
     years_experience: int = Field(ge=0, le=50)
     is_active: bool = True
 
+
 class SpaceMission(BaseModel):
     mission_id: str = Field(min_length=5, max_length=15)
     mission_name: str = Field(min_length=3, max_length=100)
@@ -28,25 +32,32 @@ class SpaceMission(BaseModel):
     crew: List[CrewMember] = Field(min_length=1, max_length=12)
     mission_status: str = "planned"
     budget_millions: float = Field(ge=1.0, le=10000.0)
+
     @model_validator(mode='after')
-    def another_function(self) -> Self:
+    def validator_for_models(self) -> Self:
         if not self.mission_id.startswith('M'):
             raise ValueError('Mission ID must start with "M"')
-        filter = sum(1 for cr in self.crew if cr.rank == Rank.comm or cr.rank == Rank.cap)
-        if filter == 0:
+        filtering = sum(1 for cr in self.crew if cr.rank == Rank.comm)
+        filtering += sum(1 for cr in self.crew if cr.rank == Rank.cap)
+        if filtering == 0:
             raise ValueError('Must have at least one Commander or Captain')
         if self.duration_days > 365:
-            experience_rate = sum(1 for cr in self.crew if cr.years_experience >= 5) / len(self.crew) if len(self.crew) > 0 else 0
+            crew_size = len(self.crew)
+            exp = sum(1 for cr in self.crew if cr.years_experience >= 5)
+            experience_rate = exp / crew_size if crew_size > 0 else 0
             if 0.5 > experience_rate:
-                raise ValueError('Long missions (> 365 days) need 50% experienced crew (5+ years)')
+                raise ValueError(
+                    'Long missions (> 365 days) need 50%'
+                    'experienced crew (5+ years)'
+                )
         for cr in self.crew:
             if not cr.is_active:
                 raise ValueError('All crew members must be active')
         return self
 
-def main():
-    try:
 
+def main() -> None:
+    try:
         print("Space Mission Crew Validation")
         print("=========================================")
 
@@ -57,7 +68,7 @@ def main():
             age=42,
             specialization="Mission Command",
             years_experience=15,
-            is_active=True
+            is_active=True,
         )
 
         lieutenant = CrewMember(
@@ -67,7 +78,7 @@ def main():
             age=35,
             specialization="Navigation",
             years_experience=8,
-            is_active=True
+            is_active=True,
         )
 
         officer = CrewMember(
@@ -77,7 +88,7 @@ def main():
             age=29,
             specialization="Engineering",
             years_experience=6,
-            is_active=True
+            is_active=True,
         )
 
         mission = SpaceMission(
@@ -88,22 +99,23 @@ def main():
             duration_days=900,
             crew=[commander, lieutenant, officer],
             mission_status="planned",
-            budget_millions=2500.0
+            budget_millions=2500.0,
         )
 
-        print(f"Valid mission created:")
+        print("Valid mission created:")
         print(f"  Mission:     {mission.mission_name}")
         print(f"  ID:          {mission.mission_id}")
         print(f"  Destination: {mission.destination}")
         print(f"  Duration:    {mission.duration_days} days")
         print(f"  Budget:      ${mission.budget_millions}M")
         print(f"  Crew size:   {len(mission.crew)}")
-        print(f"  Crew members:")
+        print("  Crew members:")
         for member in mission.crew:
-            print(f"    - {member.name} ({member.rank.value}) - {member.specialization}")
+            print("    - "
+                  f"{member.name} "
+                  f"({member.rank.value}) - {member.specialization}")
 
         print("\n=========================================")
-
         print("Expected validation error:")
         try:
             cadet = CrewMember(
@@ -113,9 +125,8 @@ def main():
                 age=22,
                 specialization="Logistics",
                 years_experience=1,
-                is_active=True
+                is_active=True,
             )
-
             SpaceMission(
                 mission_id="M2024_FAIL",
                 mission_name="Doomed Mission",
@@ -124,14 +135,14 @@ def main():
                 duration_days=200,
                 crew=[cadet],
                 mission_status="planned",
-                budget_millions=500.0
+                budget_millions=500.0,
             )
-
         except ValidationError as e:
             for error in e.errors():
                 print(f"{error['msg']}")
     except Exception as e:
         print(f"Error: {e.__class__.__name__} - {e}")
+
 
 if __name__ == "__main__":
     main()
