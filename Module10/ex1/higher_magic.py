@@ -52,7 +52,7 @@ def main():
 
         print("\nTesting conditional caster...")
 
-        def has_mana():
+        def yes_mana():
             return True
 
         def no_mana():
@@ -61,7 +61,7 @@ def main():
         def lightning():
             return "Dark pursuers launched"
 
-        cast_with_mana = conditional_caster(has_mana, lightning)
+        cast_with_mana = conditional_caster(yes_mana, lightning)
         cast_without_mana = conditional_caster(no_mana, lightning)
         print(f"With mana: {cast_with_mana()}")
         print(f"Without mana: {cast_without_mana()}")
