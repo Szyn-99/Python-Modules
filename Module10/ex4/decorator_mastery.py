@@ -3,9 +3,9 @@ from functools import wraps
 import time
 
 
-def spell_timer(func: Callable) -> Callable:
+def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
     @wraps(func)
-    def decorator_job(*args, **kwargs) -> Any:
+    def decorator_job(*args: Any, **kwargs: Any) -> Any:
         print(f"Casting {func.__name__}...")
         chrono_start = time.time()
         aftermath = func(*args, **kwargs)
@@ -14,10 +14,10 @@ def spell_timer(func: Callable) -> Callable:
     return decorator_job
 
 
-def power_validator(min_power: int) -> Callable:
-    def decorator_job(function: Callable) -> Callable:
+def power_validator(min_power: int) -> Callable[..., Any]:
+    def decorator_job(function: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(function)
-        def decorator(*args, **kwargs) -> Any:
+        def decorator(*args: Any, **kwargs: Any) -> Any:
             power = kwargs.get('power', args[-1] if args else 0)
             if power >= min_power:
                 return function(*args, **kwargs)
@@ -27,10 +27,10 @@ def power_validator(min_power: int) -> Callable:
     return decorator_job
 
 
-def retry_spell(max_attempts: int) -> Callable:
-    def decorator_job(function: Callable) -> Callable:
+def retry_spell(max_attempts: int) -> Callable[..., Any]:
+    def decorator_job(function: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(function)
-        def decorator(*args, **kwargs) -> Any:
+        def decorator(*args: Any, **kwargs: Any) -> Any:
             for attempt in range(max_attempts):
                 try:
                     return function(*args, **kwargs)
@@ -44,23 +44,24 @@ def retry_spell(max_attempts: int) -> Callable:
 class MageGuild:
     @staticmethod
     def validate_mage_name(name: str) -> bool:
-        if not name or len(name.strip()) < 3:
+        if len(name) < 3:
             return False
-        if not name.isalpha():
-            return False
-        return True
+        edited_name = name.replace(" ", "")
+        if edited_name.isalpha():
+            return True
+        return False
 
     @power_validator(10)
     def cast_spell(self, spell_name: str, power: int) -> str:
         return f"Successfully cast {spell_name} with {power} power"
 
 
-def main():
+def main() -> None:
     try:
         print("Testing spell timer...")
 
         @spell_timer
-        def fireball():
+        def fireball() -> str:
             chrono = 1.337
             time.sleep(chrono)
             return "Fireball cast!"
@@ -86,20 +87,20 @@ def main():
         call_count = 0
 
         @retry_spell(max_attempts=5)
-        def unstable_spell() -> str:
+        def not_accurate_spell() -> str:
             nonlocal call_count
             call_count += 1
             if call_count < 3:
                 raise RuntimeError("Spell missed the enemy!")
             return "Spell casted succesfully!"
-        print(f"Result: {unstable_spell()}")
+        print(f"Result: {not_accurate_spell()}")
 
-        print("\nTesting retry spell (always fails)...")
+        print("\nTesting retry spell...")
 
         @retry_spell(max_attempts=3)
-        def doomed_spell() -> str:
+        def not_working_spell() -> str:
             raise RuntimeError("Critical failure!")
-        result = doomed_spell()
+        result = not_working_spell()
         print(f"Result: {result}")
     except Exception as e:
         print(f"Error: {e.__class__.__name__} - {e}")

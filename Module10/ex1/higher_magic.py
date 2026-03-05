@@ -1,41 +1,47 @@
 from typing import Any, Callable
 
 
-def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
-    def combined_spell() -> tuple:
-        return (spell1(), spell2())
+def spell_combiner(
+    spell1: Callable[..., Any], spell2: Callable[..., Any]
+) -> Callable[..., Any]:
+    def combined_spell(*args: Any, **kwargs: Any) -> tuple[Any, Any]:
+        return (spell1(*args, **kwargs), spell2(*args, **kwargs))
     return combined_spell
 
 
-def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
-    def spell_multiplier() -> Any:
-        return base_spell() * multiplier
+def power_amplifier(
+    base_spell: Callable[..., Any], multiplier: int
+) -> Callable[..., Any]:
+    def spell_multiplier(*args: Any, **kwargs: Any) -> Any:
+        return base_spell(*args, **kwargs) * multiplier
     return spell_multiplier
 
 
-def conditional_caster(condition: Callable, spell: Callable) -> Callable:
-    def only_if_true() -> str:
-        if condition():
-            return spell()
+def conditional_caster(
+    condition: Callable[..., Any], spell: Callable[..., Any]
+) -> Callable[..., Any]:
+    def only_if_true(*args: Any, **kwargs: Any) -> Any:
+        if condition(*args, **kwargs):
+            return spell(*args, **kwargs)
         else:
             return "Spell fizzled"
     return only_if_true
 
 
-def spell_sequence(spells: list[Callable]) -> Callable:
-    def cast_all() -> list:
-        return [spell() for spell in spells]
+def spell_sequence(spells: list[Callable[..., Any]]) -> Callable[..., Any]:
+    def cast_all(*args: Any, **kwargs: Any) -> list[Any]:
+        return [spell(*args, **kwargs) for spell in spells]
     return cast_all
 
 
-def main():
+def main() -> None:
     try:
         print("Testing spell combiner...")
 
-        def fireball():
+        def fireball() -> str:
             return "Fireball hits Dragon"
 
-        def heal():
+        def heal() -> str:
             return "Heals Dragon"
 
         combined = spell_combiner(fireball, heal)
@@ -44,7 +50,7 @@ def main():
 
         print("\nTesting power amplifier...")
 
-        def base_power():
+        def base_power() -> int:
             return 10
 
         amplified = power_amplifier(base_power, 3)
@@ -52,13 +58,13 @@ def main():
 
         print("\nTesting conditional caster...")
 
-        def yes_mana():
+        def yes_mana() -> bool:
             return True
 
-        def no_mana():
+        def no_mana() -> bool:
             return False
 
-        def lightning():
+        def lightning() -> str:
             return "Dark pursuers launched"
 
         cast_with_mana = conditional_caster(yes_mana, lightning)
@@ -68,19 +74,19 @@ def main():
 
         print("\nTesting spell sequence...")
 
-        def dark_orb():
+        def dark_orb() -> str:
             return "Dark orb casted"
 
-        def shield():
+        def shield() -> str:
             return "Shield raised"
 
-        def heal_spell():
+        def heal_spell() -> str:
             return "Heal applied"
 
-        def pine_resin():
+        def pine_resin() -> str:
             return "Dark pine resin applied"
 
-        def dark_sword():
+        def dark_sword() -> str:
             return "Dark Sword summoned"
 
         spells = [dark_orb, shield, heal_spell, pine_resin, dark_sword]

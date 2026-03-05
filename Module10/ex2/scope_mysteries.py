@@ -1,7 +1,7 @@
-from typing import Any, Callable, Union
+from typing import Any, Callable
 
 
-def mage_counter() -> Callable:
+def mage_counter() -> Callable[[], int]:
     counter = 0
 
     def closure() -> int:
@@ -11,7 +11,7 @@ def mage_counter() -> Callable:
     return closure
 
 
-def spell_accumulator(initial_power: int) -> Callable:
+def spell_accumulator(initial_power: int) -> Callable[[int], int]:
     total_power = initial_power
 
     def accumulate_power(given_power: int) -> int:
@@ -21,19 +21,19 @@ def spell_accumulator(initial_power: int) -> Callable:
     return accumulate_power
 
 
-def enchantment_factory(enchantment_type: str) -> Callable:
+def enchantment_factory(enchantment_type: str) -> Callable[[str], str]:
     def apply_enchant(item_name: str) -> str:
-        return enchantment_type + " " + item_name
+        return f"{enchantment_type} {item_name}"
     return apply_enchant
 
 
-def memory_vault() -> dict[str, Callable]:
-    storage: dict = {}
+def memory_vault() -> dict[str, Callable[..., Any]]:
+    storage: dict[Any, Any] = {}
 
     def store(key: Any, value: Any) -> None:
         storage.update({key: value})
 
-    def recall(key: Any) -> Union[str, Any]:
+    def recall(key: Any) -> Any:
         try:
             return storage[key]
         except KeyError:
@@ -41,7 +41,7 @@ def memory_vault() -> dict[str, Callable]:
     return {'store': store, 'recall': recall}
 
 
-def main():
+def main() -> None:
     try:
         print("Testing mage counter...")
         counter = mage_counter()

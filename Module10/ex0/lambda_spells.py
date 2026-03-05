@@ -1,29 +1,32 @@
-from typing import Iterator
+from typing import Any
 
 
-def artifact_sorter(artifacts: list[dict]) -> list[dict]:
+def artifact_sorter(artifacts: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(
         artifacts, key=lambda power: power['power'], reverse=True
     )
 
 
-def power_filter(mages: list[dict], min_power: int) -> Iterator[dict]:
-    return filter(lambda mage: mage['power'] >= min_power, mages)
+def power_filter(
+    mages: list[dict[str, Any]], min_power: int
+) -> list[dict[str, Any]]:
+    return list(filter(lambda mage: mage['power'] >= min_power, mages))
 
 
-def spell_transformer(spells: list[str]) -> Iterator[str]:
-    return map(lambda prefix: "*" + prefix + "*", spells)
+def spell_transformer(spells: list[str]) -> list[str]:
+    return list(map(lambda prefix: "* " + prefix + " *", spells))
 
 
-def mage_stats(mages: list[dict]) -> dict:
+def mage_stats(mages: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         'max_power': max(mages, key=lambda p: p['power']),
         'min_power': min(mages, key=lambda p: p['power']),
-        'avg_power': sum(mage['power'] for mage in mages) / len(mages)
+        'avg_power': round(sum(mage['power'] for mage in filter(
+            lambda m: 'power' in m, mages)) / len(mages) if mages else 0, 2)
     }
 
 
-def main():
+def main() -> None:
     try:
         artifacts = [
             {"name": "Fire Staff", "power": 92, "type": "staff"},
@@ -31,9 +34,9 @@ def main():
             {"name": "Shadow Cloak", "power": 60, "type": "cloak"},
         ]
         mages = [
-            {"name": "Gandalf", "power": 95},
-            {"name": "Merlin", "power": 88},
-            {"name": "Morgana", "power": 72},
+            {"name": "Pate", "power": 10},
+            {"name": "Bearer of the curse", "power": 99},
+            {"name": "Gwyn, lord of cinder", "power": 100},
         ]
         spells = ["fireball", "heal", "shield"]
 
@@ -70,7 +73,7 @@ def main():
             f"Least powerful: {stats['min_power']['name']}"
             f" ({stats['min_power']['power']} power)"
         )
-        print(f"Average power: {stats['avg_power']:.1f}")
+        print(f"Average power: {stats['avg_power']}")
     except Exception as e:
         print(f"Error: {e.__class__.__name__} - {e}")
 

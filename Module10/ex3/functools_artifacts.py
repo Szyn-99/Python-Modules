@@ -1,29 +1,23 @@
-from typing import Callable, Optional, Union
+from typing import Any, Callable, Optional
 from functools import reduce, singledispatch, partial, lru_cache
-from operator import add, mul, sub, truediv, floordiv, mod, pow
+from operator import add, mul
 
 
 def spell_reducer(spells: list[int], operation: str) -> Optional[int]:
-    if operation == "add" or operation == "+":
+    if operation == "add":
         return reduce(add, spells, 0)
-    elif operation == "mul" or operation == "*":
+    elif operation == "mul":
         return reduce(mul, spells, 1)
-    elif operation == "sub" or operation == "-":
-        return reduce(sub, spells, 0)
-    elif operation == "truediv" or operation == "/":
-        return reduce(truediv, spells, 1)
-    elif operation == "floordiv" or operation == "//":
-        return reduce(floordiv, spells, 1)
-    elif operation == "mod" or operation == "%":
-        return reduce(mod, spells, 0)
-    elif operation == "pow" or operation == "**":
-        return reduce(pow, spells, 1)
     elif operation == "max":
         return reduce(max, spells)
+    elif operation == "min":
+        return reduce(min, spells)
     return None
 
 
-def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
+def partial_enchanter(
+    base_enchantment: Callable[..., Any]
+) -> dict[str, Callable[..., Any]]:
     return {
         'fire_enchant': partial(base_enchantment, element='Fire', power=50),
         'ice_enchant': partial(base_enchantment, element='Ice', power=50),
@@ -35,32 +29,34 @@ def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
 
 @lru_cache(maxsize=None)
 def memoized_fibonacci(n: int) -> int:
+    if n < 0:
+        raise ValueError("Input must be a non-negative integer")
     if n <= 1:
         return n
     return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
-def spell_dispatcher() -> Callable:
+def spell_dispatcher() -> Callable[..., None]:
     @singledispatch
-    def spell_caster(spell: Union[str, int, list]) -> str:
+    def spell_caster(spell: Any) -> None:
         print(f"Unsupported Format {spell.__class__.__name__} - {spell}")
 
     @spell_caster.register(int)
-    def _cast_int(spell: int) -> str:
+    def _cast_int(spell: int) -> None:
         print(f"casting spell with {spell} damage")
 
     @spell_caster.register(str)
-    def _cast_str(spell: str) -> str:
+    def _cast_str(spell: str) -> None:
         print(f"casting spell with {spell} enchantment")
 
     @spell_caster.register(list)
-    def _cast_list(spell: list) -> str:
+    def _cast_list(spell: list[Any]) -> None:
         for s in spell:
             spell_caster(s)
     return spell_caster
 
 
-def main():
+def main() -> None:
     try:
         print("Testing spell reducer...")
         powers = [10, 20, 30, 40]
@@ -82,7 +78,7 @@ def main():
 
         print("\nTesting memoized fibonacci...")
         fib = 10
-        print(f"Fib({fib}): {memoized_fibonacci(10)}")
+        print(f"Fib({fib}): {memoized_fibonacci(fib)}")
         fib = 15
         print(f"Fib({fib}): {memoized_fibonacci(fib)}")
 
